@@ -1,0 +1,22 @@
+{
+  "short_name": "AirCatalog",
+  "name": "AirCatalog - Katalog dopravních letadel",
+  "description": "Moderní interaktivní přehled a technické specifikace dopravních letadel s elegantním designem a fotografiemi.",
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "display": "standalone",
+  "orientation": "portrait"
+}

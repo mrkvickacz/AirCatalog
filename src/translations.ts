@@ -72,6 +72,9 @@ export interface UITranslationMap {
   changeLanguage: string;
   czLang: string;
   enLang: string;
+  changeTheme: string;
+  themeLight: string;
+  themeDark: string;
 }
 
 export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
@@ -143,6 +146,9 @@ export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
     changeLanguage: 'Změnit jazyk',
     czLang: 'Čeština',
     enLang: 'English (EN)',
+    changeTheme: 'Motiv',
+    themeLight: 'Světlý',
+    themeDark: 'Tmavý',
   },
   EN: {
     appName: 'AirCatalog',
@@ -212,6 +218,9 @@ export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
     changeLanguage: 'Language',
     czLang: 'Czech',
     enLang: 'English (EN)',
+    changeTheme: 'Theme',
+    themeLight: 'Light',
+    themeDark: 'Dark',
   }
 };
 

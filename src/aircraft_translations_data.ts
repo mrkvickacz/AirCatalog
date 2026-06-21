@@ -610,16 +610,168 @@ export const AIRCRAFT_TRANSLATIONS_EN: Record<string, { descriptionEn: string; u
     "descriptionEn": "A classic Cessna Caravan fitted with lightweight, large composite floats featuring retractable wheels.",
     "uniquenessEn": "A highly versatile utility platform that can land seamlessly on both conventional concrete runways and remote water lakes."
   },
+  "bombardier-dhc-8-100": {
+    "descriptionEn": "A twin-engine turboprop regional airliner designed for short-haul routes, originally developed by de Havilland Canada.",
+    "uniquenessEn": "Known for its outstanding Short Takeoff and Landing (STOL) performance and rugged structure ideal for harsh operational environments."
+  },
+  "bombardier-dhc-8-200": {
+    "descriptionEn": "An upgraded version of the 100 series equipped with much more powerful engines for improved hot-and-high airfield performance.",
+    "uniquenessEn": "Combines the compact passenger capacity of the 100 series with the modern propulsion system of the larger 300 series."
+  },
+  "bombardier-dhc-8-300": {
+    "descriptionEn": "A stretched version of the 100/200 series featuring an extended wingspan and significantly higher passenger capacity.",
+    "uniquenessEn": "A classic workhorse of regional airlines, offering an ideal balance of seating capacity and low operating costs."
+  },
+  "bombardier-dhc-8-400": {
+    "descriptionEn": "A completely redesigned, elongated, and highly rapid variant of the Dash 8 family featuring the Active Noise and Vibration Suppression (ANVS) system.",
+    "uniquenessEn": "Achieves cruise speeds virtually comparable to regional jets while preserving the superior fuel economy of a turboprop design."
+  },
+  "bombardier-crj100": {
+    "descriptionEn": "The initial production variant of the highly successful 50-seat Canadair Regional Jet family designed for short-to-medium regional routes.",
+    "uniquenessEn": "Ignited a true revolution in regional aviation by progressively displacing turboprop layouts from many key airline Hub-and-Spoke routes."
+  },
+  "bombardier-crj200": {
+    "descriptionEn": "An enhanced version of the CRJ100 airliner featuring newer, highly efficient powerplants with optimized, reduced fuel consumption.",
+    "uniquenessEn": "Formed the backbone of countless regional affiliate fleets in North America and Europe at the turn of the millennium."
+  },
+  "bombardier-crj440": {
+    "descriptionEn": "A specialized, strictly capped 44-seat variant of the CRJ200 certified to fulfill ousting scope clauses of major US carriers.",
+    "uniquenessEn": "Enables regional operators to run efficient passenger jets while adhering strictly to legacy labor union pilot agreements."
+  },
+  "bombardier-crj700": {
+    "descriptionEn": "A stretched, modernized successor with completely redesigned wings, a lowered cabin floor, and highly optimized powerplants.",
+    "uniquenessEn": "Formidable challenger to the Embraer 170, introducing a dramatically quieter cabin experience compared to old division aircraft."
+  },
   "bombardier-crj900": {
-    "descriptionEn": "A twin-engine regional jet airliner developed from the successful CRJ700, featuring a stretched fuselage designed for short- and medium-haul routes.",
-    "uniquenessEn": "It is one of the most widely used regional jets in the world, highly favored by airlines for its reliable operation and low fuel consumption."
+    "descriptionEn": "A stretched fuselage variant derived from the CRJ700, serving as an outstanding fit for higher-demand regional connection operations.",
+    "uniquenessEn": "Features a modern, award-winning Atmosphere cabin layout and offers superb operating economics per seat-mile."
+  },
+  "bombardier-crj1000": {
+    "descriptionEn": "The largest variant in the CRJ series, featuring an extended fuselage stretched by nearly three meters compared to the CRJ900.",
+    "uniquenessEn": "Specially designed as a direct competitor to the Embraer 190 on secondary and regional European flight connections."
+  },
+  "bombardier-cs100": {
+    "descriptionEn": "A revolutionary, clean-sheet single-aisle airliner designed from the ground up with advanced aerodynamics and composites (now the Airbus A220-100).",
+    "uniquenessEn": "Distinguished by an ultra-quiet cabin, incredibly wide passenger seats, and game-changing Pratt & Whitney geared turbofan engines."
+  },
+  "bombardier-cs300": {
+    "descriptionEn": "The stretched version of the pioneering CSeries program, extending to 38.7 meters to accommodate high-density layouts (now the Airbus A220-300).",
+    "uniquenessEn": "Delivers airlines an unprecedented 20% fuel burn reduction compared to older generation aircraft in the same category."
+  },
+  "bombardier-learjet-31": {
+    "descriptionEn": "A rapid, high-climbing American-Canadian twin-engine business jet, succeeding the legendary Learjet 35 line.",
+    "uniquenessEn": "Features distinctive rear-fuselage 'Delta Fins' for exceptional handling qualities and lateral stability at high angles of attack."
+  },
+  "bombardier-learjet-31a": {
+    "descriptionEn": "An improved model 31 featuring modernized BendixKing flight decks and an elevated maximum takeoff weight limit.",
+    "uniquenessEn": "Capable of achieving cruise speeds up to Mach 0.81, renowned for its sports-car-like flight dynamics and exceptional rate of climb."
+  },
+  "bombardier-learjet-35": {
+    "descriptionEn": "A legendary twin-engine business jet featuring iconic tip-tank fuel cells mounted permanently to the wingtips.",
+    "uniquenessEn": "One of the most successful business jets ever built, praised for its extreme durability and widespread use as a critical air ambulance."
+  },
+  "bombardier-learjet-36": {
+    "descriptionEn": "A long-range sibling of the model 35 that swaps two passenger seats for a larger fuselage fuel tank to achieve epic non-stop range.",
+    "uniquenessEn": "A pioneer in transatlantic private flights, completing journeys formerly restricted to aircraft twice its size."
+  },
+  "bombardier-learjet-60": {
+    "descriptionEn": "A mid-size corporate jet featuring a stretched passenger cabin and highly robust Pratt & Whitney Canada powerplants.",
+    "uniquenessEn": "The largest legacy-derived member of the Learjet stable, celebrated for its rocket-like climb directly to quiet initial cruise altitudes."
+  },
+  "bombardier-learjet-60xr": {
+    "descriptionEn": "A modern evolution of the Learjet 60 featuring a fully redesigned cabin and advanced Rockwell Collins Pro Line 21 integrated avionics.",
+    "uniquenessEn": "Brings a full glass cockpit to the aircraft and features an upgraded, spacious aft lavatory with natural-light cabin windows."
+  },
+  "bombardier-learjet-45": {
+    "descriptionEn": "An entirely clean-sheet corporate aircraft, representing the first scratch-designed Learjet since the brand's original creation.",
+    "uniquenessEn": "The first aircraft in its category completely engineered using comprehensive 3D software (CATIA) to reach perfect drag reduction."
+  },
+  "bombardier-learjet-45xr": {
+    "descriptionEn": "An upgraded iteration of the Learjet 45 offering increased takeoff weights, higher-thrust powerplants, and shorter runway requirements.",
+    "uniquenessEn": "A highly capable hot-and-high climber that gets business executives out of mountainous remote airfields with ease."
+  },
+  "bombardier-learjet-40": {
+    "descriptionEn": "A shortened variant of the model 45 designed to replace the legacy Learjet 31A while bringing a vastly more spacious cabin.",
+    "uniquenessEn": "An smart utility option for quick regional business hops that demand elevated cruise velocities and standard comfort."
+  },
+  "bombardier-learjet-40xr": {
+    "descriptionEn": "An upgraded edition of the model 40 providing higher takeoff weights and newer, high-efficiency engine configurations.",
+    "uniquenessEn": "Optimizes altitude ascents and drag layouts to reduce overall flight times to final cruising altitudes."
+  },
+  "bombardier-learjet-70": {
+    "descriptionEn": "A hefty upgrade of the Learjet 40 packing a Garmin G5000 touchscreen avionics suite and a newly ergonomic cabin design.",
+    "uniquenessEn": "Features newly profile-optimized canted winglets inherited from the Global program to drop fuel burns and climb faster."
+  },
+  "bombardier-learjet-75": {
+    "descriptionEn": "A major update to the Learjet 45 introducing powerful new propulsion systems and a Garmin G5000 touchscreen flight deck.",
+    "uniquenessEn": "Cabin appointments borrow heavily from the Challenger family to establish a new benchmark of comfort for up to eight travelers."
+  },
+  "bombardier-learjet-75-liberty": {
+    "descriptionEn": "An economical, redesigned variant of the Learjet 75 featuring a luxurious six-seat layout rather than the standard eight seats.",
+    "uniquenessEn": "Serves as the final production model of the legendary Learjet brand name before manufacturing ceased in 2021."
+  },
+  "bombardier-challenger-600": {
+    "descriptionEn": "The founding model of the groundbreaking wide-body business jet family, initially designed by Bill Lear.",
+    "uniquenessEn": "Introduced a comfortable stand-up cabin concept to the business aviation market, forever changing luxury expectations."
+  },
+  "bombardier-challenger-601": {
+    "descriptionEn": "An enhanced iteration of the 600 series fitted with highly reliable and efficient General Electric turbofans.",
+    "uniquenessEn": "The first model in the Challenger family to incorporate winglets as a standard drag-reducing design feature."
+  },
+  "bombardier-challenger-604": {
+    "descriptionEn": "A massive commercial hit for the Challenger family, introducing enlarged fuel capacity and Collins Pro Line 4 instrumentation.",
+    "uniquenessEn": "Became the global gold standard for reliable, high-volume transatlantic corporate and private charter flight operations."
+  },
+  "bombardier-challenger-605": {
+    "descriptionEn": "The elegant successor to the 604, introducing larger cabin windows, a more spacious interior, and advanced Pro Line 21 avionics.",
+    "uniquenessEn": "Boasts a 14% increase in window size, maximizing natural cabin illumination and passenger sightseeing comfort."
+  },
+  "bombardier-challenger-650": {
+    "descriptionEn": "The ultimate evolution of the time-tested Challenger 600 platform, with advanced engines and a state-of-the-art entertainment cabin.",
+    "uniquenessEn": "Delivers the lowest cabin sound levels in its class, coupled with cutting-edge touch seat control terminals."
+  },
+  "bombardier-challenger-300": {
+    "descriptionEn": "A totally clean-sheet super-midsize business jet with a flat-floor cabin layout and high transcontinental range.",
+    "uniquenessEn": "Enables non-stop coast-to-coast flights across the United States within an incredibly roomy, executive cabin."
+  },
+  "bombardier-challenger-350": {
+    "descriptionEn": "An exceptionally popular and reliable mid-size business jet, characterized by high climb performance and an outstandingly quiet passenger cabin.",
+    "uniquenessEn": "It was long the best-selling super-midsize business jet in the world, offering an outstanding ratio of ownership and operational costs to flight capabilities."
+  },
+  "bombardier-challenger-3500": {
+    "descriptionEn": "The latest evolution of the Challenger 300 series, boasting features ported from the flagship Global cabin and voice controls.",
+    "uniquenessEn": "The first super-midsize aircraft carrying an Environmental Product Declaration (EPD) validating its ecologically conscious build."
+  },
+  "bombardier-global-express": {
+    "descriptionEn": "A pioneering ultra-long-range business jet built to connect distant continents non-stop in paramount luxury.",
+    "uniquenessEn": "Launched the highly successful Global family, showcasing a uniquely designed supercritical wing structure."
+  },
+  "bombardier-global-express-xrs": {
+    "descriptionEn": "The refined variant of the original Global Express, providing quicker refueling rates and even greater range margins.",
+    "uniquenessEn": "Equipped with advanced interior lighting schemes and the sophisticated Bombardier Enhanced Vision System (BEVS)."
+  },
+  "bombardier-global-5000": {
+    "descriptionEn": "A slightly shortened variant of the Global Express offering breathtaking high-speed cruise and transoceanic capability.",
+    "uniquenessEn": "Superb short-field performance allows it to operate out of challenging, restrictive runways like London City Airport."
+  },
+  "bombardier-global-6000": {
+    "descriptionEn": "The successor to the XRS, incorporating a Vision Flight Deck and an incredibly quiet passenger environment.",
+    "uniquenessEn": "Pioneered the fastest available satellite cabin internet (Ka-band) to ensure uninterrupted office productivity during flights."
+  },
+  "bombardier-global-5500": {
+    "descriptionEn": "A modern evolution of the Global 5000, powered by next-generation Rolls-Royce Pearl powerplants and Nuage seats.",
+    "uniquenessEn": "Delivers 13% lower fuel burns and adds nearly 900 km of range through a reshaped, aerodynamic trailing wing edge."
+  },
+  "bombardier-global-6500": {
+    "descriptionEn": "An advanced successor to the Global 6000, packing next-generation Pearl 15 engines and refined aerodynamic wing trailing edges.",
+    "uniquenessEn": "Accomplishes much longer intercontinental ranges at higher cruise velocities with significantly minimized carbon emissions."
   },
   "bombardier-global-7500": {
     "descriptionEn": "A state-of-the-art, luxurious, and ultra-long-range business jet that adds the highest level of comfort and autonomy to the Global family.",
     "uniquenessEn": "With a range of over 14,000 km, it can connect cities like New York and Hong Kong non-stop, offering a spacious cabin divided into four living zones."
   },
-  "bombardier-challenger-350": {
-    "descriptionEn": "An exceptionally popular and reliable mid-size business jet, characterized by high climb performance and an outstandingly quiet passenger cabin.",
-    "uniquenessEn": "It was long the best-selling super-midsize business jet in the world, offering an outstanding ratio of ownership and operational costs to flight capabilities."
+  "bombardier-global-8000": {
+    "descriptionEn": "The fastest civil aircraft since the retirement of Concorde, combining a massive 14,800 km uncompromised range.",
+    "uniquenessEn": "Successfully broke the sound barrier by registering a peak flight test speed of Mach 1.015."
   }
 };

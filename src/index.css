@@ -24,3 +24,34 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.4);
 }
+
+/* Precise Contrast Fixes for Light Theme Sidebar Accords */
+.light-theme button.bg-slate-950\/40 {
+  background-color: #0f172a !important; /* Rich Dark Slate-900 */
+  border-color: #334155 !important;    /* Slate-700 */
+}
+.light-theme button.hover\:bg-slate-900\/60:hover {
+  background-color: #020617 !important; /* Premium Slate-950 */
+}
+.light-theme button.bg-slate-950\/40 .text-slate-200 {
+  color: #f8fafc !important;            /* Slate-50 */
+}
+.light-theme button.bg-slate-950\/40 .text-slate-500 {
+  color: #94a3b8 !important;            /* Slate-400 */
+}
+
+/* Sub-folders like Airbus A300, Boeing 737 etc. nested buttons */
+.light-theme button.bg-slate-950\/20 {
+  background-color: #1e293b !important; /* Sleek Slate-800 */
+  border-color: #334155 !important;    /* Slate-700 */
+}
+.light-theme button.hover\:bg-slate-900\/40:hover {
+  background-color: #0f172a !important; /* Sleek Slate-900 */
+}
+.light-theme button.bg-slate-950\/20 .text-slate-300 {
+  color: #f1f5f9 !important;            /* Slate-100 */
+}
+.light-theme button.bg-slate-950\/20 .text-slate-500 {
+  color: #cbd5e1 !important;            /* Slate-300 */
+}
+

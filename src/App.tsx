@@ -19,12 +19,15 @@ import {
   TrendingUp,
   Layers,
   ArrowLeftRight,
-  Eye
+  Eye,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { AIRCRAFT_DATA } from './data';
 import { Aircraft, AircraftCategory } from './types';
 import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag } from './components/Flags';
 import AircraftComparison from './components/AircraftComparison';
+import AircraftVisualProfile from './components/AircraftVisualProfile';
 import { 
   TRANSLATIONS, 
   translateCategory, 
@@ -34,6 +37,35 @@ import {
 } from './translations';
 
 export default function App() {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try {
+      const saved = localStorage.getItem('theme_preset');
+      return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    try {
+      localStorage.setItem('theme_preset', newTheme);
+    } catch (_) {}
+  };
+
+  const isDark = theme === 'dark';
+
+  // Design tokens for dynamic theme swapping
+  const bgMainClass = isDark ? 'bg-[#0f172a]' : 'bg-[#f8fafc]';
+  const textMainClass = isDark ? 'text-slate-100' : 'text-slate-800';
+  const textMutedClass = isDark ? 'text-slate-450' : 'text-slate-550';
+  const textSubtleClass = isDark ? 'text-slate-500' : 'text-slate-450';
+  const borderMutedClass = isDark ? 'border-slate-850/40' : 'border-slate-200';
+  const borderSubtleClass = isDark ? 'border-white/5' : 'border-slate-200/60';
+  const bgSubtleClass = isDark ? 'bg-slate-950/20' : 'bg-slate-100/60';
+  const bgCardClass = isDark ? 'bg-slate-900/40' : 'bg-white shadow-sm shadow-slate-200/60';
+
   const [lang, setLang] = useState<'CZ' | 'EN'>(() => {
     try {
       const saved = localStorage.getItem('language_preset');
@@ -150,13 +182,15 @@ export default function App() {
         className={`w-full text-left p-3 rounded-2xl transition-all duration-300 relative group cursor-pointer border select-none outline-none ${
           isSelected
             ? isBoeing 
-              ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-indigo-500/30'
+              ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-indigo-500/50 shadow-md'
               : isEmbraer
-                ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-emerald-500/30'
+                ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-emerald-500/50 shadow-md'
                 : isCessna
-                  ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-amber-500/30'
-                  : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-sky-500/30'
-            : 'bg-slate-900/15 border-white/5 hover:bg-slate-800/30 hover:border-slate-800 text-slate-300'
+                  ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-amber-500/50 shadow-md'
+                  : 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-sky-500/50 shadow-md'
+            : isDark
+              ? 'bg-slate-900/15 border-white/5 hover:bg-slate-800/30 hover:border-slate-800 text-slate-300'
+              : 'bg-slate-900 border-slate-950 text-slate-100 hover:bg-slate-950 shadow-sm'
         }`}
         layoutId={`button-bg-${aircraft.id}`}
       >
@@ -192,7 +226,7 @@ export default function App() {
                 <div className="w-3.5 h-2.5 flex items-center shrink-0 overflow-hidden rounded-[1px] opacity-80 shadow-sm">
                   {flagComponent}
                 </div>
-                <span className={`text-[10px] md:text-[9px] font-mono ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                <span className={`text-[10px] md:text-[9px] font-mono ${isSelected ? 'text-slate-300' : isDark ? 'text-slate-500' : 'text-slate-450'}`}>
                   {countryLabel}
                 </span>
                 {isSeen && (
@@ -204,14 +238,14 @@ export default function App() {
 
               {/* Aircraft Name */}
               <h4 className={`font-bold text-sm md:text-[13px] leading-tight tracking-tight ${
-                isSelected ? 'text-white' : 'text-slate-200'
+                isSelected ? 'text-white' : isDark ? 'text-slate-200': 'text-white'
               }`}>
                 {aircraft.name}
               </h4>
 
               {/* Subspecs */}
               <p className={`text-[11px] md:text-[10px] mt-0.5 font-mono ${
-                isSelected ? 'text-slate-300' : 'text-slate-400 font-light'
+                isSelected ? 'text-slate-300' : isDark ? 'text-slate-400 font-light' : 'text-slate-350 font-light'
               }`}>
                 {lang === 'CZ' 
                   ? `${aircraft.specs.engineCount}x motor • ${aircraft.specs.rangeKm.toLocaleString('cs-CZ')} km dolet`
@@ -723,47 +757,69 @@ export default function App() {
   ]);
 
   return (
-    <div className="min-h-screen bg-[#0f172a] font-sans text-slate-100 flex flex-col md:flex-row antialiased">
+    <div className={`min-h-screen ${bgMainClass} font-sans ${textMainClass} flex flex-col md:flex-row antialiased transition-colors duration-300 ${isDark ? 'dark-theme' : 'light-theme'}`}>
       
       {/* LEFT SIDEBAR: Flight catalog navigation */}
       <aside 
         id="sidebar"
-        className={`w-full md:w-[380px] lg:w-[420px] bg-slate-900/40 backdrop-blur-md border-b md:border-b-0 md:border-r border-slate-800/60 flex flex-col shrink-0 h-screen sticky top-0 ${
+        className={`w-full md:w-[380px] lg:w-[420px] backdrop-blur-md border-b md:border-b-0 md:border-r ${isDark ? 'bg-slate-900/40 border-slate-800/60' : 'bg-white/95 border-slate-200/80 shadow-sm'} flex flex-col shrink-0 h-screen sticky top-0 transition-colors duration-300 ${
           mobileView === 'detail' ? 'hidden md:flex' : 'flex'
         }`}
       >
         {/* Header Branding */}
-        <div className="p-6 pb-4 border-b border-slate-800/40 space-y-3.5">
-          {/* Language Switcher Buttons */}
-          <div className="flex items-center justify-between bg-slate-950/20 border border-white/5 rounded-2xl p-2 px-3">
-            <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 select-none">
-              <Globe className="w-3.5 h-3.5 text-sky-400" />
-              {t.changeLanguage}
+        <div className={`p-6 pb-4 border-b ${isDark ? 'border-slate-800/40' : 'border-slate-200'} space-y-3.5`}>
+          {/* Settings panel (Language & Theme) */}
+          <div className={`flex items-center justify-between border rounded-2xl p-2 px-3 transition-colors ${isDark ? 'bg-slate-950/20 border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+            <span className={`text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              <Globe className={`w-3.5 h-3.5 ${isDark ? 'text-sky-400' : 'text-sky-600'}`} />
+              <span>{lang === 'CZ' ? 'Nastavení' : 'Settings'}</span>
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex items-center gap-2.5">
+              {/* Language Switcher Buttons */}
+              <div className="flex gap-1">
+                <button
+                  onClick={() => handleLanguageChange('CZ')}
+                  title={t.czLang}
+                  className={`flex items-center justify-center w-7 h-5 rounded-lg border text-[9px] font-bold font-mono transition-all cursor-pointer ${
+                    lang === 'CZ' 
+                      ? 'bg-sky-500/10 border-sky-500/35 text-sky-450 shadow-sm shadow-sky-500/5 font-extrabold' 
+                      : isDark
+                        ? 'bg-transparent border-transparent text-slate-500 hover:text-slate-350'
+                        : 'bg-transparent border-transparent text-slate-450 hover:text-slate-600'
+                  }`}
+                >
+                  <span>CZ</span>
+                </button>
+                <button
+                  onClick={() => handleLanguageChange('EN')}
+                  title={t.enLang}
+                  className={`flex items-center justify-center w-7 h-5 rounded-lg border text-[9px] font-bold font-mono transition-all cursor-pointer ${
+                    lang === 'EN' 
+                      ? 'bg-sky-500/10 border-sky-500/35 text-sky-450 shadow-sm shadow-sky-500/5 font-extrabold' 
+                      : isDark
+                        ? 'bg-transparent border-transparent text-slate-500 hover:text-slate-350'
+                        : 'bg-transparent border-transparent text-slate-450 hover:text-slate-600'
+                  }`}
+                >
+                  <span>EN</span>
+                </button>
+              </div>
+
+              {/* Vertical divider */}
+              <div className={`w-[1px] h-3.5 ${isDark ? 'bg-white/5' : 'bg-slate-300'}`} />
+
+              {/* Theme Switcher Button */}
               <button
-                onClick={() => handleLanguageChange('CZ')}
-                title={t.czLang}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl border text-[10px] font-bold font-mono transition-all cursor-pointer ${
-                  lang === 'CZ' 
-                    ? 'bg-sky-500/10 border-sky-500/50 text-sky-300 shadow-sm shadow-sky-500/5' 
-                    : 'bg-slate-900/10 border-white/5 text-slate-500 hover:text-slate-300 hover:bg-slate-800/20'
+                onClick={toggleTheme}
+                title={t.changeTheme}
+                className={`flex items-center justify-center p-1 px-1.5 rounded-lg border text-[9px] font-bold font-mono transition-all cursor-pointer ${
+                  isDark 
+                    ? 'bg-slate-800/40 border-transparent text-slate-400 hover:text-amber-400 hover:bg-slate-800/80' 
+                    : 'bg-white border-slate-200 text-amber-500 shadow-sm hover:bg-slate-50'
                 }`}
               >
-                <CZFlag />
-                <span>CZ</span>
-              </button>
-              <button
-                onClick={() => handleLanguageChange('EN')}
-                title={t.enLang}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl border text-[10px] font-bold font-mono transition-all cursor-pointer ${
-                  lang === 'EN' 
-                    ? 'bg-sky-500/10 border-sky-500/50 text-sky-300 shadow-sm shadow-sky-500/5' 
-                    : 'bg-slate-900/10 border-white/5 text-slate-500 hover:text-slate-300 hover:bg-slate-800/20'
-                }`}
-              >
-                <UKFlag />
-                <span>EN</span>
+                {isDark ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+                <span className="ml-1 text-[9px] tracking-tight">{isDark ? t.themeDark : t.themeLight}</span>
               </button>
             </div>
           </div>
@@ -777,7 +833,7 @@ export default function App() {
                 <h1 className="text-lg font-extrabold bg-gradient-to-r from-[#38bdf8] to-[#818cf8] bg-clip-text text-transparent tracking-tight">
                   AirCatalog
                 </h1>
-                <p className="text-[9px] text-slate-500 font-mono tracking-wider">
+                <p className={`text-[9px] ${isDark ? 'text-slate-500' : 'text-slate-450'} font-mono tracking-wider`}>
                   {t.catalogSubtitle.replace('{count}', String(AIRCRAFT_DATA.length))}
                 </p>
               </div>
@@ -802,22 +858,30 @@ export default function App() {
               placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-slate-800 rounded-2xl text-base md:text-sm placeholder:text-slate-500 text-slate-200 outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500/50 transition-all font-sans"
+              className={`w-full pl-10 pr-4 py-3 border rounded-2xl text-base md:text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500/50 transition-all font-sans ${
+                isDark 
+                  ? 'bg-slate-950/50 border-slate-800 text-slate-200' 
+                  : 'bg-slate-50 border-slate-200 text-slate-800 shadow-inner'
+              }`}
             />
           </div>
         </div>
 
         {/* Sekce označených letadel - Viděno naživo */}
         <div id="seen-aircraft-section" className="px-4 py-1.5">
-          <div className="bg-slate-950/30 border border-slate-800/60 rounded-2xl p-3 space-y-2">
+          <div className={`border rounded-2xl p-3 space-y-2 transition-all ${
+            isDark 
+              ? 'bg-slate-950/30 border-slate-800/60' 
+              : 'bg-slate-50/70 border-slate-200 shadow-sm'
+          }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className={`p-1 bg-emerald-500/10 rounded-lg text-emerald-400 shrink-0 ${seenIds.length > 0 ? 'animate-pulse' : ''}`}>
                   <Eye className="w-4 h-4" />
                 </div>
                 <div className="text-left">
-                  <span className="text-xs font-bold text-slate-200 block leading-tight">{t.seenSectionTitle}</span>
-                  <span className="text-[10px] text-slate-500 font-mono">
+                  <span className={`text-xs font-bold block leading-tight ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{t.seenSectionTitle}</span>
+                  <span className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-450'} font-mono`}>
                     {t.seenRatio
                       .replace('{seen}', String(seenIds.length))
                       .replace('{total}', String(AIRCRAFT_DATA.length))
@@ -828,7 +892,7 @@ export default function App() {
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-slate-800/40 h-1 rounded-full overflow-hidden">
+            <div className={`w-full h-1 rounded-full overflow-hidden ${isDark ? 'bg-slate-800/40' : 'bg-slate-200'}`}>
               <div 
                 className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full transition-all duration-500 ease-out"
                 style={{ width: `${Math.max(2, (seenIds.length / AIRCRAFT_DATA.length) * 100)}%` }}
@@ -842,10 +906,12 @@ export default function App() {
                   <button
                     key={aircraft.id}
                     onClick={() => handleSelect(aircraft.id)}
-                    className={`flex items-center gap-1.5 px-2 py-0.5 bg-slate-900/40 hover:bg-slate-800/50 border rounded-xl text-[10px] font-mono whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-2 py-0.5 border rounded-xl text-[10px] font-mono whitespace-nowrap transition-all duration-200 cursor-pointer ${
                       selectedId === aircraft.id
                         ? 'border-emerald-500/50 text-emerald-400 shadow-sm bg-emerald-500/10'
-                        : 'border-white/5 text-slate-350 hover:border-slate-300'
+                        : isDark
+                          ? 'bg-slate-900/40 border-white/5 text-slate-350 hover:border-slate-300 hover:bg-slate-800/50'
+                          : 'bg-white border-slate-250 text-slate-600 hover:border-slate-450 hover:bg-slate-100 shadow-xs'
                     }`}
                   >
                     <span>{aircraft.name.replace('Boeing ', '').replace('Airbus ', '')}</span>
@@ -873,7 +939,7 @@ export default function App() {
         </div>
 
         {/* Categories Tab Swapper */}
-        <div className="px-4 py-2 border-b border-slate-800/40">
+        <div className={`px-4 py-2 border-b ${isDark ? 'border-slate-800/40' : 'border-slate-200'}`}>
           <div className="flex gap-1.5 overflow-x-auto pb-2 no-scrollbar scroll-smooth">
             {categories.map((cat) => (
               <button
@@ -885,7 +951,9 @@ export default function App() {
                 className={`px-3.5 py-2 md:px-3 md:py-1.5 text-sm md:text-xs font-semibold rounded-full whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-gradient-to-r from-[#38bdf8] to-[#818cf8] text-white shadow-md shadow-sky-500/15 font-bold'
-                    : 'bg-slate-800/40 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200 border border-white/5'
+                    : isDark 
+                      ? 'bg-slate-800/40 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200 border border-white/5'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800 border border-slate-200/40'
                 }`}
               >
                 {cat === 'Vše' 
@@ -1996,85 +2064,108 @@ export default function App() {
             </div>
 
             {/* 2. AIRPLANE INTRO: Full Description */}
-            <div className="bg-gradient-to-b from-slate-900 to-slate-900/40 rounded-3xl p-6 md:p-8 shadow-xl border border-white/5">
+            <div className={`rounded-3xl p-6 md:p-8 shadow-xl border transition-colors duration-300 ${isDark ? 'bg-gradient-to-b from-slate-900 to-slate-900/40 border-white/5' : 'bg-white border-slate-200'}`}>
               {/* Description grids */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-8 text-slate-300 space-y-4 text-base leading-relaxed">
+                <div className={`lg:col-span-8 space-y-4 text-base leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                   <p>{translateText(selectedAircraft.description, lang, false)}</p>
                 </div>
 
                 {/* Fun Fact quote layout */}
-                <div className="lg:col-span-4 bg-amber-500/5 border border-amber-500/20 rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between">
-                  <div className="absolute -right-6 -top-6 text-amber-500/10">
+                <div className={`lg:col-span-4 rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between border transition-all duration-300 ${
+                  isDark ? 'bg-amber-500/5 border-amber-500/20' : 'bg-amber-50 border-amber-100 shadow-sm shadow-amber-100/50'
+                }`}>
+                  <div className={`absolute -right-6 -top-6 ${isDark ? 'text-amber-500/10' : 'text-amber-500/15'}`}>
                     <Sparkles className="w-24 h-24 stroke-[1.2]" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2 text-amber-400 font-bold text-xs mb-2.5 font-mono">
-                      <Sparkles className="w-4 h-4 text-amber-600 animate-spin-slow" />
+                    <div className={`flex items-center gap-2 font-bold text-xs mb-2.5 font-mono ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>
+                      <Sparkles className={`w-4 h-4 animate-spin-slow ${isDark ? 'text-amber-600' : 'text-amber-500'}`} />
                       <span>{t.funFactHeader}</span>
                     </div>
-                    <p className="text-amber-900/90 text-sm italic font-medium leading-relaxed relative z-10">
+                    <p className={`text-sm italic font-medium leading-relaxed relative z-10 ${
+                      isDark ? 'text-amber-200' : 'text-amber-900 font-semibold'
+                    }`}>
                       {lang === 'CZ' ? `„${selectedAircraft.uniqueness}“` : `"${translateText(selectedAircraft.uniqueness, lang, true)}"`}
                     </p>
                   </div>
-                  <div className="text-[10px] text-amber-500/45 font-mono mt-4 pt-3 border-t border-amber-500/10">
+                  <div className={`text-[10px] font-mono mt-4 pt-3 border-t ${
+                    isDark ? 'text-amber-500/45 border-amber-500/10' : 'text-amber-800/65 border-amber-200/60'
+                  }`}>
                     {t.funFactFooter}
                   </div>
                 </div>
               </div>
             </div>
 
+            {/* 2.5 VISUAL PROFILE VIEW (SIDE & TOP SHAPES WITH DIMENSIONS) */}
+            <AircraftVisualProfile 
+              aircraft={selectedAircraft}
+              lang={lang}
+              theme={isDark ? 'dark' : 'light'}
+            />
+
             {/* 3. TECHNICAL SPECIFICATIONS BENTO GRID */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-[#38bdf8] animate-spin-slow" />
-                  <h3 className="text-lg font-bold text-slate-100 tracking-tight">
+                  <Layers className={`w-4 h-4 animate-spin-slow ${isDark ? 'text-[#38bdf8]' : 'text-sky-600'}`} />
+                  <h3 className={`text-lg font-bold tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
                     {t.specsHeader}
                   </h3>
                 </div>
-                <span className="text-[10px] text-slate-500 font-mono text-right">{t.specsSubheader}</span>
+                <span className={`text-[10px] font-mono text-right ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.specsSubheader}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 
                 {/* Stat Card: Max Capacity */}
-                <div className="bg-slate-900/40 rounded-2xl p-5 border border-white/5 shadow-lg hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20 transition-all duration-300">
+                <div className={`rounded-2xl p-5 border shadow-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-slate-900/40 border-white/5 hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20' 
+                    : 'bg-white border-slate-200 hover:border-[#38bdf8]/30 hover:shadow-slate-200/80'
+                }`}>
                   <div className="flex justify-between items-start mb-3">
                     <div className="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl">
                       <Users className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.capacityCardTitle}</span>
+                    <span className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t.capacityCardTitle}</span>
                   </div>
-                  <div className="font-mono text-xs text-slate-500">{t.capacityCardSubtitle}</div>
-                  <div className="text-2xl font-bold text-white mt-0.5 tracking-tight">
-                    {selectedAircraft.specs.capacityMax} <span className="text-sm font-medium text-slate-500">{t.capacityCardMaxTypical}</span>
+                  <div className={`font-mono text-xs ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.capacityCardSubtitle}</div>
+                  <div className={`text-2xl font-bold mt-0.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {selectedAircraft.specs.capacityMax} <span className={`text-sm font-medium ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t.capacityCardMaxTypical}</span>
                   </div>
-                  <div className="text-xs text-slate-300 mt-2 font-medium bg-slate-950/40 py-1 px-2 rounded-lg inline-block border border-white/5">
-                    {t.capacityCardTypicalLabel} <span className="text-sky-300 font-bold">{translateTypicalCapacity(selectedAircraft.specs.capacityTypical, lang)}</span>
+                  <div className={`text-xs mt-2 font-medium py-1 px-2 rounded-lg inline-block border ${
+                    isDark ? 'bg-slate-950/40 border-white/5 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-700'
+                  }`}>
+                    {t.capacityCardTypicalLabel} <span className="text-sky-500 font-bold">{translateTypicalCapacity(selectedAircraft.specs.capacityTypical, lang)}</span>
                   </div>
                 </div>
 
                 {/* Stat Card: Reach Range */}
-                <div className="bg-slate-900/40 rounded-2xl p-5 border border-white/5 shadow-lg hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20 transition-all duration-300">
+                <div className={`rounded-2xl p-5 border shadow-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-slate-900/40 border-white/5 hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20' 
+                    : 'bg-white border-slate-200 hover:border-[#38bdf8]/30 hover:shadow-slate-200/80'
+                }`}>
                   <div className="flex justify-between items-start mb-3">
                     <div className="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl">
                       <Milestone className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.rangeCardTitle}</span>
+                    <span className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t.rangeCardTitle}</span>
                   </div>
-                  <div className="font-mono text-xs text-slate-500">{t.rangeCardSubtitle}</div>
-                  <div className="text-2xl font-bold text-white mt-0.5 tracking-tight">
-                    {selectedAircraft.specs.rangeKm.toLocaleString(lang === 'CZ' ? 'cs-CZ' : 'en-GB')} <span className="text-sm font-medium text-slate-500">km</span>
+                  <div className={`font-mono text-xs ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.rangeCardSubtitle}</div>
+                  <div className={`text-2xl font-bold mt-0.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {selectedAircraft.specs.rangeKm.toLocaleString(lang === 'CZ' ? 'cs-CZ' : 'en-GB')} <span className={`text-sm font-medium ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>km</span>
                   </div>
                   
                   {/* Visual scale bar for range */}
                   <div className="mt-4">
                     <div className="flex justify-between text-[10px] text-slate-500 font-mono mb-1">
                       <span>{t.rangeCardCompareScale}</span>
-                      <span className="font-bold text-emerald-400">{Math.round((selectedAircraft.specs.rangeKm / 16000) * 100)} %</span>
+                      <span className="font-bold text-emerald-500">{Math.round((selectedAircraft.specs.rangeKm / 16000) * 100)} %</span>
                     </div>
-                    <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-white/5">
+                    <div className={`w-full h-1.5 rounded-full overflow-hidden border ${isDark ? 'bg-slate-950 border-white/5' : 'bg-slate-100 border-slate-200'}`}>
                       <motion.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.min(100, (selectedAircraft.specs.rangeKm / 16000) * 100)}%` }}
@@ -2086,89 +2177,109 @@ export default function App() {
                 </div>
 
                 {/* Stat Card: Velocity Speed */}
-                <div className="bg-slate-900/40 rounded-2xl p-5 border border-white/5 shadow-lg hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20 transition-all duration-300">
+                <div className={`rounded-2xl p-5 border shadow-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-slate-900/40 border-white/5 hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20' 
+                    : 'bg-white border-slate-200 hover:border-[#38bdf8]/30 hover:shadow-slate-200/80'
+                }`}>
                   <div className="flex justify-between items-start mb-3">
                     <div className="p-2.5 bg-indigo-500/10 text-indigo-400 rounded-xl">
                       <Gauge className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.speedCardTitle}</span>
+                    <span className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t.speedCardTitle}</span>
                   </div>
-                  <div className="font-mono text-xs text-slate-500">{t.speedCardSubtitle}</div>
-                  <div className="text-2xl font-bold text-white mt-0.5 tracking-tight">
-                    {selectedAircraft.specs.cruiseSpeedKmh} <span className="text-sm font-medium text-slate-500">km/h</span>
+                  <div className={`font-mono text-xs ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.speedCardSubtitle}</div>
+                  <div className={`text-2xl font-bold mt-0.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {selectedAircraft.specs.cruiseSpeedKmh} <span className={`text-sm font-medium ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>km/h</span>
                   </div>
-                  <div className="text-xs text-[#818cf8] mt-2 font-mono font-bold bg-indigo-500/10 border border-indigo-500/15 py-1 px-2 rounded-lg inline-block">
+                  <div className={`text-xs mt-2 font-mono font-bold py-1 px-2 rounded-lg inline-block border ${
+                    isDark ? 'bg-indigo-500/10 border-indigo-500/15 text-[#818cf8]' : 'bg-indigo-50 border-indigo-150 text-indigo-700'
+                  }`}>
                     {t.speedCardMachLabel.replace('{mach}', String(selectedAircraft.specs.cruiseMach))} {selectedAircraft.specs.cruiseMach > 1 ? t.supersonicLabel : ''}
                   </div>
                 </div>
 
                 {/* Stat Card: Wingspan / Dimensions */}
-                <div className="bg-slate-900/40 rounded-2xl p-5 border border-white/5 shadow-lg hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20 transition-all duration-300">
+                <div className={`rounded-2xl p-5 border shadow-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-slate-900/40 border-white/5 hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20' 
+                    : 'bg-white border-slate-200 hover:border-[#38bdf8]/30 hover:shadow-slate-200/80'
+                }`}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="p-2.5 bg-violet-500/10 text-violet-400 rounded-xl">
                       <Ruler className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.dimensionsCardTitle}</span>
+                    <span className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t.dimensionsCardTitle}</span>
                   </div>
-                  <div className="text-sm font-bold text-white mb-2 pb-1 border-b border-white/5">
+                  <div className={`text-sm font-bold mb-2 pb-1 border-b ${isDark ? 'text-white border-white/5' : 'text-slate-800 border-slate-200'}`}>
                     {t.dimensionsCardSub}
                   </div>
-                  <div className="space-y-1.5 text-xs text-slate-300 font-sans">
-                    <div className="flex justify-between py-0.5 border-b border-white/5">
-                      <span className="text-slate-500">{t.overallLength}</span>
-                      <span className="text-slate-100 font-mono font-bold">{selectedAircraft.specs.lengthM} m</span>
+                  <div className={`space-y-1.5 text-xs font-sans ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    <div className={`flex justify-between py-0.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+                      <span className={`${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.overallLength}</span>
+                      <span className={`font-mono font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{selectedAircraft.specs.lengthM} m</span>
                     </div>
-                    <div className="flex justify-between py-0.5 border-b border-white/5">
-                      <span className="text-slate-500">{t.wingspan}</span>
-                      <span className="text-slate-100 font-mono font-bold">{selectedAircraft.specs.wingspanM} m</span>
+                    <div className={`flex justify-between py-0.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+                      <span className={`${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.wingspan}</span>
+                      <span className={`font-mono font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{selectedAircraft.specs.wingspanM} m</span>
                     </div>
-                    <div className="flex justify-between py-0.5 border-b border-white/5">
-                      <span className="text-slate-500">{t.height}</span>
-                      <span className="text-slate-100 font-mono font-bold">{selectedAircraft.specs.heightM} m</span>
+                    <div className={`flex justify-between py-0.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+                      <span className={`${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.height}</span>
+                      <span className={`font-mono font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{selectedAircraft.specs.heightM} m</span>
                     </div>
-                    <div className="flex justify-between py-0.5 border-b border-white/5">
-                      <span className="text-slate-500">{t.fuselageWidth}</span>
-                      <span className="text-slate-100 font-mono font-bold">{selectedAircraft.specs.fuselageWidthM} m</span>
+                    <div className={`flex justify-between py-0.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+                      <span className={`${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.fuselageWidth}</span>
+                      <span className={`font-mono font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{selectedAircraft.specs.fuselageWidthM} m</span>
                     </div>
                     <div className="flex justify-between py-0.5">
-                      <span className="text-slate-500">{t.wingArea}</span>
-                      <span className="text-slate-100 font-mono font-bold">{selectedAircraft.specs.wingAreaM2} m²</span>
+                      <span className={`${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.wingArea}</span>
+                      <span className={`font-mono font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{selectedAircraft.specs.wingAreaM2} m²</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Stat Card: MTOW Weight */}
-                <div className="bg-slate-900/40 rounded-2xl p-5 border border-white/5 shadow-lg hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20 transition-all duration-300">
+                <div className={`rounded-2xl p-5 border shadow-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-slate-900/40 border-white/5 hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20' 
+                    : 'bg-white border-slate-200 hover:border-[#38bdf8]/30 hover:shadow-slate-200/80'
+                }`}>
                   <div className="flex justify-between items-start mb-3">
                     <div className="p-2.5 bg-rose-500/10 text-rose-400 rounded-xl">
                       <Scale className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.mtowCardTitle}</span>
+                    <span className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t.mtowCardTitle}</span>
                   </div>
-                  <div className="font-mono text-xs text-slate-500">{t.mtowCardSub}</div>
-                  <div className="text-2xl font-bold text-white mt-0.5 tracking-tight">
-                    {selectedAircraft.specs.mtowTonnes} <span className="text-sm font-medium text-slate-500">{lang === 'CZ' ? 'tun' : 'tonnes'}</span>
+                  <div className={`font-mono text-xs ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.mtowCardSub}</div>
+                  <div className={`text-2xl font-bold mt-0.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {selectedAircraft.specs.mtowTonnes} <span className={`text-sm font-medium ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{lang === 'CZ' ? 'tun' : 'tonnes'}</span>
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-3 font-sans leading-relaxed">
+                  <div className={`text-[10px] mt-3 font-sans leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {t.mtowCardDesc}
                   </div>
                 </div>
 
                 {/* Stat Card: Engine & Engineering spec */}
-                <div className="bg-slate-900/40 rounded-2xl p-5 border border-white/5 shadow-lg hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20 transition-all duration-300">
+                <div className={`rounded-2xl p-5 border shadow-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-slate-900/40 border-white/5 hover:border-[#38bdf8]/30 hover:shadow-cyan-950/20' 
+                    : 'bg-white border-slate-200 hover:border-[#38bdf8]/30 hover:shadow-slate-200/80'
+                }`}>
                   <div className="flex justify-between items-start mb-3">
                     <div className="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl">
                       <Wrench className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.enginesCardTitle}</span>
+                    <span className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t.enginesCardTitle}</span>
                   </div>
-                  <div className="font-mono text-xs text-slate-500">{t.enginesCardSub}</div>
-                  <div className="text-sm font-bold text-slate-200 mt-1 lines-clamp-2">
+                  <div className={`font-mono text-xs ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>{t.enginesCardSub}</div>
+                  <div className={`text-sm font-bold mt-1 lines-clamp-2 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                     {selectedAircraft.specs.engineType}
                   </div>
-                  <div className="text-[11px] text-[#94a3b8] font-mono mt-2 bg-slate-950/40 border border-white/5 p-1.5 rounded-lg flex justify-between items-center">
+                  <div className={`text-[11px] font-mono mt-2 border p-1.5 rounded-lg flex justify-between items-center ${
+                    isDark ? 'bg-slate-950/40 border-white/5 text-[#94a3b8]' : 'bg-slate-50 border-slate-200 text-slate-600'
+                  }`}>
                     <span>{t.enginesCardListLabel}</span>
-                    <span className="bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded font-bold text-[10px]">
+                    <span className="bg-amber-500/20 text-amber-500 border border-amber-500/30 px-1.5 py-0.5 rounded font-bold text-[10px]">
                       {selectedAircraft.specs.engineCount}x JT/CFM/RR
                     </span>
                   </div>
@@ -2352,6 +2463,7 @@ export default function App() {
         onClose={() => setCompareOpen(false)} 
         initialAircraft={selectedAircraft}
         lang={lang}
+        theme={theme}
       />
 
     </div>

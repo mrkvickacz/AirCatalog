@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { AIRCRAFT_DATA } from './data';
 import { Aircraft, AircraftCategory } from './types';
-import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag } from './components/Flags';
+import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag } from './components/Flags';
 import AircraftComparison from './components/AircraftComparison';
 import { 
   TRANSLATIONS, 
@@ -106,15 +106,24 @@ export default function App() {
 
   const AircraftListItem = ({ aircraft, isSelected }: { aircraft: Aircraft; isSelected: boolean; key?: string }) => {
     const isBoeing = aircraft.manufacturer.toLowerCase() === 'boeing';
+    const isEmbraer = aircraft.manufacturer.toLowerCase() === 'embraer';
+    const isCessna = aircraft.manufacturer.toLowerCase() === 'cessna';
+    const isBombardier = aircraft.manufacturer.toLowerCase() === 'bombardier';
     const isSeen = seenIds.includes(aircraft.id);
 
     // Get flag and country text
     const normCountry = aircraft.country.toLowerCase();
     let flagComponent = <EUFlag />;
     let countryLabel = aircraft.country;
-    if (isBoeing) {
+    if (isBombardier || normCountry === 'kanada' || normCountry === 'canada') {
+      flagComponent = <CanadaFlag />;
+      countryLabel = lang === 'CZ' ? 'Kanada' : 'Canada';
+    } else if (isCessna || isBoeing) {
       flagComponent = <USFlag />;
       countryLabel = 'USA';
+    } else if (isEmbraer || normCountry === 'brazílie' || normCountry === 'brazil') {
+      flagComponent = <BrazilFlag />;
+      countryLabel = lang === 'CZ' ? 'Brazílie' : 'Brazil';
     } else if (normCountry.includes('kanada')) {
       flagComponent = <EUCanadaFlag />;
       countryLabel = lang === 'CZ' ? 'EU / Kanada' : 'EU / Canada';
@@ -142,7 +151,11 @@ export default function App() {
           isSelected
             ? isBoeing 
               ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-indigo-500/30'
-              : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-sky-500/30'
+              : isEmbraer
+                ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-emerald-500/30'
+                : isCessna
+                  ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-amber-500/30'
+                  : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-white border-sky-500/30'
             : 'bg-slate-900/15 border-white/5 hover:bg-slate-800/30 hover:border-slate-800 text-slate-300'
         }`}
         layoutId={`button-bg-${aircraft.id}`}
@@ -150,9 +163,9 @@ export default function App() {
         {isSelected && (
           <motion.div 
             className={`absolute left-0 top-1/4 bottom-1/4 w-0.5 bg-gradient-to-b rounded-r-full ${
-              isBoeing ? 'from-[#818cf8] to-[#6366f1]' : 'from-[#38bdf8] to-[#818cf8]'
+              isBoeing ? 'from-[#818cf8] to-[#6366f1]' : isEmbraer ? 'from-[#10b981] to-[#059669]' : isCessna ? 'from-[#f59e0b] to-[#d97706]' : 'from-[#38bdf8] to-[#818cf8]0'
             }`}
-            layoutId={isBoeing ? "active-indicator-boeing-helper" : "active-indicator-airbus-helper"}
+            layoutId={isBoeing ? "active-indicator-boeing-helper" : isEmbraer ? "active-indicator-embraer-helper" : isCessna ? "active-indicator-cessna-helper" : "active-indicator-airbus-helper"}
           />
         )}
 
@@ -164,7 +177,11 @@ export default function App() {
                 isSelected 
                   ? isBoeing 
                     ? 'bg-indigo-400 shadow-[0_0_6px_rgba(129,140,248,0.8)]' 
-                    : 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.8)]' 
+                    : isEmbraer
+                      ? 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.8)]'
+                      : isCessna
+                        ? 'bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.8)]'
+                        : 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.8)]' 
                   : 'bg-slate-800'
               }`} />
             </div>
@@ -175,25 +192,25 @@ export default function App() {
                 <div className="w-3.5 h-2.5 flex items-center shrink-0 overflow-hidden rounded-[1px] opacity-80 shadow-sm">
                   {flagComponent}
                 </div>
-                <span className={`text-[9px] font-mono ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                <span className={`text-[10px] md:text-[9px] font-mono ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
                   {countryLabel}
                 </span>
                 {isSeen && (
-                  <span className="flex items-center gap-0.5 text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1 rounded ml-1">
+                  <span className="flex items-center gap-0.5 text-[10px] md:text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1 rounded ml-1">
                     👁️ {lang === 'CZ' ? 'VIDĚNO' : 'SPOTTED'}
                   </span>
                 )}
               </div>
 
               {/* Aircraft Name */}
-              <h4 className={`font-bold text-[13px] leading-tight tracking-tight ${
+              <h4 className={`font-bold text-sm md:text-[13px] leading-tight tracking-tight ${
                 isSelected ? 'text-white' : 'text-slate-200'
               }`}>
                 {aircraft.name}
               </h4>
 
               {/* Subspecs */}
-              <p className={`text-[10px] mt-0.5 font-mono ${
+              <p className={`text-[11px] md:text-[10px] mt-0.5 font-mono ${
                 isSelected ? 'text-slate-300' : 'text-slate-400 font-light'
               }`}>
                 {lang === 'CZ' 
@@ -256,6 +273,9 @@ export default function App() {
   const [b767Expanded, setB767Expanded] = useState<boolean>(false);
   const [b777Expanded, setB777Expanded] = useState<boolean>(false);
   const [b787Expanded, setB787Expanded] = useState<boolean>(false);
+  const [embraerExpanded, setEmbraerExpanded] = useState<boolean>(false);
+  const [cessnaExpanded, setCessnaExpanded] = useState<boolean>(false);
+  const [bombardierExpanded, setBombardierExpanded] = useState<boolean>(false);
 
   // List of categories for tabs
   const categories = ['Vše', 'Úzkotrupá (Single-Aisle)', 'Širokotrupá (Wide-Body)', 'Regionální (Regional)', 'Historická / Nadzvuková'];
@@ -372,6 +392,18 @@ export default function App() {
     );
   }, [boeingAircraft]);
 
+  const embraerAircraft = useMemo(() => {
+    return filteredAircraft.filter(a => a.manufacturer.toLowerCase() === 'embraer');
+  }, [filteredAircraft]);
+
+  const cessnaAircraft = useMemo(() => {
+    return filteredAircraft.filter(a => a.manufacturer.toLowerCase() === 'cessna');
+  }, [filteredAircraft]);
+
+  const bombardierAircraft = useMemo(() => {
+    return filteredAircraft.filter(a => a.manufacturer.toLowerCase() === 'bombardier');
+  }, [filteredAircraft]);
+
   // Selected aircraft details
   const selectedAircraft = useMemo(() => {
     return AIRCRAFT_DATA.find(a => a.id === selectedId) || AIRCRAFT_DATA[0];
@@ -422,6 +454,10 @@ export default function App() {
         } else if (selectedAircraft.id.startsWith('boeing-787')) {
           setB787Expanded(true);
         }
+      } else if (selectedAircraft.manufacturer.toLowerCase() === 'embraer') {
+        setEmbraerExpanded(true);
+      } else if (selectedAircraft.manufacturer.toLowerCase() === 'cessna') {
+        setCessnaExpanded(true);
       }
     }
   }, [selectedId, selectedAircraft]); // Run when selected aircraft changes
@@ -489,6 +525,12 @@ export default function App() {
           setB787Expanded(true);
         }
       }
+      if (embraerAircraft.length > 0) {
+        setEmbraerExpanded(true);
+      }
+      if (cessnaAircraft.length > 0) {
+        setCessnaExpanded(true);
+      }
     } else {
       // Když se vyhledávání smaže, zavřou se všechny složky kromě té s právě vybraným letadlem
       setAirbusExpanded(false);
@@ -511,7 +553,9 @@ export default function App() {
       setB767Expanded(false);
       setB777Expanded(false);
       setB787Expanded(false);
- 
+      setEmbraerExpanded(false);
+      setCessnaExpanded(false);
+   
       if (selectedAircraft) {
         if (selectedAircraft.manufacturer.toLowerCase() === 'airbus') {
           setAirbusExpanded(true);
@@ -555,10 +599,16 @@ export default function App() {
           } else if (selectedAircraft.id.startsWith('boeing-787')) {
             setB787Expanded(true);
           }
+        } else if (selectedAircraft.manufacturer.toLowerCase() === 'embraer') {
+          setEmbraerExpanded(true);
+        } else if (selectedAircraft.manufacturer.toLowerCase() === 'cessna') {
+          setCessnaExpanded(true);
+        } else if (selectedAircraft.manufacturer.toLowerCase() === 'bombardier') {
+          setBombardierExpanded(true);
         }
       }
     }
-  }, [searchQuery, airbusAircraft.length, a220Aircraft.length, a300Aircraft.length, a310Aircraft.length, a320Aircraft.length, a330Aircraft.length, a340Aircraft.length, a350Aircraft.length, a380Aircraft.length, belugaAircraft.length, boeingAircraft.length, b707Aircraft.length, b717Aircraft.length, b727Aircraft.length, b737Aircraft.length, b747Aircraft.length, b757Aircraft.length, b767Aircraft.length, b777Aircraft.length, b787Aircraft.length, selectedAircraft]);
+  }, [searchQuery, airbusAircraft.length, a220Aircraft.length, a300Aircraft.length, a310Aircraft.length, a320Aircraft.length, a330Aircraft.length, a340Aircraft.length, a350Aircraft.length, a380Aircraft.length, belugaAircraft.length, boeingAircraft.length, b707Aircraft.length, b717Aircraft.length, b727Aircraft.length, b737Aircraft.length, b747Aircraft.length, b757Aircraft.length, b767Aircraft.length, b777Aircraft.length, b787Aircraft.length, embraerAircraft.length, cessnaAircraft.length, bombardierAircraft.length, selectedAircraft]);
 
   // Calculate fleet averages for comparison
   const fleetAverages = useMemo(() => {
@@ -752,7 +802,7 @@ export default function App() {
               placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-slate-800 rounded-2xl text-sm placeholder:text-slate-500 text-slate-200 outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500/50 transition-all font-sans"
+              className="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-slate-800 rounded-2xl text-base md:text-sm placeholder:text-slate-500 text-slate-200 outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500/50 transition-all font-sans"
             />
           </div>
         </div>
@@ -832,7 +882,7 @@ export default function App() {
                 onClick={() => {
                   setSelectedCategory(cat);
                 }}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-full whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`px-3.5 py-2 md:px-3 md:py-1.5 text-sm md:text-xs font-semibold rounded-full whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-gradient-to-r from-[#38bdf8] to-[#818cf8] text-white shadow-md shadow-sky-500/15 font-bold'
                     : 'bg-slate-800/40 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200 border border-white/5'
@@ -863,8 +913,8 @@ export default function App() {
                           <EUFlag />
                         </div>
                         <div className="text-left">
-                          <h4 className="text-xs font-extrabold tracking-wider text-slate-200 font-mono">AIRBUS</h4>
-                          <p className="text-[10px] text-slate-500 font-mono">
+                          <h4 className="text-sm md:text-xs font-extrabold tracking-wider text-slate-200 font-mono">AIRBUS</h4>
+                          <p className="text-[11px] md:text-[10px] text-slate-500 font-mono">
                             {airbusAircraft.length} {getModelText(airbusAircraft.length)}
                           </p>
                         </div>
@@ -1293,8 +1343,8 @@ export default function App() {
                           <USFlag />
                         </div>
                         <div className="text-left">
-                          <h4 className="text-xs font-extrabold tracking-wider text-slate-200 font-mono">BOEING</h4>
-                          <p className="text-[10px] text-slate-500 font-mono">
+                          <h4 className="text-sm md:text-xs font-extrabold tracking-wider text-slate-200 font-mono">BOEING</h4>
+                          <p className="text-[11px] md:text-[10px] text-slate-500 font-mono">
                             {boeingAircraft.length} {getModelText(boeingAircraft.length)}
                           </p>
                         </div>
@@ -1700,6 +1750,135 @@ export default function App() {
 
                           {/* Other Boeing aircraft */}
                           {otherBoeingAircraft.map((aircraft) => (
+                            <AircraftListItem
+                              key={aircraft.id}
+                              aircraft={aircraft}
+                              isSelected={aircraft.id === selectedId}
+                            />
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+
+                {/* EMBRAER SECTION */}
+                {embraerAircraft.length > 0 && (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setEmbraerExpanded(!embraerExpanded)}
+                      className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-slate-900/60 border border-white/5 rounded-2xl transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-emerald-500/10 rounded-lg group-hover:scale-105 transition-transform duration-200 flex items-center justify-center text-sm w-7 h-7 select-none">
+                          <BrazilFlag />
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-sm md:text-xs font-extrabold tracking-wider text-slate-200 font-mono">EMBRAER</h4>
+                          <p className="text-[11px] md:text-[10px] text-slate-500 font-mono">
+                            {embraerAircraft.length} {getModelText(embraerAircraft.length)}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${embraerExpanded ? 'rotate-90 text-emerald-400' : ''}`} />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {embraerExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeInOut' }}
+                          className="space-y-2 pl-3 border-l border-emerald-500/15 overflow-hidden py-1"
+                        >
+                          {embraerAircraft.map((aircraft) => (
+                            <AircraftListItem
+                              key={aircraft.id}
+                              aircraft={aircraft}
+                              isSelected={aircraft.id === selectedId}
+                            />
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+
+                {/* CESSNA SECTION */}
+                {cessnaAircraft.length > 0 && (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setCessnaExpanded(!cessnaExpanded)}
+                      className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-slate-900/60 border border-white/5 rounded-2xl transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-amber-500/10 rounded-lg group-hover:scale-105 transition-transform duration-200 flex items-center justify-center text-sm w-7 h-7 select-none">
+                          <USFlag />
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-sm md:text-xs font-extrabold tracking-wider text-slate-200 font-mono">CESSNA</h4>
+                          <p className="text-[11px] md:text-[10px] text-slate-500 font-mono">
+                            {cessnaAircraft.length} {getModelText(cessnaAircraft.length)}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${cessnaExpanded ? 'rotate-90 text-amber-400' : ''}`} />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {cessnaExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeInOut' }}
+                          className="space-y-2 pl-3 border-l border-amber-500/15 overflow-hidden py-1"
+                        >
+                          {cessnaAircraft.map((aircraft) => (
+                            <AircraftListItem
+                              key={aircraft.id}
+                              aircraft={aircraft}
+                              isSelected={aircraft.id === selectedId}
+                            />
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+
+                {/* BOMBARDIER SECTION */}
+                {bombardierAircraft.length > 0 && (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setBombardierExpanded(!bombardierExpanded)}
+                      className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-slate-900/60 border border-white/5 rounded-2xl transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-red-500/10 rounded-lg group-hover:scale-105 transition-transform duration-200 flex items-center justify-center text-sm w-7 h-7 select-none">
+                          <CanadaFlag />
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-sm md:text-xs font-extrabold tracking-wider text-slate-200 font-mono">BOMBARDIER</h4>
+                          <p className="text-[11px] md:text-[10px] text-slate-500 font-mono">
+                            {bombardierAircraft.length} {getModelText(bombardierAircraft.length)}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${bombardierExpanded ? 'rotate-90 text-red-400' : ''}`} />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {bombardierExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeInOut' }}
+                          className="space-y-2 pl-3 border-l border-red-500/15 overflow-hidden py-1"
+                        >
+                          {bombardierAircraft.map((aircraft) => (
                             <AircraftListItem
                               key={aircraft.id}
                               aircraft={aircraft}

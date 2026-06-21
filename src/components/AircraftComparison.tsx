@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { Aircraft } from '../types';
 import { AIRCRAFT_DATA } from '../data';
-import { EUFlag, USFlag, CanadaFlag, EUCanadaFlag } from './Flags';
+import { EUFlag, USFlag, CanadaFlag, EUCanadaFlag, BrazilFlag } from './Flags';
 import { translateCategory, translateTypicalCapacity, translateCountry, translateText } from '../translations';
 
 interface AircraftComparisonProps {
@@ -93,6 +93,7 @@ export default function AircraftComparison({ isOpen, onClose, initialAircraft, l
     if (norm.includes('evropská unie') || norm.includes('european union') || norm.includes('france') || norm.includes('francie') || norm.includes('německo') || norm.includes('germany') || norm.includes('velká británie') || norm.includes('united kingdom') || norm.includes('eu') || norm.includes('uk')) return <EUFlag />;
     if (norm.includes('usa') || norm.includes('spojené státy') || norm.includes('united states')) return <USFlag />;
     if (norm.includes('kanada') || norm.includes('canada')) return <CanadaFlag />;
+    if (norm.includes('brazílie') || norm.includes('brazil')) return <BrazilFlag />;
     return <span className="text-xs">🌐</span>;
   };
 

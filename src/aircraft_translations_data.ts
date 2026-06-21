@@ -337,5 +337,289 @@ export const AIRCRAFT_TRANSLATIONS_EN: Record<string, { descriptionEn: string; u
   "boeing-787-10": {
     "descriptionEn": "The longest version of the 787 family, stretched by another 5.5 meters compared to the -9 version. It is designed to compete with the Airbus A350-900 and replace older aircraft on high-density routes, while sharing more than 95% of parts with the -9 version.",
     "uniquenessEn": "Thanks to its stretched fuselage, it accommodates up to 15% more passengers than the -9 version, yet exhibits 25% lower emissions and fuel consumption per seat than the aircraft it replaces."
+  },
+  "embraer-emb-110": {
+    "descriptionEn": "A twin-engine turboprop utility aircraft that launched Embraer's dynamic global success. Designed for regional passenger transport and military duties, it carries up to 21 passengers and is known for its rugged construction.",
+    "uniquenessEn": "Named after the Brazilian inland explorers ('Bandeirantes'). It served as the fundamental stepping stone for the entire Brazilian aviation industry."
+  },
+  "embraer-emb-200": {
+    "descriptionEn": "A single-seat agricultural aircraft widely used for aerial application and crop dusting. It is one of the longest continuously produced aircraft in the world, with immense contributions to Brazilian agriculture.",
+    "uniquenessEn": "It is the first mass-produced aircraft in the world certified to fly exclusively on 100% ethanol fuel, significantly cutting operating costs and carbon emissions."
+  },
+  "embraer-emb-121": {
+    "descriptionEn": "A twin-engine turboprop utility passenger aircraft designed for executive and military personnel transport. It pairs the wing and powerplant design of the Bandeirante with a newly developed pressurized fuselage.",
+    "uniquenessEn": "It was the first pressurized aircraft designed in Brazil and became highly popular as a primary multi-engine trainers for the French Air Force and Navy."
+  },
+  "embraer-emb-120": {
+    "descriptionEn": "An exceptionally successful 30-passenger high-speed twin-turboprop regional airliner. It earned massive commercial popularity with major regional airlines throughout North America and Europe.",
+    "uniquenessEn": "Equipped with powerful engines and outstanding aerodynamics, it was one of the fastest regional turboprops of its era, cruising at over 550 km/h."
+  },
+  "embraer-erj-145": {
+    "descriptionEn": "A fifty-seat regional jet with rear-mounted jet engines that became a massive global commercial hit. It enabled regional airlines to retire turboprops and offer fast jet comfort on low-yielding domestic routes.",
+    "uniquenessEn": "It was the critical savior of the privatized Embraer in the 1990s. With over a thousand built, it stands as one of the best-selling regional jets in history."
+  },
+  "embraer-erj-135": {
+    "descriptionEn": "A shortened 37-seat version belonging to the ERJ 145 platform. It shares 95% parts commonality with its sibling, radically lowering development, maintenance, and training overhead for existing operators.",
+    "uniquenessEn": "Designed to bring full jet speeds, comfort, and quick aircraft gate turnaround times to lighter passenger-density commuter routes."
+  },
+  "embraer-erj-140": {
+    "descriptionEn": "A commuter jet positioned directly between the ERJ 135 and ERJ 145. Carrying 44 passengers, it was custom-made for major US airlines to fit within their restrictive pilot union 'scope clauses'.",
+    "uniquenessEn": "It was developed in record time of just a few months owing to its immense technical commonality with its fellow ERJ family members."
+  },
+  "embraer-legacy-600": {
+    "descriptionEn": "A luxury business jet derivative of the ERJ 135 commuter airliner. It features a spacious three-section cabin, intercontinental range, seating for 13-14 VIP passengers, and a generous main baggage compartment.",
+    "uniquenessEn": "By combining a highly rugged commercial narrowbody airframe with a custom premium interior, Embraer delivered a luxury jet with some of the lowest operating costs in its class."
+  },
+  "embraer-legacy-650": {
+    "descriptionEn": "An upgraded, longer range variant of the Legacy 600 boasting Honeywell Primus Elite glass avionics, quieter turbofans, and lower fuel burn. Built to seamlessly facilitate intercontinental business travel.",
+    "uniquenessEn": "With a range extended to over 7,200 km, it can connect city pairs such as London to New York or Beijing to Dubai completely non-stop."
+  },
+  "embraer-e170": {
+    "descriptionEn": "The smallest member of the highly praised first-generation E-Jets family. It was designed entirely from scratch with a four-abreast 2+2 layout to completely eliminate the cramped feeling typical of traditional regional commuters.",
+    "uniquenessEn": "Thanks to its unique 'double-bubble' fuselage cross-section, it provides passengers with superior head and shoulder room compared to any prior regional competitor."
+  },
+  "embraer-e175": {
+    "descriptionEn": "A popular mid-sized regional jet from the Embraer E-Jets family. It is extremely widespread on regional routes in the US due to the 'scope clause' agreements of major American airlines. It offers excellent passenger comfort and a 2+2 seating configuration with no middle seats.",
+    "uniquenessEn": "An absolute leader in the American regional skies, it also features oversized passenger windows and remarkably spacious overhead bins in its class."
+  },
+  "embraer-e190": {
+    "descriptionEn": "The base and very successful first-generation model of the E-Jets family with longer range and higher capacity than the E175. Operated by dozens of airlines worldwide, from low-cost to flag carriers, allowing them to serve thin routes at high frequencies.",
+    "uniquenessEn": "Serves as a perfect bridge between classic regional aircraft and larger narrow-body airliners like the Airbus A220 or Boeing 737."
+  },
+  "embraer-e195": {
+    "descriptionEn": "The largest variant of the original E-Jets generation, stretched by more than 2 meters over the E190. Perfect for highly traveled regional trunk routes, offering excellent seat-mile operating economics.",
+    "uniquenessEn": "Highly utilized by European network carriers like Lufthansa CityLine and Austrian Airlines to bring high-density passenger feed into their major hubs."
+  },
+  "embraer-lineage-1000": {
+    "descriptionEn": "An ultra-large business jet derived from the E190 passenger airliner. It features a massive cabin split into up to five distinct zones, including options for a master bedroom with a queen bed and a private shower.",
+    "uniquenessEn": "Fitted with extra auxiliary fuel tanks in the belly cargo hold, it has more than double the range of the E190 passenger liner, flying up to 8,500 km non-stop."
+  },
+  "embraer-phenom-100": {
+    "descriptionEn": "A sleek Very Light Jet (VLJ) designed by Embraer for single or multi-pilot operations carrying up to 7 passengers. Highly popular with private owner-pilots, air taxi operations, and military flight academies.",
+    "uniquenessEn": "Boasts a highly distinctive interior designed in partnership with BMW Group DesignworksUSA, delivering space-saving comfort and premium luxury."
+  },
+  "embraer-phenom-300": {
+    "descriptionEn": "A larger, faster, and incredibly popular light business jet carrying up to 10 companions. It features state-of-the-art Garmin G3000 touch-interactive avionics and coast-to-coast US range.",
+    "uniquenessEn": "Has held the title of the world's best-selling light business jet design for over ten consecutive years, renowned for its airliner-grade robustness and excellent economy."
+  },
+  "embraer-legacy-500": {
+    "descriptionEn": "A revolutionary mid-size business jet with a flat-floor stand-up cabin and incredible range. It features full fly-by-wire digital flight controls and premium executive styling.",
+    "uniquenessEn": "It was the first aircraft in the mid-size segment to offer full digital fly-by-wire flight control with sidestick inputs, which was previously exclusive to ultra-premium heavy jets."
+  },
+  "embraer-legacy-450": {
+    "descriptionEn": "A slightly shortened corporate companion of the Legacy 500, sharing the highly comfortable flat-floor fuselage cabin and full fly-by-wire flight systems. Optimized for shorter segments with peerless cabin luxuries.",
+    "uniquenessEn": "Delivers outstanding premium cabin comfort paired with the fastest cruise speed in its light-medium aircraft category while keeping fuel efficiency exceptionally high."
+  },
+  "embraer-praetor-500": {
+    "descriptionEn": "The modern direct successor and upgrade to the Legacy 450. It provides a vastly extended flight range enabled by larger fuel cells and redesigned high-efficiency winglets, alongside advanced Collins Pro Line Fusion avionics.",
+    "uniquenessEn": "Stands as the fastest and longest-ranging mid-size executive jet on earth, capable of traversing the entire North American continent non-stop."
+  },
+  "embraer-e190-e2": {
+    "descriptionEn": "A new-generation update to the popular E190, fitted with Pratt & Whitney ultra-high-bypass geared turbofan engines, an advanced clean-sheet wing, and full digital fly-by-wire controls.",
+    "uniquenessEn": "Delivers a 17.3% lower fuel burn than the original E190, holding a record as the quietest and most environmentally clean narrow-body airliner in flight today."
+  },
+  "embraer-e195-e2": {
+    "descriptionEn": "The largest, most modern, and most efficient aircraft from the new E2 generation. Nicknamed the 'Profit Hunter' due to its unprecedented fuel economy and emissions (25% lower than the previous generation).",
+    "uniquenessEn": "It is the quietest single-aisle commercial aircraft in the world, boasts the lowest operating cost per seat in its segment, and is famous for its striking wild animal liveries (like the 'tech lion' or 'shark') on promotional tours."
+  },
+  "embraer-e175-e2": {
+    "descriptionEn": "The smallest member of the modern E2 family, designed to succeed the legendary E175. Powered by geared Pratt & Whitney PW1700G powerplants, it acts as a super-clean green regional transport.",
+    "uniquenessEn": "While highly efficient, its introduction in the USA has been postponed since the heavier geared turbofan engines cause it to exceed current scope clause weight limits."
+  },
+  "cessna-model-a": {
+    "descriptionEn": "A high-wing four-seat cabin monoplane introduced in the late 1920s, featuring structural design with a fabric-covered steel tube fuselage and wooden wings.",
+    "uniquenessEn": "It was Clyde Cessna's first production aircraft model after establishing the company, establishing the signature overhead cantilever wing design."
+  },
+  "cessna-model-dc": {
+    "descriptionEn": "A classic late 1920s high-wing cabin monoplane powered by a Wright Aeronautical engine, representing Cessna's early high-performance attempts.",
+    "uniquenessEn": "Designed during the Great Depression, this model introduced minor tail alterations to improve lateral stability compared to earlier designs."
+  },
+  "cessna-model-ec": {
+    "descriptionEn": "A rare 1930s-era single-engine cabin tourer powered by a Warner Scarab engine, designed to provide private pilots comfortable transport.",
+    "uniquenessEn": "One of the few models constructed during Cessna's restructuring period of the early thirties, showcasing excellent low-speed flight handling."
+  },
+  "cessna-model-fc": {
+    "descriptionEn": "An enhanced four-place high-wing cabin monoplane from 1933, featuring a more robust Warner Scarab engine and wider cabin accommodations.",
+    "uniquenessEn": "Developed as a bridge towards the highly successful C-series Airmasters, it is extremely rare today with only a few flyable survivors remaining."
+  },
+  "cessna-c-34": {
+    "descriptionEn": "A majestic high-wing cantilever cabin monoplane of 1935, credited as the blueprint that rebuilt the Cessna brand during the thirties.",
+    "uniquenessEn": "Highly efficient for its time, it won the title of 'The World's Most Efficient Airplane' twice in aeronautical efficiency competitions."
+  },
+  "cessna-c-165-airmaster": {
+    "descriptionEn": "A refined and elegant four-place cabin monoplane of the late 1930s, featuring a beautifully streamlined airframe and a radial powerplant.",
+    "uniquenessEn": "Often regarded as the ultimate design of the historic Airmaster series, it achieved outstanding speed and efficiency without external wing struts."
+  },
+  "cessna-120": {
+    "descriptionEn": "A popular post-WWII two-seat light utility aircraft with a conventional landing gear (tailwheel) and an all-metal fuselage with fabric wings.",
+    "uniquenessEn": "Built as a basic, economical utility airplane without electrical systems or flaps to keep costs low for veterans returning from war."
+  },
+  "cessna-140": {
+    "descriptionEn": "A companion model to the 120, featuring manual wing flaps, a rear cabin window, and a full electrical system as standard equipment.",
+    "uniquenessEn": "Its introduction marked Cessna's transition to a high-volume general aviation manufacturer, highly favored by flight schools for cross-country."
+  },
+  "cessna-170": {
+    "descriptionEn": "A four-place, single-engine light aircraft, featuring a tailwheel configuration and fabric-covered wings later updated to all-metal structure.",
+    "uniquenessEn": "Direct predecessor of the legendary 172 Skyhawk; it remains highly sought-after today by vintage airplane restorers and backcountry pilots."
+  },
+  "cessna-190": {
+    "descriptionEn": "A luxurious and robust high-wing light aircraft with a tailwheel landing gear, powered by a heavy radial piston engine.",
+    "uniquenessEn": "Featured a fully-aluminum fuselage and vintage look, offering high-speed cruising with a heavy, reliable antique radial engine sound."
+  },
+  "cessna-195-businessliner": {
+    "descriptionEn": "Known as the Businessliner, this high-end vintage cross-country monoplane was designed for business executives in the post-WWII era.",
+    "uniquenessEn": "It was Cessna's only post-war radial engine aircraft, famous for its grand art-deco interior and exceptional climb metrics."
+  },
+  "cessna-177-cardinal": {
+    "descriptionEn": "A modern high-wing cabin aircraft introduced in 1967 as a potential replacement for the Cessna 172, boasting a majestic strutless wing.",
+    "uniquenessEn": "Features a fully cantilever strutless wing and a sharply sloped windshield, giving pilots unparalleled forward and upward visibility."
+  },
+  "cessna-210-centurion": {
+    "descriptionEn": "A six-seat, high-performance, single-engine light aircraft featuring retractable landing gear and a highly efficient cantilever wing.",
+    "uniquenessEn": "A premier cross-country workhorse of general aviation, capable of high-altitude flight and heavy payloads usually reserved for twins."
+  },
+  "cessna-350-corvalis": {
+    "descriptionEn": "A high-performance, four-seat, single-engine composite aircraft originally developed by Columbia Aircraft as the Columbia 350.",
+    "uniquenessEn": "Constructed entirely from modern carbon-fiber composites, it features utility side-sticks instead of traditional central yokes."
+  },
+  "cessna-400-corvalis": {
+    "descriptionEn": "A turbocharged variant of the 350, boasting a mighty twin-turbocharged Continental engine and advanced glass cockpit avionics.",
+    "uniquenessEn": "Was the fastest certified fixed-gear single-engine piston aircraft in production, capable of cruising at speeds up to 235 knots."
+  },
+  "cessna-corvalis-tt": {
+    "descriptionEn": "The refined twin-turbocharged version of the Corvalis series, offering outstanding high-altitude cruise capability and built-in oxygen systems.",
+    "uniquenessEn": "Combining luxurious interior appointments with exceptional speed, it represented Cessna's high-tech response to composite single competitors."
+  },
+  "cessna-ttx": {
+    "descriptionEn": "The final and most modernized iteration of the Corvalis 400, loaded with the touchscreen-controlled Garmin G2000 Intrinzic avionics flight deck.",
+    "uniquenessEn": "Regarded as the ultimate premium sports car of the skies, achieving supreme speed and modern flight deck sophistication for private owners."
+  },
+  "cessna-at-17-bobcat": {
+    "descriptionEn": "A twin-engine advanced trainer and utility aircraft introduced in 1939, built with wooden wings and used extensively in WWII.",
+    "uniquenessEn": "Nicknamed the 'Bamboo Bomber' due to its extensive wooden structural framework, it trained thousands of multis-engine military pilots."
+  },
+  "cessna-320-skyknight": {
+    "descriptionEn": "A six-seat twin-engine light transport aircraft developed from the 310, equipped with turbocharged piston powerplants.",
+    "uniquenessEn": "Offered a pressurized-like feel at high altitudes with its extra cabin windows, making it highly desirable for small businesses."
+  },
+  "cessna-340": {
+    "descriptionEn": "A pressurized six-seat twin-engine business aircraft featuring a spacious cabin and high-altitude cruise comfort.",
+    "uniquenessEn": "It combined light-twin economy with the luxury of a pressurized cabin, resolving cabin noise and passenger ear fatigue on climbs."
+  },
+  "cessna-401": {
+    "descriptionEn": "A twin-engine light corporate transport aircraft designed to offer reliable commuter flights with comfortable six-to-eight seat layouts.",
+    "uniquenessEn": "Engineered specifically to minimize initial procurement costs while delivering utility-cabin volume for regional commuter operators."
+  },
+  "cessna-411": {
+    "descriptionEn": "A larger eight-seat twin-engine corporate transport aircraft, serving as Cessna's flagship business piston aircraft in the 1960s.",
+    "uniquenessEn": "Introduced geared engines that spun propellers slower to suppress noise levels, paving the way for larger executive aircraft designs."
+  },
+  "cessna-414": {
+    "descriptionEn": "A pressurized light twin-engine business plane combining the wing of the 401 with the spacious pressurized fuselage of the 421.",
+    "uniquenessEn": "A popular corporate favorite frequently upgraded with winglets and active RAM air turbos to fly comfortably above bad weather."
+  },
+  "cessna-421": {
+    "descriptionEn": "A majestic pressurized twin-engine corporate transport, widely considered the pinnacle of Cessna's piston-engined aircraft family.",
+    "uniquenessEn": "Equipped with geared engines and full pressurization, it served as a highly cost-effective alternative to multi-million turboprops."
+  },
+  "cessna-441-conquest-ii": {
+    "descriptionEn": "Cessna's first turboprop-powered aircraft design, featuring twin Garrett TPE331 turboprop engines and high cruising altitudes.",
+    "uniquenessEn": "Acclaimed for its incredible fuel efficiency and speed, it could easily outrun many early entry-level business jets of its era."
+  },
+  "cessna-425-corsair": {
+    "descriptionEn": "A twin-turboprop aircraft developed from the Cessna 421, aimed at competing directly with turboprops like the Beechcraft King Air.",
+    "uniquenessEn": "Offered simple pilot handling and quiet operations, serving as the gateway design for traditional piston pilots stepping into turboprops."
+  },
+  "cessna-425-conquest-i": {
+    "descriptionEn": "The renamed and upgraded version of the Corsair, featuring increased maximum takeoff weights and refined internal cabin systems.",
+    "uniquenessEn": "A highly reliable regional transport known for operating safely out of short, unpaved local flight strips."
+  },
+  "cessna-citation-i": {
+    "descriptionEn": "The legendary entry-level turbofan business jet that established the incredibly successful Cessna Citation family in the early 1970s.",
+    "uniquenessEn": "Pioneered the 'slow and straight' high-wing utility philosophy, proving that business jets could easily operate on short runways."
+  },
+  "cessna-citation-ii": {
+    "descriptionEn": "A significantly stretched and highly popular business jet, offering a longer cabin and more powerful Pratt & Whitney powerplants.",
+    "uniquenessEn": "Remains one of the most prolific light business jets ever manufactured, serving corporate transport worldwide for decades."
+  },
+  "cessna-citation-iii": {
+    "descriptionEn": "A high-performance mid-size business jet introduced in the early 1980s, featuring swept wings and an T-tail configuration.",
+    "uniquenessEn": "Marked Cessna's transition into swept-wing, high-speed jet configurations, achieving long flight ranges and great speeds."
+  },
+  "cessna-citation-vi": {
+    "descriptionEn": "A derivative of the Citation III designed as a standardized, lower-cost executive model with standard interior options.",
+    "uniquenessEn": "Offered identical digital performance to the Citation III at a significantly reduced capital aquisition price point for operators."
+  },
+  "cessna-citation-vii": {
+    "descriptionEn": "An upgraded high-performance variant of the Citation III, featuring more powerful Garrett turbofans for improved hot-and-high airfield metrics.",
+    "uniquenessEn": "Acclaimed for its outstanding climb parameters, allowing it to depart challenging mountain airfields and rapidly reach high cruise altitudes."
+  },
+  "cessna-citation-v": {
+    "descriptionEn": "A larger, stretched light corporate jet developed from the Citation II, offering spacious eight-seat VIP accommodations.",
+    "uniquenessEn": "Its long, straight wing gave it incredible low-speed stability, making it one of the easiest multi-engine cabin jets to land."
+  },
+  "cessna-citation-ultra": {
+    "descriptionEn": "An updated version of the Citation V featuring advanced glass flight decks and upgraded, quiet Pratt & Whitney JT15D turbofans.",
+    "uniquenessEn": "Named 'Best Utility Jet' by aviation magazines due to its fantastic cargo layout and highly forgiving single-pilot flight dynamics."
+  },
+  "cessna-citation-encore": {
+    "descriptionEn": "The trailing development of the Citation V family, incorporating the modern, highly fuel-efficient PW535 engines and trailing-link landing gear.",
+    "uniquenessEn": "The advanced trailing-link soft gear configuration ensured exceptionally smooth touchdowns even on tough, uneven runway surfaces."
+  },
+  "cessna-citation-cj1": {
+    "descriptionEn": "A modernized, light business jet representing the second generation of the CitationJet series, fitted with an active EFIS cockpit.",
+    "uniquenessEn": "Incorporated full digital engine control systems (FADEC), which greatly minimized single-pilot cockpit workload during departures."
+  },
+  "cessna-citation-cj2": {
+    "descriptionEn": "A stretched variant of the CJ1 offering extra cabin space, five feet of extra fuselage, and increased cruise velocity.",
+    "uniquenessEn": "Highly efficient performance profile, allowing executives to bypass regional airlines on mid-range business routes economically."
+  },
+  "cessna-citation-cj3": {
+    "descriptionEn": "An extended version of the CJ2 with longer wings and highly efficient, clean Williams FJ44 turbofan powerplants.",
+    "uniquenessEn": "Certified for single-pilot operations, it became a massive commercial favorite for owner-operators who fly themselves."
+  },
+  "cessna-citation-cj4": {
+    "descriptionEn": "The largest and fastest aircraft in the CJ series, featuring moderately swept wings derived from the Citation Sovereign.",
+    "uniquenessEn": "Combines the lightweight economy of the CJ series with the high-speed swept-wing design of larger mid-size corporate jets."
+  },
+  "cessna-citation-sovereign": {
+    "descriptionEn": "A transcontinental mid-size corporate jet designed with a highly efficient wing to operate out of short regional airfields.",
+    "uniquenessEn": "Features incredible short-field performance and a massive external baggage compartment, making it highly versatile."
+  },
+  "cessna-208-caravan": {
+    "descriptionEn": "A rugged, single-engine turboprop passenger and utility aircraft, revered worldwide for its reliability in austere environments.",
+    "uniquenessEn": "The absolute standard for global regional utility operations, trusted by humanitarian agencies and local flight commuter startups."
+  },
+  "cessna-208-cargomaster": {
+    "descriptionEn": "A dedicated pure-cargo version of the Caravan developed in close partnership with corporate overnight delivery giant FedEx.",
+    "uniquenessEn": "Eliminated passenger windows and cabin trim to maximize interior cargo cube capacity and speed up heavy package loading."
+  },
+  "cessna-208b-grand-caravan": {
+    "descriptionEn": "A stretched, high-volume model of the Caravan, adding four feet of extra fuselage length to accommodate more seats or freight.",
+    "uniquenessEn": "Revered as the ultimate modern bush airplane, easily adapting to rough unpaved mountain runways and dirt flight strips globally."
+  },
+  "cessna-208b-super-cargomaster": {
+    "descriptionEn": "An extended, pure-freight cargo model developed from the Grand Caravan, custom modified for heavy freight carriage.",
+    "uniquenessEn": "Features a large composite underbelly cargo pod to haul extra baggage and parcels without reducing main cabin volume."
+  },
+  "cessna-208b-grand-caravan-ex": {
+    "descriptionEn": "The modernized, highly powerful variation of the Grand Caravan, equipped with a heavy-duty Pratt & Whitney PT6A-140 powerplant.",
+    "uniquenessEn": "Delivers a 38% increase in rate of climb, helping executive and flight cargo operators departure fast out of hot-and-high clearings."
+  },
+  "cessna-208-caravan-amphibian": {
+    "descriptionEn": "A classic Cessna Caravan fitted with lightweight, large composite floats featuring retractable wheels.",
+    "uniquenessEn": "A highly versatile utility platform that can land seamlessly on both conventional concrete runways and remote water lakes."
+  },
+  "bombardier-crj900": {
+    "descriptionEn": "A twin-engine regional jet airliner developed from the successful CRJ700, featuring a stretched fuselage designed for short- and medium-haul routes.",
+    "uniquenessEn": "It is one of the most widely used regional jets in the world, highly favored by airlines for its reliable operation and low fuel consumption."
+  },
+  "bombardier-global-7500": {
+    "descriptionEn": "A state-of-the-art, luxurious, and ultra-long-range business jet that adds the highest level of comfort and autonomy to the Global family.",
+    "uniquenessEn": "With a range of over 14,000 km, it can connect cities like New York and Hong Kong non-stop, offering a spacious cabin divided into four living zones."
+  },
+  "bombardier-challenger-350": {
+    "descriptionEn": "An exceptionally popular and reliable mid-size business jet, characterized by high climb performance and an outstandingly quiet passenger cabin.",
+    "uniquenessEn": "It was long the best-selling super-midsize business jet in the world, offering an outstanding ratio of ownership and operational costs to flight capabilities."
   }
 };

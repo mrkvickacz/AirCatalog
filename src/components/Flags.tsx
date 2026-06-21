@@ -127,3 +127,13 @@ export const CZFlag: React.FC = () => (
   </svg>
 );
 
+export const BrazilFlag: React.FC = () => (
+  <svg viewBox="0 0 100 70" className="w-5 h-3.5 rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none">
+    <rect width="100" height="70" fill="#009c3b" />
+    <polygon points="50,8 92,35 50,62 8,35" fill="#ffdf00" />
+    <circle cx="50" cy="35" r="17.5" fill="#002171" />
+    <path d="M 32.8,37.5 Q 50,32 67.2,28 L 67.2,30 Q 50,34 32.8,39 Z" fill="#ffffff" />
+  </svg>
+);
+
+

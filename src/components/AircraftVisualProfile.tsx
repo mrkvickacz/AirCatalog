@@ -12,7 +12,8 @@ interface AircraftVisualProfileProps {
  */
 export function getSideViewPaths(specs: Aircraft['specs'], id: string, scale: number) {
   const isConcorde = id.toLowerCase().includes('concorde');
-  const is747 = id.toLowerCase().includes('747');
+  const isDreamlifter = id.toLowerCase().includes('lcf') || id.toLowerCase().includes('dreamlifter');
+  const is747 = id.toLowerCase().includes('747') && !isDreamlifter;
   const isA380 = id.toLowerCase().includes('a380');
 
   const dpL = specs.lengthM * scale;
@@ -40,6 +41,21 @@ export function getSideViewPaths(specs: Aircraft['specs'], id: string, scale: nu
       L ${X_nose + 0.82 * dpL} ${Y_f_bottom - 0.5}
       L ${X_nose + 0.25 * dpL} ${Y_f_bottom - 0.5}
       C ${X_nose + 0.18 * dpL} ${Y_f_bottom - 0.5}, ${X_nose + 0.08 * dpL} ${Y_f_center + 3}, ${X_nose} ${Y_f_center + 1}
+      Z
+    `.trim();
+  } else if (isDreamlifter) {
+    // Boeing 747-400LCF Dreamlifter: Giant, cargo-bulged bulbous fuselage spanning most of the length
+    sideFuselagePath = `
+      M ${X_nose} ${Y_f_center}
+      C ${X_nose + 0.02 * dpL} ${Y_f_center - 4}, ${X_nose + 0.04 * dpL} ${Y_f_top - 0.82 * dpW}, ${X_nose + 0.08 * dpL} ${Y_f_top - 0.82 * dpW}
+      L ${X_nose + 0.80 * dpL} ${Y_f_top - 0.82 * dpW}
+      C ${X_nose + 0.84 * dpL} ${Y_f_top - 0.82 * dpW}, ${X_nose + 0.88 * dpL} ${Y_f_top}, ${X_nose + 0.92 * dpL} ${Y_f_top}
+      C ${X_nose + 0.95 * dpL} ${Y_f_top}, ${X_nose + 0.98 * dpL} ${Y_f_center - 1}, ${X_nose + 0.99 * dpL} ${Y_f_center}
+      L ${X_nose + dpL} ${Y_f_center + 2}
+      L ${X_nose + 0.98 * dpL} ${Y_f_center + 5}
+      L ${X_nose + 0.76 * dpL} ${Y_f_bottom}
+      L ${X_nose + 0.12 * dpL} ${Y_f_bottom}
+      C ${X_nose + 0.03 * dpL} ${Y_f_bottom}, ${X_nose} ${Y_f_center + 3}, ${X_nose} ${Y_f_center}
       Z
     `.trim();
   } else if (is747) {
@@ -173,6 +189,7 @@ export function getSideViewPaths(specs: Aircraft['specs'], id: string, scale: nu
  */
 export function getTopViewPaths(specs: Aircraft['specs'], id: string, scale: number) {
   const isConcorde = id.toLowerCase().includes('concorde');
+  const isDreamlifter = id.toLowerCase().includes('lcf') || id.toLowerCase().includes('dreamlifter');
 
   const dpL = specs.lengthM * scale;
   const dpW = specs.wingspanM * scale;
@@ -194,6 +211,23 @@ export function getTopViewPaths(specs: Aircraft['specs'], id: string, scale: num
       L ${X_center + dpFw/2} ${Y_nose + 0.85 * dpL}
       L ${X_center + dpFw/2} ${Y_nose + 0.25 * dpL}
       C ${X_center + dpFw/2} ${Y_nose + 0.15 * dpL}, ${X_center + 0.5} ${Y_nose + 0.05 * dpL}, ${X_center} ${Y_nose}
+      Z
+    `.trim();
+  } else if (isDreamlifter) {
+    // Dreamlifter: Extends widely for cargo hold
+    const dpCargoW = dpFw * 1.5; // Significantly wider fuselage over cargo hold
+    fuselagePath = `
+      M ${X_center} ${Y_nose}
+      C ${X_center - dpFw/3} ${Y_nose + 0.02 * dpL}, ${X_center - dpCargoW/2} ${Y_nose + 0.07 * dpL}, ${X_center - dpCargoW/2} ${Y_nose + 0.12 * dpL}
+      L ${X_center - dpCargoW/2} ${Y_nose + 0.82 * dpL}
+      C ${X_center - dpCargoW/2} ${Y_nose + 0.86 * dpL}, ${X_center - dpFw/2} ${Y_nose + 0.88 * dpL}, ${X_center - dpFw/2} ${Y_nose + 0.90 * dpL}
+      L ${X_center - dpFw/2} ${Y_nose + 0.94 * dpL}
+      C ${X_center - dpFw/2} ${Y_nose + 0.96 * dpL}, ${X_center - 1} ${Y_tail - 5}, ${X_center} ${Y_tail}
+      C ${X_center + 1} ${Y_tail - 5}, ${X_center + dpFw/2} ${Y_nose + 0.96 * dpL}, ${X_center + dpFw/2} ${Y_nose + 0.94 * dpL}
+      L ${X_center + dpFw/2} ${Y_nose + 0.90 * dpL}
+      C ${X_center + dpFw/2} ${Y_nose + 0.88 * dpL}, ${X_center + dpCargoW/2} ${Y_nose + 0.86 * dpL}, ${X_center + dpCargoW/2} ${Y_nose + 0.82 * dpL}
+      L ${X_center + dpCargoW/2} ${Y_nose + 0.12 * dpL}
+      C ${X_center + dpCargoW/2} ${Y_nose + 0.07 * dpL}, ${X_center + dpFw/3} ${Y_nose + 0.02 * dpL}, ${X_center} ${Y_nose}
       Z
     `.trim();
   } else {

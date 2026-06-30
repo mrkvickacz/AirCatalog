@@ -74,6 +74,10 @@ export const AIRCRAFT_TRANSLATIONS_EN: Record<string, { descriptionEn: string; u
     "descriptionEn": "The most modern and largest version of the 'neo' series. With an extraordinary capacity of up to 244 passengers and extended range, it is gradually replacing older wide-body aircraft on many long-haul routes, changing the economics of long-distance flight.",
     "uniquenessEn": "Enables a low-cost model for long-haul flights across the Atlantic Ocean thanks to the combination of great range and the massive capacity of a single-aisle cabin."
   },
+  "airbus-a321-xlr": {
+    "descriptionEn": "An extra-long-range (XLR) version of the A320neo family. With an integrated rear center fuel tank, it offers an outstanding range of up to 8,700 km, allowing narrow-body aircraft to connect distant continents.",
+    "uniquenessEn": "The longest-range narrow-body commercial airliner in the world, capable of flying nonstop routes like London to Miami or Rome to New York."
+  },
   "airbus-a320-a319-neo": {
     "descriptionEn": "The latest modernized version of the A319 series with new-generation engines. Thanks to its smaller fuselage and improved propulsion, it demonstrates great flight performance in high-altitude conditions and extreme temperatures, while offering record range in its subcategory.",
     "uniquenessEn": "Offers the longest range of the entire A320neo family while maintaining excellent capability to operate at airports with challenging runways."
@@ -257,6 +261,18 @@ export const AIRCRAFT_TRANSLATIONS_EN: Record<string, { descriptionEn: string; u
   "boeing-747-8": {
     "descriptionEn": "The latest and largest generation of the iconic four-engine aircraft. It utilizes modern technologies from the 787 Dreamliner, including GEnx engines, a new wing profile, and a stretched fuselage. It is produced as a passenger version (Intercontinental) and as a highly sought-after freighter (8F).",
     "uniquenessEn": "It is the longest passenger-carrying aircraft in active service in the world, measuring nearly 76.3 meters."
+  },
+  "boeing-747-8f": {
+    "descriptionEn": "Freighter version of the latest generation of the Boeing 747. It features a longer fuselage than the preceding 747-400F, an improved wing design, and more efficient GEnx engines.",
+    "uniquenessEn": "The largest commercially produced commercial freighter of American production, featuring a signature upward-opening nose door."
+  },
+  "boeing-747-400lcf": {
+    "descriptionEn": "A special-purpose cargo aircraft with a significantly enlarged fuselage, developed to transport oversized parts of the Boeing 787 Dreamliner from suppliers worldwide to the Everett assembly plant. It was created by modifying existing passenger Boeing 747-400 airframes.",
+    "uniquenessEn": "It has the largest cargo hold volume of any aircraft in the world (1,840 m³) and features a swing-tail fuselage section that opens hydraulically 90 degrees to the side for loading."
+  },
+  "boeing-747-400f": {
+    "descriptionEn": "Freight version of the most popular generation of the Boeing 747. It has a shortened upper deck (identical to the 747-200) for weight optimization and a nose cargo door for oversized cargo.",
+    "uniquenessEn": "The nose cargo door allows loading of items that exceed the length of standard side cargo doors."
   },
   "boeing-757-200": {
     "descriptionEn": "The first and by far the most widespread passenger version of the 757 series. It is renowned for its excellent flight characteristics, exceptional climb performance, and ability to operate from shorter, high-altitude airports.",

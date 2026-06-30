@@ -30,3 +30,22 @@ export interface Aircraft {
   authorName: string;           // Photo author credit
   specs: AircraftSpecs;         // Specs object
 }
+
+export interface AirlineFleetItem {
+  aircraftId: string;
+  quantity: number;
+}
+
+export interface Airline {
+  id: string;
+  name: string;
+  foundedYear: number;
+  country: string;              // e.g. "USA", "Německo"
+  hub: string;                  // e.g. "Atlanta (ATL)", "Frankfurt (FRA)"
+  alliance: string;             // e.g. "SkyTeam", "Star Alliance"
+  description: string;          // Czech description
+  logoUrl?: string;             // Optional logo/image
+  fleet: AirlineFleetItem[];
+  continent: string;            // 'Evropa' | 'Amerika' | 'Asie' | 'Austrálie a Oceánie'
+}
+

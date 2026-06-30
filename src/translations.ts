@@ -75,6 +75,7 @@ export interface UITranslationMap {
   changeTheme: string;
   themeLight: string;
   themeDark: string;
+  logoDisclaimer: string;
 }
 
 export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
@@ -149,6 +150,7 @@ export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
     changeTheme: 'Motiv',
     themeLight: 'Světlý',
     themeDark: 'Tmavý',
+    logoDisclaimer: 'Loga společností jsou pouze přibližné z důvodu autorských práv.',
   },
   EN: {
     appName: 'AirCatalog',
@@ -221,6 +223,7 @@ export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
     changeTheme: 'Theme',
     themeLight: 'Light',
     themeDark: 'Dark',
+    logoDisclaimer: 'Company logos are only approximate due to copyright reasons.',
   }
 };
 
@@ -265,6 +268,22 @@ export function translateCountry(country: string, lang: 'CZ' | 'EN'): string {
     .replace('Sovětský svaz', 'Soviet Union')
     .replace('Spojené státy', 'United States')
     .replace('Brazílie', 'Brazil')
+    .replace('Německo', 'Germany')
+    .replace('Česká republika', 'Czech Republic')
+    .replace('Irsko', 'Ireland')
+    .replace('Nizozemsko', 'Netherlands')
+    .replace('Katar', 'Qatar')
+    .replace('Maďarsko', 'Hungary')
+    .replace('Singapur', 'Singapore')
+    .replace('Portugalsko', 'Portugal')
+    .replace('Finsko', 'Finland')
+    .replace('Turecko', 'Turkey')
+    .replace('Japonsko', 'Japan')
+    .replace('Spojené arabské emiráty', 'United Arab Emirates')
+    .replace('Austrálie', 'Australia')
+    .replace('Jižní Korea', 'South Korea')
+    .replace('Španělsko', 'Spain')
+    .replace('Hongkong', 'Hong Kong')
     .replace('Ukrajina', 'Ukraine');
 }
 
@@ -405,8 +424,54 @@ export function translateText(text: string, lang: 'CZ' | 'EN', isUniqueness = fa
     // Concorde
     'Jediné komerčně úspěšné nadzvukové transportní letadlo historie vyvinuté společně britskými a francouzskými inženýry. Létalo rychlostí přesahující Mach 2 (dvojnásobek rychlosti zvuku), díky čemuž dokázalo přelétnout Atlantský oceán za necelé 3,5 hodiny. Provoz ukončen v roce 2003.':
       'The only commercially successful supersonic passenger transport aircraft in history, developed jointly by British and French engineers. It flew at speeds exceeding Mach 2 (twice the speed of sound), allowing it to cross the Atlantic Ocean in less than 3.5 hours. It was retired in 2003.',
+    'Jedno z pouhých dvou nadzvukových osobních letadel, které klesly do komerční služby, nabízející cestování rychlejší než kulka.':
+      'One of only two supersonic passenger airliners to ever enter commercial service, offering travel faster than a bullet.',
     'Jedno z pouhých dvou nadzvukových osobních letadel, které kdy vstoupily do komerční služby, nabízející cestování rychlejší než kulka.':
-      'One of only two supersonic passenger airliners to ever enter commercial service, offering travel faster than a bullet.'
+      'One of only two supersonic passenger airliners to ever enter commercial service, offering travel faster than a bullet.',
+
+    // Airlines
+    'Delta Air Lines je jednou z nejstarších a největších leteckých společností na světě. Sídlí v Atlantě ve státě Georgie a provozuje rozsáhlou vnitrostátní i mezinárodní síť linek. Je zakládajícím členem aliance SkyTeam a její hlavní hub v Atlantě (Hartsfield-Jackson) je nejvytíženějším letištěm světa podle počtu cestujících.':
+      'Delta Air Lines is one of the oldest and largest airlines in the world. Headquartered in Atlanta, Georgia, it operates an extensive domestic and international route network. It is a founding member of the SkyTeam alliance, and its main hub in Atlanta (Hartsfield-Jackson) is the world\'s busiest airport by passenger traffic.',
+    'Deutsche Lufthansa AG je německý národní letecký dopravce a jedna z největších leteckých skupin v Evropě. Je zakládajícím členem aliance Star Alliance. Lufthansa je známá svým špičkovým servisem, vysokými standardy bezpečnosti a provozem kultovních čtyřmotorových letadel Boeing 747 na dálkových trasách.':
+      'Deutsche Lufthansa AG is the German flag carrier and one of the largest airline groups in Europe. It is a founding member of the Star Alliance. Lufthansa is renowned for its premium service, high safety standards, and operation of the iconic four-engine Boeing 747 aircraft on long-haul routes.',
+    'Smartwings, a.s. je česká letecká společnost se sídlem v Praze. Provozuje pravidelné linky, charterové lety a pronájmy letadel pro cestovní kanceláře a jiné letecké společnosti. Je největším leteckým dopravcem v České republice a provozuje moderní flotilu letadel řady Boeing 737.':
+      'Smartwings, a.s. is a Czech airline headquartered in Prague. It operates scheduled flights, charter flights, and aircraft leases for travel agencies and other airlines. It is the largest airline in the Czech Republic and operates a modern fleet of Boeing 737 family aircraft.',
+    'Ryanair je irská nízkonákladová letecká společnost se sídlem v Dublinu. Je největší nízkonákladovou leteckou společností v Evropě a jednou z největších na světě podle počtu přepravených cestujících. Provozuje obrovskou flotilu převážně letadel Boeing 737 a obsluhuje stovky destinací po celé Evropě, severní Africe a na Blízkém východě.':
+      'Ryanair is an Irish ultra-low-cost carrier headquartered in Dublin. It is the largest low-cost airline in Europe and one of the largest in the world by scheduled passengers carried. It operates a massive fleet of mostly Boeing 737 aircraft, serving hundreds of destinations across Europe, North Africa, and the Middle East.',
+    'British Airways je vlajkový letecký dopravce Spojeného království se sídlem v Londýně. Je jedním z největších leteckých dopravců v Evropě a zakládajícím členem aliance oneworld. Provozuje rozsáhlou globální síť linek z hlavního uzlu na letišti Londýn Heathrow.':
+      'British Airways is the flag carrier of the United Kingdom, headquartered in London. It is one of the largest airlines in Europe and a founding member of the oneworld alliance. It operates an extensive global route network from its main hub at London Heathrow Airport.',
+    'KLM Royal Dutch Airlines (Koninklijke Luchtvaart Maatschappij) je národní letecký dopravce Nizozemska se sídlem v Amstelveenu, s hlavním uzlem na letišti Schiphol v Amsterdamu. Založena v roce 1919, KLM je nejstarší leteckou společností na světě, která stále operuje pod svým původním názvem.':
+      'KLM Royal Dutch Airlines (Koninklijke Luchtvaart Maatschappij) is the flag carrier of the Netherlands, headquartered in Amstelveen, with its main hub at Amsterdam Airport Schiphol. Founded in 1919, KLM is the oldest airline in the world still operating under its original name.',
+    'Qatar Airways je státní národní letecký dopravce Kataru se sídlem v Dauhá. Společnost propojuje přes 150 mezinárodních destinací po celém světě ze svého hlavního uzlu na letišti Hamad. Je známá svým luxusním servisem Qsuite a opakovaně získala ocenění pro nejlepší leteckou společnost světa v hodnocení Skytrax.':
+      'Qatar Airways is the state-owned flag carrier of Qatar, headquartered in Doha. The airline links over 150 international destinations worldwide from its main hub at Hamad International Airport. It is renowned for its luxurious Qsuite service and has repeatedly won the World\'s Best Airline award by Skytrax.',
+    'Wizz Air je maďarská nízkonákladová letecká společnost se sídlem v Budapešti. Je jednou z největších nízkonákladových leteckých společností ve střední a východní Evropě a provozuje rozsáhlou síť linek propojující desítky zemí v Evropě, na Blízkém východě a v severní Africe s moderní flotilou letadel Airbus.':
+      'Wizz Air is a Hungarian ultra-low-cost carrier headquartered in Budapest. It is one of the largest low-cost airlines in Central and Eastern Europe, operating an extensive route network connecting dozens of countries in Europe, the Middle East, and North Africa with a modern fleet of Airbus aircraft.',
+    'Singapore Airlines jsou vlajkovým leteckým dopravcem Singapuru s hlavním uzlem na letišti Changi. Jsou známé svými mimořádně vysokými standardy služeb, luxusními kabinami a tím, že jako první na světě uvedly do provozu obří letoun Airbus A380.':
+      'Singapore Airlines is the flag carrier of Singapore, with its main hub at Changi Airport. It is renowned for its exceptionally high standards of service, luxurious cabins, and for being the global launch customer of the double-decker Airbus A380.',
+    'TAP Air Portugal je národní letecký dopravce Portugalska se sídlem v Lisabonu. Je členem Star Alliance a provozuje rozsáhlou síť linek, zejména do Severní a Jižní Ameriky a Afriky, s moderní celoairbusovou flotilou.':
+      'TAP Air Portugal is the flag carrier of Portugal, headquartered in Lisbon. A member of the Star Alliance, it operates an extensive route network, particularly to North and South America and Africa, with a modern all-Airbus fleet.',
+    'Air Canada je největší letecká společnost a národní dopravce Kanady se sídlem v Montrealu. Je zakládajícím členem Star Alliance a propojuje desítky destinací na šesti kontinentech z hlavních uzlů v Torontu, Vancouveru a Montrealu.':
+      'Air Canada is the largest airline and flag carrier of Canada, headquartered in Montreal. It is a founding member of Star Alliance and connects dozens of destinations across six continents from its hubs in Toronto, Vancouver, and Montreal.',
+    'Finnair je finský národní letecký dopravce se sídlem v Vantaa, Helsinkách. Je jedním z nejstarších nepřetržitě fungujících leteckých dopravců na světě a členem aliance oneworld. Specializuje se na rychlé spojení mezi Evropou a Asií přes severní polární trasu.':
+      'Finnair is the flag carrier of Finland, headquartered in Vantaa, Helsinki. It is one of the oldest continuously operating airlines in the world and a member of the oneworld alliance. It specializes in fast connections between Europe and Asia via the northern polar route.',
+    'United Airlines je jednou z největších leteckých společností na světě se sídlem v Chicagu, Illinois. Provozuje rozsáhlou vnitrostátní i mezinárodní síť s klíčovými uzly jako Chicago O\'Hare, Denver, Houston a Newark. Je zakládajícím členem Star Alliance.':
+      'United Airlines is one of the largest airlines in the world, headquartered in Chicago, Illinois. It operates an extensive domestic and international route network, with major hubs at Chicago O\'Hare, Denver, Houston, and Newark. It is a founding member of Star Alliance.',
+    'American Airlines je největší letecká společnost na světě podle velikosti flotily a počtu přepravených cestujících, se sídlem ve Fort Worthu v Texasu. Je zakládajícím členem aliance oneworld a jejím největším uzlem je letiště Dallas/Fort Worth.':
+      'American Airlines is the world\'s largest airline by fleet size and scheduled passengers carried, headquartered in Fort Worth, Texas. It is a founding member of the oneworld alliance, with Dallas/Fort Worth International Airport as its largest hub.',
+    'Turkish Airlines je národní letecký dopravce Turecka se sídlem v Istanbulu. Létá do více destinací bez mezipřistání než kterákoli jiná letecká společnost na světě. Jejím hlavním uzlem je moderní letiště Istanbul Airport a je členem Star Alliance.':
+      'Turkish Airlines is the flag carrier of Turkey, headquartered in Istanbul. It flies to more non-stop destinations than any other airline in the world. Its main hub is the modern Istanbul Airport and it is a member of the Star Alliance.',
+    'All Nippon Airways (ANA) je největší letecká společnost v Japonsku se sídlem v Tokiu. Provozuje rozsáhlou síť vnitrostátních a mezinárodních linek z hlavních uzlů na letištích Haneda a Narita a je členem Star Alliance. Je známá svými výjimečnými službami a pětihvězdičkovým hodnocením.':
+      'All Nippon Airways (ANA) is the largest airline in Japan, headquartered in Tokyo. It operates an extensive network of domestic and international flights from its primary hubs at Haneda and Narita airports and is a member of Star Alliance, renowned for its exceptional service and 5-star rating.',
+    'Emirates je jedna z největších leteckých společností na světě se sídlem v Dubaji v SAE. Je známá svým luxusním servisem, flotilou složenou výhradně ze širokotrupých letadel Airbus A380 a Boeing 777 a svým globálním uzlem na letišti v Dubaji.':
+      'Emirates is one of the world\'s largest airlines, based in Dubai, UAE. It is renowned for its luxurious service, a fleet composed entirely of wide-body Airbus A380 and Boeing 777 aircraft, and its global hub at Dubai International Airport.',
+    'Qantas je australský národní letecký dopravce a jedna z nejstarších nepřetržitě fungujících leteckých společností na světě. Je zakládajícím členem aliance oneworld a provozuje rozsáhlou vnitrostátní i mezinárodní síť s klíčovými uzly v Sydney, Melbourne a Brisbane.':
+      'Qantas is the flag carrier of Australia and one of the oldest continuously operating airlines in the world. It is a founding member of the oneworld alliance and operates an extensive domestic and international network with key hubs in Sydney, Melbourne, and Brisbane.',
+    'Korean Air je největší letecká společnost a národní dopravce Jižní Koreje se sídlem v Soulu. Je zakládajícím členem aliance SkyTeam a provozuje rozsáhlou globální síť spojující Asii, Ameriku, Evropu a Austrálii z hlavního uzlu na letišti Inčchon.':
+      'Korean Air is the largest airline and flag carrier of South Korea, headquartered in Seoul. A founding member of the SkyTeam alliance, it operates an extensive global network connecting Asia, the Americas, Europe, and Australia from its main hub at Incheon International Airport.',
+    'Vueling je španělská nízkonákladová letecká společnost se sídlem ve Viladecans u Barcelony. Je druhou největší leteckou společností ve Španělsku a provozuje rozsáhlou evropskou síť s hlavními uzly v Barceloně a Římě.':
+      'Vueling is a Spanish low-cost airline headquartered in Viladecans near Barcelona. It is the second-largest airline in Spain, operating an extensive European network with primary hubs in Barcelona and Rome.',
+    'Cathay Pacific je vlajkový letecký dopravce Hongkongu se sídlem na letišti v Hongkongu. Je zakládajícím členem aliance oneworld a je známý svými vysokými standardy kvality služeb a rozsáhlou globální sítí přepravy cestujících i nákladu.':
+      'Cathay Pacific is the flag carrier of Hong Kong, headquartered at Hong Kong International Airport. A founding member of the oneworld alliance, it is renowned for its high standards of service quality and an extensive global passenger and cargo network.'
   };
 
   if (overrides[text]) {

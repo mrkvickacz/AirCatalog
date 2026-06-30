@@ -24,8 +24,9 @@ import {
   Moon
 } from 'lucide-react';
 import { AIRCRAFT_DATA } from './data';
-import { Aircraft, AircraftCategory } from './types';
-import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag } from './components/Flags';
+import { AIRLINE_DATA } from './airline_data';
+import { Aircraft, AircraftCategory, Airline } from './types';
+import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag, GermanyFlag, IEFlag, NLFlag, QAFlag, HUFlag, SGFlag, PTFlag, FIFlag, TRFlag, JPFlag, AEFlag, AUFlag, KRFlag, ESFlag, HKFlag, SmartwingsLogo, DeltaLogo, LufthansaLogo, RyanairLogo, BritishAirwaysLogo, KLMLogo, QatarLogo, WizzLogo, SingaporeLogo, TapLogo, AirCanadaLogo, FinnairLogo, UnitedLogo, AmericanLogo, TurkishLogo, ANALogo, EmiratesLogo, QantasLogo, KoreanLogo, VuelingLogo, CathayLogo } from './components/Flags';
 import AircraftComparison from './components/AircraftComparison';
 import AircraftVisualProfile from './components/AircraftVisualProfile';
 import { 
@@ -114,6 +115,30 @@ export default function App() {
   const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
   const [compareOpen, setCompareOpen] = useState<boolean>(false);
 
+  const [selectedType, setSelectedType] = useState<'aircraft' | 'airline'>('aircraft');
+  const [selectedAirlineId, setSelectedAirlineId] = useState<string>(() => {
+    try {
+      const saved = localStorage.getItem('selected_airline_id');
+      const exists = AIRLINE_DATA.some(a => a.id === saved);
+      return exists && saved ? saved : AIRLINE_DATA[0].id;
+    } catch {
+      return AIRLINE_DATA[0].id;
+    }
+  });
+
+  const selectedAirline = useMemo(() => {
+    return AIRLINE_DATA.find(a => a.id === selectedAirlineId) || AIRLINE_DATA[0];
+  }, [selectedAirlineId]);
+
+  const [dopravniLetadlaExpanded, setDopravniLetadlaExpanded] = useState<boolean>(true);
+  const [leteckeSpolecnostiExpanded, setLeteckeSpolecnostiExpanded] = useState<boolean>(true);
+  const [expandedContinents, setExpandedContinents] = useState<Record<string, boolean>>({
+    'Evropa': true,
+    'Amerika': false,
+    'Asie': false,
+    'Austrálie a Oceánie': false
+  });
+
   const [seenIds, setSeenIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('seen_aircraft_ids');
@@ -141,6 +166,7 @@ export default function App() {
     const isEmbraer = aircraft.manufacturer.toLowerCase() === 'embraer';
     const isCessna = aircraft.manufacturer.toLowerCase() === 'cessna';
     const isBombardier = aircraft.manufacturer.toLowerCase() === 'bombardier';
+    const isMcdonnellDouglas = aircraft.manufacturer.toLowerCase() === 'mcdonnell douglas';
     const isSeen = seenIds.includes(aircraft.id);
 
     // Get flag and country text
@@ -150,7 +176,7 @@ export default function App() {
     if (isBombardier || normCountry === 'kanada' || normCountry === 'canada') {
       flagComponent = <CanadaFlag />;
       countryLabel = lang === 'CZ' ? 'Kanada' : 'Canada';
-    } else if (isCessna || isBoeing) {
+    } else if (isCessna || isBoeing || isMcdonnellDouglas) {
       flagComponent = <USFlag />;
       countryLabel = 'USA';
     } else if (isEmbraer || normCountry === 'brazílie' || normCountry === 'brazil') {
@@ -187,7 +213,9 @@ export default function App() {
                 ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-emerald-500/50 shadow-md'
                 : isCessna
                   ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-amber-500/50 shadow-md'
-                  : 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-sky-500/50 shadow-md'
+                  : isMcdonnellDouglas
+                    ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-rose-500/50 shadow-md'
+                    : 'bg-gradient-to-br from-slate-900 to-slate-800 text-white border-sky-500/50 shadow-md'
             : isDark
               ? 'bg-slate-900/15 border-white/5 hover:bg-slate-800/30 hover:border-slate-800 text-slate-300'
               : 'bg-slate-900 border-slate-950 text-slate-100 hover:bg-slate-950 shadow-sm'
@@ -197,9 +225,9 @@ export default function App() {
         {isSelected && (
           <motion.div 
             className={`absolute left-0 top-1/4 bottom-1/4 w-0.5 bg-gradient-to-b rounded-r-full ${
-              isBoeing ? 'from-[#818cf8] to-[#6366f1]' : isEmbraer ? 'from-[#10b981] to-[#059669]' : isCessna ? 'from-[#f59e0b] to-[#d97706]' : 'from-[#38bdf8] to-[#818cf8]0'
+              isBoeing ? 'from-[#818cf8] to-[#6366f1]' : isEmbraer ? 'from-[#10b981] to-[#059669]' : isCessna ? 'from-[#f59e0b] to-[#d97706]' : isMcdonnellDouglas ? 'from-[#f43f5e] to-[#e11d48]' : 'from-[#38bdf8] to-[#818cf8]0'
             }`}
-            layoutId={isBoeing ? "active-indicator-boeing-helper" : isEmbraer ? "active-indicator-embraer-helper" : isCessna ? "active-indicator-cessna-helper" : "active-indicator-airbus-helper"}
+            layoutId={isBoeing ? "active-indicator-boeing-helper" : isEmbraer ? "active-indicator-embraer-helper" : isCessna ? "active-indicator-cessna-helper" : isMcdonnellDouglas ? "active-indicator-mcdonnell-douglas-helper" : "active-indicator-airbus-helper"}
           />
         )}
 
@@ -215,7 +243,9 @@ export default function App() {
                       ? 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.8)]'
                       : isCessna
                         ? 'bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.8)]'
-                        : 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.8)]' 
+                        : isMcdonnellDouglas
+                          ? 'bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]'
+                          : 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.8)]' 
                   : 'bg-slate-800'
               }`} />
             </div>
@@ -310,6 +340,7 @@ export default function App() {
   const [embraerExpanded, setEmbraerExpanded] = useState<boolean>(false);
   const [cessnaExpanded, setCessnaExpanded] = useState<boolean>(false);
   const [bombardierExpanded, setBombardierExpanded] = useState<boolean>(false);
+  const [mcdonnellDouglasExpanded, setMcdonnellDouglasExpanded] = useState<boolean>(false);
 
   // List of categories for tabs
   const categories = ['Vše', 'Úzkotrupá (Single-Aisle)', 'Širokotrupá (Wide-Body)', 'Regionální (Regional)', 'Historická / Nadzvuková'];
@@ -326,6 +357,20 @@ export default function App() {
       return matchSearch && matchCategory;
     });
   }, [searchQuery, selectedCategory]);
+
+  // Filter airlines based on search query
+  const filteredAirlines = useMemo(() => {
+    return AIRLINE_DATA.filter(airline => {
+      const query = searchQuery.toLowerCase();
+      return (
+        airline.name.toLowerCase().includes(query) ||
+        airline.country.toLowerCase().includes(query) ||
+        airline.alliance.toLowerCase().includes(query) ||
+        airline.description.toLowerCase().includes(query) ||
+        airline.hub.toLowerCase().includes(query)
+      );
+    });
+  }, [searchQuery]);
 
   // Separate filtered lists for Airbus and Boeing
   const airbusAircraft = useMemo(() => {
@@ -345,7 +390,7 @@ export default function App() {
   }, [airbusAircraft]);
 
   const a320Aircraft = useMemo(() => {
-    return airbusAircraft.filter(a => a.id.startsWith('airbus-a320-'));
+    return airbusAircraft.filter(a => a.id.startsWith('airbus-a320-') || a.id === 'airbus-a321-xlr');
   }, [airbusAircraft]);
 
   const a330Aircraft = useMemo(() => {
@@ -369,7 +414,7 @@ export default function App() {
   }, [airbusAircraft]);
 
   const otherAirbusAircraft = useMemo(() => {
-    return airbusAircraft.filter(a => !a.id.startsWith('airbus-a220-') && !a.id.startsWith('airbus-a300-') && !a.id.startsWith('airbus-a310-') && !a.id.startsWith('airbus-a320-') && !a.id.startsWith('airbus-a330-') && !a.id.startsWith('airbus-a340-') && !a.id.startsWith('airbus-a350-') && !a.id.startsWith('airbus-a350f') && !a.id.startsWith('airbus-a380-') && !a.id.startsWith('airbus-beluga'));
+    return airbusAircraft.filter(a => !a.id.startsWith('airbus-a220-') && !a.id.startsWith('airbus-a300-') && !a.id.startsWith('airbus-a310-') && !a.id.startsWith('airbus-a320-') && a.id !== 'airbus-a321-xlr' && !a.id.startsWith('airbus-a330-') && !a.id.startsWith('airbus-a340-') && !a.id.startsWith('airbus-a350-') && !a.id.startsWith('airbus-a350f') && !a.id.startsWith('airbus-a380-') && !a.id.startsWith('airbus-beluga'));
   }, [airbusAircraft]);
 
   const boeingAircraft = useMemo(() => {
@@ -438,6 +483,10 @@ export default function App() {
     return filteredAircraft.filter(a => a.manufacturer.toLowerCase() === 'bombardier');
   }, [filteredAircraft]);
 
+  const mcdonnellDouglasAircraft = useMemo(() => {
+    return filteredAircraft.filter(a => a.manufacturer.toLowerCase() === 'mcdonnell douglas');
+  }, [filteredAircraft]);
+
   // Selected aircraft details
   const selectedAircraft = useMemo(() => {
     return AIRCRAFT_DATA.find(a => a.id === selectedId) || AIRCRAFT_DATA[0];
@@ -454,7 +503,7 @@ export default function App() {
           setA300Expanded(true);
         } else if (selectedAircraft.id.startsWith('airbus-a310-')) {
           setA310Expanded(true);
-        } else if (selectedAircraft.id.startsWith('airbus-a320-')) {
+        } else if (selectedAircraft.id.startsWith('airbus-a320-') || selectedAircraft.id === 'airbus-a321-xlr') {
           setA320Expanded(true);
         } else if (selectedAircraft.id.startsWith('airbus-a330-')) {
           setA330Expanded(true);
@@ -492,6 +541,8 @@ export default function App() {
         setEmbraerExpanded(true);
       } else if (selectedAircraft.manufacturer.toLowerCase() === 'cessna') {
         setCessnaExpanded(true);
+      } else if (selectedAircraft.manufacturer.toLowerCase() === 'mcdonnell douglas') {
+        setMcdonnellDouglasExpanded(true);
       }
     }
   }, [selectedId, selectedAircraft]); // Run when selected aircraft changes
@@ -565,6 +616,9 @@ export default function App() {
       if (cessnaAircraft.length > 0) {
         setCessnaExpanded(true);
       }
+      if (mcdonnellDouglasAircraft.length > 0) {
+        setMcdonnellDouglasExpanded(true);
+      }
     } else {
       // Když se vyhledávání smaže, zavřou se všechny složky kromě té s právě vybraným letadlem
       setAirbusExpanded(false);
@@ -589,7 +643,8 @@ export default function App() {
       setB787Expanded(false);
       setEmbraerExpanded(false);
       setCessnaExpanded(false);
-   
+      setMcdonnellDouglasExpanded(false);
+    
       if (selectedAircraft) {
         if (selectedAircraft.manufacturer.toLowerCase() === 'airbus') {
           setAirbusExpanded(true);
@@ -599,7 +654,7 @@ export default function App() {
             setA300Expanded(true);
           } else if (selectedAircraft.id.startsWith('airbus-a310-')) {
             setA310Expanded(true);
-          } else if (selectedAircraft.id.startsWith('airbus-a320-')) {
+          } else if (selectedAircraft.id.startsWith('airbus-a320-') || selectedAircraft.id === 'airbus-a321-xlr') {
             setA320Expanded(true);
           } else if (selectedAircraft.id.startsWith('airbus-a330-')) {
             setA330Expanded(true);
@@ -639,10 +694,12 @@ export default function App() {
           setCessnaExpanded(true);
         } else if (selectedAircraft.manufacturer.toLowerCase() === 'bombardier') {
           setBombardierExpanded(true);
+        } else if (selectedAircraft.manufacturer.toLowerCase() === 'mcdonnell douglas') {
+          setMcdonnellDouglasExpanded(true);
         }
       }
     }
-  }, [searchQuery, airbusAircraft.length, a220Aircraft.length, a300Aircraft.length, a310Aircraft.length, a320Aircraft.length, a330Aircraft.length, a340Aircraft.length, a350Aircraft.length, a380Aircraft.length, belugaAircraft.length, boeingAircraft.length, b707Aircraft.length, b717Aircraft.length, b727Aircraft.length, b737Aircraft.length, b747Aircraft.length, b757Aircraft.length, b767Aircraft.length, b777Aircraft.length, b787Aircraft.length, embraerAircraft.length, cessnaAircraft.length, bombardierAircraft.length, selectedAircraft]);
+  }, [searchQuery, airbusAircraft.length, a220Aircraft.length, a300Aircraft.length, a310Aircraft.length, a320Aircraft.length, a330Aircraft.length, a340Aircraft.length, a350Aircraft.length, a380Aircraft.length, belugaAircraft.length, boeingAircraft.length, b707Aircraft.length, b717Aircraft.length, b727Aircraft.length, b737Aircraft.length, b747Aircraft.length, b757Aircraft.length, b767Aircraft.length, b777Aircraft.length, b787Aircraft.length, embraerAircraft.length, cessnaAircraft.length, bombardierAircraft.length, mcdonnellDouglasAircraft.length, selectedAircraft]);
 
   // Calculate fleet averages for comparison
   const fleetAverages = useMemo(() => {
@@ -728,6 +785,7 @@ export default function App() {
   // Select the first plane from filtered list if current selection gets filtered out
   const handleSelect = (id: string) => {
     setSelectedId(id);
+    setSelectedType('aircraft');
     setMobileView('detail');
     try {
       localStorage.setItem('selected_aircraft_id', id);
@@ -840,10 +898,10 @@ export default function App() {
             </div>
             <button
               onClick={() => setCompareOpen(true)}
-              className="flex items-center gap-1 px-2.5 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 rounded-xl text-[10px] font-bold text-sky-450 transition-all cursor-pointer shadow-md shadow-sky-500/5 select-none shrink-0"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 rounded-xl text-[11px] font-extrabold text-sky-450 transition-all cursor-pointer shadow-md shadow-sky-500/5 select-none shrink-0"
             >
-              <ArrowLeftRight className="w-3 h-3" />
-              {t.compareButton}
+              <ArrowLeftRight className="w-3.5 h-3.5" />
+              {lang === 'CZ' ? 'Porovnat' : 'Compare'}
             </button>
           </div>
         </div>
@@ -855,7 +913,7 @@ export default function App() {
             <input
               id="search-input"
               type="text"
-              placeholder={t.searchPlaceholder}
+              placeholder={lang === 'CZ' ? 'Hledat' : 'Search'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full pl-10 pr-4 py-3 border rounded-2xl text-base md:text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500/50 transition-all font-sans ${
@@ -965,10 +1023,45 @@ export default function App() {
         </div>
 
         {/* Flight Selection List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2.5">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           <AnimatePresence mode="popLayout">
-            {filteredAircraft.length > 0 ? (
-              <div className="space-y-4">
+            {/* FOLDER 1: DOPRAVNÍ LETADLA */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setDopravniLetadlaExpanded(!dopravniLetadlaExpanded)}
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all cursor-pointer group ${
+                  isDark 
+                    ? 'bg-slate-900/60 hover:bg-slate-900/90 border border-white/5' 
+                    : 'bg-white hover:bg-slate-50 border border-slate-200 shadow-sm'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-tr from-[#38bdf8] to-[#818cf8] rounded-xl text-white shadow-md shadow-sky-500/5 flex items-center justify-center">
+                    <Plane className="w-4 h-4" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className={`text-sm font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                      {lang === 'CZ' ? 'Dopravní Letadla' : 'Commercial Aircraft'}
+                    </h3>
+                    <p className={`text-[10px] font-mono ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>
+                      {filteredAircraft.length} {lang === 'CZ' ? 'modelů' : 'models'}
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${dopravniLetadlaExpanded ? 'rotate-90 text-sky-400' : ''}`} />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {dopravniLetadlaExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="space-y-3.5 pl-2 border-l border-sky-500/15 overflow-hidden py-1"
+                  >
+                    {filteredAircraft.length > 0 ? (
+                      <div className="space-y-4">
                 {/* AIRBUS SECTION */}
                 {airbusAircraft.length > 0 && (
                   <div className="space-y-2">
@@ -1958,6 +2051,49 @@ export default function App() {
                     </AnimatePresence>
                   </div>
                 )}
+
+                {/* MCDONNELL DOUGLAS SECTION */}
+                {mcdonnellDouglasAircraft.length > 0 && (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setMcdonnellDouglasExpanded(!mcdonnellDouglasExpanded)}
+                      className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-slate-900/60 border border-white/5 rounded-2xl transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-rose-500/10 rounded-lg group-hover:scale-105 transition-transform duration-200 flex items-center justify-center text-sm w-7 h-7 select-none">
+                          <USFlag />
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-sm md:text-xs font-extrabold tracking-wider text-slate-200 font-mono">MCDONNELL DOUGLAS</h4>
+                          <p className="text-[11px] md:text-[10px] text-slate-500 font-mono">
+                            {mcdonnellDouglasAircraft.length} {getModelText(mcdonnellDouglasAircraft.length)}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${mcdonnellDouglasExpanded ? 'rotate-90 text-rose-400' : ''}`} />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {mcdonnellDouglasExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeInOut' }}
+                          className="space-y-2 pl-3 border-l border-rose-500/15 overflow-hidden py-1"
+                        >
+                          {mcdonnellDouglasAircraft.map((aircraft) => (
+                            <AircraftListItem
+                              key={aircraft.id}
+                              aircraft={aircraft}
+                              isSelected={aircraft.id === selectedId}
+                            />
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="py-12 text-center text-slate-500">
@@ -1966,6 +2102,200 @@ export default function App() {
                 <p className="text-xs text-slate-500 mt-1">Zkuste upravit klíčová slova</p>
               </div>
             )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* FOLDER 2: LETECKÉ SPOLEČNOSTI */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setLeteckeSpolecnostiExpanded(!leteckeSpolecnostiExpanded)}
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all cursor-pointer group ${
+                  isDark 
+                    ? 'bg-slate-900/60 hover:bg-slate-900/90 border border-white/5' 
+                    : 'bg-white hover:bg-slate-50 border border-slate-200 shadow-sm'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl text-white shadow-md shadow-indigo-500/5 flex items-center justify-center">
+                    <Globe className="w-4 h-4" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className={`text-sm font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                      {lang === 'CZ' ? 'Letecké společnosti' : 'Airlines'}
+                    </h3>
+                    <p className={`text-[10px] font-mono ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>
+                      {filteredAirlines.length} {lang === 'CZ' ? 'společnosti' : 'airlines'}
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${leteckeSpolecnostiExpanded ? 'rotate-90 text-indigo-400' : ''}`} />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {leteckeSpolecnostiExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="space-y-2 pl-2 border-l border-indigo-500/10 overflow-hidden py-1"
+                  >
+                    {filteredAirlines.length > 0 ? (
+                      (() => {
+                        const continents = ['Evropa', 'Amerika', 'Asie', 'Austrálie a Oceánie'];
+                        
+                        return (
+                          <div className="space-y-3">
+                            {continents.map((continent) => {
+                              const airlinesInContinent = filteredAirlines.filter(a => a.continent === continent);
+                              if (airlinesInContinent.length === 0) return null;
+                              
+                              const isExpanded = expandedContinents[continent] ?? false;
+                              
+                              return (
+                                <div key={continent} className="space-y-1.5 mb-2">
+                                  <button
+                                    onClick={() => setExpandedContinents(prev => ({ ...prev, [continent]: !prev[continent] }))}
+                                    className={`w-full flex items-center justify-between p-2.5 rounded-2xl transition-all cursor-pointer group text-left border ${
+                                      isDark
+                                        ? 'bg-slate-950/20 hover:bg-slate-900/40 border-white/5 text-slate-300'
+                                        : 'bg-slate-50/75 border-slate-200/85 text-slate-700 hover:bg-slate-100/75 hover:border-slate-300 shadow-xs'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <div className="text-left">
+                                        <h5 className={`text-[11px] font-bold font-mono tracking-wide ${
+                                          isDark ? 'text-slate-300' : 'text-slate-800'
+                                        }`}>
+                                          {continent}
+                                        </h5>
+                                        <p className={`text-[9px] font-mono leading-none mt-0.5 ${
+                                          isDark ? 'text-slate-500' : 'text-slate-450'
+                                        }`}>
+                                          {airlinesInContinent.length} {lang === 'CZ' ? (airlinesInContinent.length === 1 ? 'společnost' : airlinesInContinent.length < 5 ? 'společnosti' : 'společností') : (airlinesInContinent.length === 1 ? 'airline' : 'airlines')}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <ChevronRight className={`w-3 h-3 text-slate-400 transition-transform duration-300 ${isExpanded ? 'rotate-90 text-indigo-400' : ''}`} />
+                                  </button>
+                                  
+                                  <AnimatePresence initial={false}>
+                                    {isExpanded && (
+                                      <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="space-y-2 pl-3 border-l border-slate-700/30 overflow-hidden py-1"
+                                      >
+                                        {airlinesInContinent.map((airline) => {
+                                          const isSelected = selectedType === 'airline' && selectedAirlineId === airline.id;
+                                          const totalFleet = airline.fleet.reduce((sum, item) => sum + item.quantity, 0);
+                                          return (
+                                            <button
+                                              key={airline.id}
+                                              onClick={() => {
+                                                setSelectedType('airline');
+                                                setSelectedAirlineId(airline.id);
+                                                setMobileView('detail');
+                                              }}
+                                              className={`w-full text-left p-3 rounded-xl flex items-center justify-between border transition-all cursor-pointer ${
+                                                isSelected
+                                                  ? 'bg-gradient-to-r from-indigo-500/15 to-purple-500/15 border-indigo-500/40 text-indigo-400 font-bold'
+                                                  : isDark
+                                                    ? 'bg-slate-950/20 border-white/5 text-slate-300 hover:bg-slate-800/40 hover:border-slate-700/50'
+                                                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-xs'
+                                              }`}
+                                            >
+                                              <div className="flex items-center gap-2.5 truncate">
+                                                <div className={`w-8 h-8 rounded-lg overflow-hidden relative shrink-0 border ${isDark ? 'border-white/5' : 'border-slate-200'} flex items-center justify-center bg-slate-900/60`}>
+                                                  {airline.id === 'lufthansa' ? (
+                                                    <LufthansaLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'delta-air-lines' ? (
+                                                    <DeltaLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'smartwings' ? (
+                                                    <SmartwingsLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'ryanair' ? (
+                                                    <RyanairLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'british-airways' ? (
+                                                    <BritishAirwaysLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'klm' ? (
+                                                    <KLMLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'qatar-airways' ? (
+                                                    <QatarLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'wizz-air' ? (
+                                                    <WizzLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'singapore-airlines' ? (
+                                                    <SingaporeLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'tap-portugal' ? (
+                                                    <TapLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'air-canada' ? (
+                                                    <AirCanadaLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'finnair' ? (
+                                                    <FinnairLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'united-airlines' ? (
+                                                    <UnitedLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'american-airlines' ? (
+                                                    <AmericanLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'turkish-airlines' ? (
+                                                    <TurkishLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'ana' ? (
+                                                    <ANALogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'emirates' ? (
+                                                    <EmiratesLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'qantas' ? (
+                                                    <QantasLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'korean-air' ? (
+                                                    <KoreanLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'vueling' ? (
+                                                    <VuelingLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'cathay-pacific' ? (
+                                                    <CathayLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : (
+                                                    <img src={airline.logoUrl} alt={airline.name} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+                                                  )}
+                                                </div>
+                                                <div className="truncate text-left">
+                                                  <h4 className={`text-xs font-bold leading-snug truncate ${isSelected ? (isDark ? 'text-indigo-400' : 'text-indigo-600') : (isDark ? 'text-slate-200' : 'text-slate-800')}`}>
+                                                    {airline.name}
+                                                  </h4>
+                                                  <p className={`text-[10px] font-mono leading-none mt-1 ${isDark ? 'text-slate-500' : 'text-slate-450'}`}>
+                                                    {translateCountry(airline.country, lang)} • {airline.alliance}
+                                                  </p>
+                                                </div>
+                                              </div>
+                                              <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                                                isSelected
+                                                  ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
+                                                  : isDark
+                                                    ? 'bg-slate-950/40 border-white/5 text-slate-500'
+                                                    : 'bg-slate-100 border-slate-200 text-slate-500'
+                                              }`}>
+                                                {totalFleet} {lang === 'CZ' ? 'letadel' : 'aircraft'}
+                                              </span>
+                                            </button>
+                                          );
+                                        })}
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()
+                    ) : (
+                      <div className="py-6 text-center text-slate-500">
+                        <p className="text-xs italic">{lang === 'CZ' ? 'Žádné společnosti' : 'No airlines found'}</p>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </AnimatePresence>
         </div>
 
@@ -1975,6 +2305,9 @@ export default function App() {
             <Globe className="w-4 h-4 text-slate-600" />
             <span>AirCatalog Katalog v1.2</span>
           </div>
+          <p className="text-[10px] text-slate-600 mt-1.5 leading-normal">
+            {t.logoDisclaimer}
+          </p>
         </div>
       </aside>
 
@@ -1989,14 +2322,284 @@ export default function App() {
         }}
       >
         <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedAircraft.id}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="space-y-8"
-          >
+          {selectedType === 'airline' ? (
+            <motion.div
+              key={`airline-${selectedAirline.id}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="space-y-8 text-left"
+            >
+              {/* Mobile back navigation bar */}
+              <div className="md:hidden flex items-center justify-between mb-4 pb-3 border-b border-slate-800/40 gap-4">
+                <button
+                  id="mobile-back-btn"
+                  onClick={() => setMobileView('list')}
+                  className="flex items-center gap-1.5 text-xs font-bold font-mono text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 active:scale-95 transition-all py-2.5 px-4 rounded-xl border border-indigo-400/20 shadow-sm shadow-indigo-500/5 cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  {lang === 'CZ' ? 'ZPĚT NA SEZNAM' : 'BACK TO LIST'}
+                </button>
+                <span className="text-[10px] text-slate-500 font-mono font-bold tracking-wider uppercase truncate max-w-[180px]">
+                  {selectedAirline.name}
+                </span>
+              </div>
+
+              {/* 1. HERO CAPTURE AREA */}
+              <div 
+                className="relative overflow-hidden bg-slate-900/60 rounded-3xl p-6 md:p-8 lg:p-10 shadow-2xl border border-white/5 flex flex-col justify-between"
+                style={{
+                  backgroundImage: 'radial-gradient(circle at top right, rgba(99, 102, 241, 0.12), transparent 70%)'
+                }}
+              >
+                {/* Flight paths vector graphic representation */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+                
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 bg-indigo-950/80 text-indigo-300 border border-indigo-800/50 rounded-md text-[11px] font-bold font-mono tracking-wider">
+                      {selectedAirline.alliance}
+                    </span>
+                    <span className="text-slate-500">•</span>
+                    <span className="text-xs text-slate-400 font-mono font-medium">{lang === 'CZ' ? 'Letecká společnost' : 'Commercial Airline'}</span>
+                  </div>
+
+                  <div className="flex gap-1.5 flex-wrap">
+                    <span className="bg-[#6366f1]/15 text-[#818cf8] border border-[#6366f1]/25 px-3 py-1 text-[11px] font-bold tracking-wide uppercase rounded-full backdrop-blur-md">
+                      {lang === 'CZ' ? `Založeno: ${selectedAirline.foundedYear}` : `Founded: ${selectedAirline.foundedYear}`}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex flex-col lg:flex-row lg:items-end justify-between gap-6 relative z-10 pb-2">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl overflow-hidden relative border border-white/10 shrink-0 shadow-lg flex items-center justify-center bg-slate-900/60">
+                      {selectedAirline.id === 'lufthansa' ? (
+                        <LufthansaLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'delta-air-lines' ? (
+                        <DeltaLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'smartwings' ? (
+                        <SmartwingsLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'ryanair' ? (
+                        <RyanairLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'british-airways' ? (
+                        <BritishAirwaysLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'klm' ? (
+                        <KLMLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'qatar-airways' ? (
+                        <QatarLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'wizz-air' ? (
+                        <WizzLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'singapore-airlines' ? (
+                        <SingaporeLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'tap-portugal' ? (
+                        <TapLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'air-canada' ? (
+                        <AirCanadaLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'finnair' ? (
+                        <FinnairLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'united-airlines' ? (
+                        <UnitedLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'american-airlines' ? (
+                        <AmericanLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'turkish-airlines' ? (
+                        <TurkishLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'ana' ? (
+                        <ANALogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'emirates' ? (
+                        <EmiratesLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'qantas' ? (
+                        <QantasLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'korean-air' ? (
+                        <KoreanLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'vueling' ? (
+                        <VuelingLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'cathay-pacific' ? (
+                        <CathayLogo className="w-full h-full object-cover scale-110" />
+                      ) : (
+                        <img src={selectedAirline.logoUrl} alt={selectedAirline.name} referrerPolicy="no-referrer" className="w-full h-full object-cover animate-fade-in" />
+                      )}
+                    </div>
+                    <div>
+                      <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        {selectedAirline.name}
+                      </h1>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <div className="bg-white/5 border border-white/10 text-slate-300 py-1.5 px-3 rounded-full text-xs font-mono flex items-center gap-1.5 backdrop-blur-md">
+                      <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>{lang === 'CZ' ? 'Země:' : 'Country:'} {translateCountry(selectedAirline.country, lang)}</span>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 text-slate-300 py-1.5 px-3 rounded-full text-xs font-mono flex items-center gap-1.5 backdrop-blur-md">
+                      <Compass className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>Hub: {selectedAirline.hub.replace('Mnichov', lang === 'CZ' ? 'Mnichov' : 'Munich').replace('Praha', lang === 'CZ' ? 'Praha' : 'Prague')}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. DESCRIPTION & FACTS ROW */}
+              <div className={`rounded-3xl p-6 md:p-8 shadow-xl border transition-colors duration-300 ${isDark ? 'bg-gradient-to-b from-slate-900 to-slate-900/40 border-white/5' : 'bg-white border-slate-200'}`}>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className={`lg:col-span-8 space-y-4 text-base leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-750'}`}>
+                    <h3 className={`text-lg font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      {lang === 'CZ' ? 'O společnosti' : 'About Airline'}
+                    </h3>
+                    <p className="leading-relaxed">{translateText(selectedAirline.description, lang)}</p>
+                  </div>
+
+                  <div className={`lg:col-span-4 rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between border transition-all duration-300 ${
+                    isDark ? 'bg-indigo-500/5 border-indigo-500/20' : 'bg-indigo-50 border-indigo-100 shadow-sm shadow-indigo-100/50'
+                  }`}>
+                    <div className={`absolute -right-6 -top-6 ${isDark ? 'text-indigo-500/10' : 'text-indigo-500/15'}`}>
+                      <Globe className="w-24 h-24 stroke-[1.2]" />
+                    </div>
+                    <div className="space-y-4 relative z-10">
+                      <div className={`flex items-center gap-2 font-bold text-xs mb-1 font-mono ${isDark ? 'text-indigo-400' : 'text-indigo-700'}`}>
+                        <Sparkles className="w-4 h-4" />
+                        <span>{lang === 'CZ' ? 'KLÍČOVÁ DATA' : 'QUICK STATS'}</span>
+                      </div>
+                      
+                      <div className="space-y-3 font-mono text-[11px] md:text-xs">
+                        <div className="flex justify-between border-b pb-1.5 border-indigo-500/10">
+                          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>{lang === 'CZ' ? 'Založeno' : 'Founded'}</span>
+                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedAirline.foundedYear}</span>
+                        </div>
+                        <div className="flex justify-between border-b pb-1.5 border-indigo-500/10">
+                          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>{lang === 'CZ' ? 'Země' : 'Country'}</span>
+                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{translateCountry(selectedAirline.country, lang)}</span>
+                        </div>
+                        <div className="flex justify-between border-b pb-1.5 border-indigo-500/10">
+                          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>{lang === 'CZ' ? 'Aliance' : 'Alliance'}</span>
+                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedAirline.alliance}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>{lang === 'CZ' ? 'Letadla celkem' : 'Total Fleet'}</span>
+                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                            {selectedAirline.fleet.reduce((sum, item) => sum + item.quantity, 0)} {lang === 'CZ' ? 'letadel' : 'aircraft'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. FLEET COMPOSITION SECTION */}
+              <div className={`rounded-3xl p-6 md:p-8 shadow-xl border transition-colors duration-300 ${isDark ? 'bg-gradient-to-b from-slate-900 to-slate-900/40 border-white/5' : 'bg-white border-slate-200'}`}>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                  <div>
+                    <h3 className={`text-lg font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      {lang === 'CZ' ? 'Složení letecké flotily' : 'Airline Fleet Composition'}
+                    </h3>
+                    <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-450'} mt-1`}>
+                      {lang === 'CZ' 
+                        ? 'Podrobný přehled aktivních typů letadel a jejich počtu ve službách společnosti.' 
+                        : 'Detailed overview of active aircraft types and their counts in company service.'}
+                    </p>
+                  </div>
+
+                  <div className={`px-4 py-2 border rounded-2xl font-mono flex items-center gap-2 ${
+                    isDark ? 'bg-indigo-500/5 border-indigo-500/25 text-indigo-400' : 'bg-indigo-50 border-indigo-200 text-indigo-750 font-extrabold'
+                  }`}>
+                    <Plane className="w-4 h-4 text-indigo-500 animate-pulse" />
+                    <span className="text-xs">
+                      {lang === 'CZ' ? 'Celkem v letce:' : 'Total Fleet:'} <strong className="text-sm font-black">{selectedAirline.fleet.reduce((sum, item) => sum + item.quantity, 0)}</strong>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Fleet Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedAirline.fleet.filter(item => item.quantity > 0).map((fleetItem) => {
+                    const catalogMatch = AIRCRAFT_DATA.find(a => a.id === fleetItem.aircraftId || a.id.toLowerCase().replace(/[^a-z0-9]/g, '') === fleetItem.aircraftId.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                    
+                    const fallbackName = fleetItem.aircraftId
+                      .split('-')
+                      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(' ');
+
+                    return (
+                      <div 
+                        key={fleetItem.aircraftId}
+                        className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
+                          isDark 
+                            ? 'bg-slate-950/35 border-white/5 hover:bg-slate-950/70 hover:border-indigo-500/30' 
+                            : 'bg-slate-50/50 border-slate-200 hover:bg-slate-100/50 hover:border-indigo-500/30 shadow-xs'
+                        }`}
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <div className="text-left">
+                            <span className={`text-[10px] font-mono uppercase tracking-widest block font-bold ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                              {catalogMatch ? catalogMatch.manufacturer : (fleetItem.aircraftId.startsWith('airbus') ? 'Airbus' : 'Boeing')}
+                            </span>
+                            <h4 className={`text-sm font-bold tracking-tight mt-0.5 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+                              {catalogMatch ? catalogMatch.name : fallbackName}
+                            </h4>
+                          </div>
+
+                          <div className={`px-3 py-1.5 rounded-xl font-mono flex flex-col items-center justify-center shrink-0 border ${
+                            isDark ? 'bg-slate-900 border-white/5 text-slate-200' : 'bg-white border-slate-250 text-slate-850 font-extrabold shadow-sm'
+                          }`}>
+                            <span className="text-[10px] uppercase font-bold text-slate-500 leading-none">{lang === 'CZ' ? 'Počet' : 'Count'}</span>
+                            <span className="text-lg font-black leading-none mt-1">{fleetItem.quantity}×</span>
+                          </div>
+                        </div>
+
+                        {catalogMatch ? (
+                          <div className="mt-4 pt-3 border-t border-dashed border-slate-800/10 flex items-center justify-between">
+                            <div className="flex gap-4 font-mono text-[10px] text-slate-500">
+                              <span>Max. {catalogMatch.specs.capacityMax} pax</span>
+                              <span>{catalogMatch.specs.rangeKm.toLocaleString(lang === 'CZ' ? 'cs-CZ' : 'en-GB')} km</span>
+                            </div>
+                            
+                            <button
+                              onClick={() => {
+                                setSelectedId(catalogMatch.id);
+                                setSelectedType('aircraft');
+                                setMobileView('detail');
+                              }}
+                              className="text-[10px] font-bold font-mono text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1 cursor-pointer"
+                            >
+                              <span>{lang === 'CZ' ? 'Zobrazit model' : 'View model'}</span>
+                              <ChevronRight className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="mt-4 pt-3 border-t border-dashed border-slate-800/10 flex items-center justify-between">
+                            <span className="text-[10px] font-mono text-slate-600 italic">
+                              {lang === 'CZ' ? 'Specifikace v jiné řadě' : 'Specs in another series'}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Help guidelines banner */}
+              <div className="bg-slate-900/20 rounded-2xl p-4 flex items-center gap-3 border border-white/5">
+                <Info className="w-5 h-5 text-slate-500 shrink-0" />
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {lang === 'CZ' 
+                    ? 'Informace o letkách, počtu letadel a historii leteckých společností Delta Air Lines a Lufthansa pochází z oficiálních výročních zpráv a letových statistik pro rok 2024/2025.'
+                    : 'Information regarding airline fleets, aircraft counts, and histories for Delta Air Lines and Lufthansa is compiled from official annual reports and flight logs for 2024/2025.'}
+                </p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={selectedAircraft.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="space-y-8"
+            >
             {/* Mobile back navigation bar */}
             <div className="md:hidden flex items-center justify-between mb-4 pb-3 border-b border-slate-800/40 gap-4">
               <button
@@ -2447,14 +3050,23 @@ export default function App() {
             </div>
 
             {/* Help guidelines banner */}
-            <div className="bg-slate-900/20 rounded-2xl p-4 flex items-center gap-3 border border-white/5">
-              <Info className="w-5 h-5 text-slate-500 shrink-0" />
-              <p className="text-xs text-slate-500 leading-relaxed">
-                {t.helpGuidelines}
-              </p>
+            <div className="bg-slate-900/20 rounded-2xl p-4 flex flex-col gap-2 border border-white/5">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
+                <div className="space-y-1.5">
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {t.helpGuidelines}
+                  </p>
+                  <p className="text-[11px] text-slate-400 leading-relaxed font-mono flex items-center gap-1.5">
+                    <span>⚠️</span>
+                    <span>{t.logoDisclaimer}</span>
+                  </p>
+                </div>
+              </div>
             </div>
 
           </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
@@ -2462,6 +3074,8 @@ export default function App() {
         isOpen={compareOpen} 
         onClose={() => setCompareOpen(false)} 
         initialAircraft={selectedAircraft}
+        initialAirline={selectedAirline}
+        initialMode={selectedType}
         lang={lang}
         theme={theme}
       />

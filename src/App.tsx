@@ -21,14 +21,18 @@ import {
   ArrowLeftRight,
   Eye,
   Sun,
-  Moon
+  Moon,
+  MapPin
 } from 'lucide-react';
 import { AIRCRAFT_DATA } from './data';
 import { AIRLINE_DATA } from './airline_data';
-import { Aircraft, AircraftCategory, Airline } from './types';
+import { AIRPORTS_DATA } from './data/airports';
+import { Aircraft, AircraftCategory, Airline, Airport } from './types';
 import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag, GermanyFlag, IEFlag, NLFlag, QAFlag, HUFlag, SGFlag, PTFlag, FIFlag, TRFlag, JPFlag, AEFlag, AUFlag, KRFlag, ESFlag, HKFlag, SmartwingsLogo, DeltaLogo, LufthansaLogo, RyanairLogo, BritishAirwaysLogo, KLMLogo, QatarLogo, WizzLogo, SingaporeLogo, TapLogo, AirCanadaLogo, FinnairLogo, UnitedLogo, AmericanLogo, TurkishLogo, ANALogo, EmiratesLogo, QantasLogo, KoreanLogo, VuelingLogo, CathayLogo } from './components/Flags';
 import AircraftComparison from './components/AircraftComparison';
 import AircraftVisualProfile from './components/AircraftVisualProfile';
+import AirportGlobe from './components/AirportGlobe';
+
 import { 
   TRANSLATIONS, 
   translateCategory, 
@@ -36,6 +40,13 @@ import {
   translateCountry, 
   translateText 
 } from './translations';
+
+const continentTranslations: Record<string, { CZ: string, EN: string }> = {
+  'Evropa': { CZ: 'Evropa', EN: 'Europe' },
+  'Amerika': { CZ: 'Amerika', EN: 'Americas' },
+  'Asie': { CZ: 'Asie', EN: 'Asia' },
+  'Austrálie a Oceánie': { CZ: 'Austrálie a Oceánie', EN: 'Australia and Oceania' }
+};
 
 export default function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -115,7 +126,7 @@ export default function App() {
   const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
   const [compareOpen, setCompareOpen] = useState<boolean>(false);
 
-  const [selectedType, setSelectedType] = useState<'aircraft' | 'airline'>('aircraft');
+  const [selectedType, setSelectedType] = useState<'aircraft' | 'airline' | 'airport'>('aircraft');
   const [selectedAirlineId, setSelectedAirlineId] = useState<string>(() => {
     try {
       const saved = localStorage.getItem('selected_airline_id');
@@ -126,12 +137,39 @@ export default function App() {
     }
   });
 
+  const [selectedAirportId, setSelectedAirportId] = useState<string>(() => {
+    try {
+      const saved = localStorage.getItem('selected_airport_id');
+      const exists = AIRPORTS_DATA.some(a => a.id === saved);
+      return exists && saved ? saved : AIRPORTS_DATA[0].id;
+    } catch {
+      return AIRPORTS_DATA[0].id;
+    }
+  });
+
   const selectedAirline = useMemo(() => {
     return AIRLINE_DATA.find(a => a.id === selectedAirlineId) || AIRLINE_DATA[0];
   }, [selectedAirlineId]);
 
+  const selectedAirport = useMemo(() => {
+    return AIRPORTS_DATA.find(a => a.id === selectedAirportId) || AIRPORTS_DATA[0];
+  }, [selectedAirportId]);
+
   const [dopravniLetadlaExpanded, setDopravniLetadlaExpanded] = useState<boolean>(true);
   const [leteckeSpolecnostiExpanded, setLeteckeSpolecnostiExpanded] = useState<boolean>(true);
+  const [letisteExpanded, setLetisteExpanded] = useState<boolean>(false);
+
+  const filteredAirports = useMemo(() => {
+    if (!searchQuery.trim()) return AIRPORTS_DATA;
+    const q = searchQuery.toLowerCase();
+    return AIRPORTS_DATA.filter(a => 
+      a.name.toLowerCase().includes(q) || 
+      a.code.toLowerCase().includes(q) || 
+      a.city.toLowerCase().includes(q) || 
+      a.country.toLowerCase().includes(q)
+    );
+  }, [searchQuery]);
+
   const [expandedContinents, setExpandedContinents] = useState<Record<string, boolean>>({
     'Evropa': true,
     'Amerika': false,
@@ -619,6 +657,9 @@ export default function App() {
       if (mcdonnellDouglasAircraft.length > 0) {
         setMcdonnellDouglasExpanded(true);
       }
+      if (filteredAirports.length > 0) {
+        setLetisteExpanded(true);
+      }
     } else {
       // Když se vyhledávání smaže, zavřou se všechny složky kromě té s právě vybraným letadlem
       setAirbusExpanded(false);
@@ -644,7 +685,12 @@ export default function App() {
       setEmbraerExpanded(false);
       setCessnaExpanded(false);
       setMcdonnellDouglasExpanded(false);
+      setLetisteExpanded(false);
     
+      if (selectedType === 'airport') {
+        setLetisteExpanded(true);
+      }
+
       if (selectedAircraft) {
         if (selectedAircraft.manufacturer.toLowerCase() === 'airbus') {
           setAirbusExpanded(true);
@@ -820,8 +866,12 @@ export default function App() {
       {/* LEFT SIDEBAR: Flight catalog navigation */}
       <aside 
         id="sidebar"
-        className={`w-full md:w-[380px] lg:w-[420px] backdrop-blur-md border-b md:border-b-0 md:border-r ${isDark ? 'bg-slate-900/40 border-slate-800/60' : 'bg-white/95 border-slate-200/80 shadow-sm'} flex flex-col shrink-0 h-screen sticky top-0 transition-colors duration-300 ${
-          mobileView === 'detail' ? 'hidden md:flex' : 'flex'
+        className={`w-full md:w-[380px] lg:w-[420px] backdrop-blur-md border-b md:border-b-0 md:border-r ${isDark ? 'bg-slate-900/40 border-slate-800/60' : 'bg-white/95 border-slate-200/80 shadow-sm'} flex flex-col shrink-0 h-screen sticky top-0 transition-all duration-300 ${
+          selectedType === 'airport'
+            ? 'hidden' // Completely hidden when airport (globe) is active to give it 100% full screen real estate!
+            : mobileView === 'detail' 
+              ? 'hidden md:flex' 
+              : 'flex'
         }`}
       >
         {/* Header Branding */}
@@ -2169,7 +2219,7 @@ export default function App() {
                                         <h5 className={`text-[11px] font-bold font-mono tracking-wide ${
                                           isDark ? 'text-slate-300' : 'text-slate-800'
                                         }`}>
-                                          {continent}
+                                          {lang === 'CZ' ? continent : (continentTranslations[continent]?.EN ?? continent)}
                                         </h5>
                                         <p className={`text-[9px] font-mono leading-none mt-0.5 ${
                                           isDark ? 'text-slate-500' : 'text-slate-450'
@@ -2296,6 +2346,55 @@ export default function App() {
                 )}
               </AnimatePresence>
             </div>
+
+            {/* BUTTON: INTERAKTIVNÍ GLÓBUS (LETIŠTĚ) */}
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  setSelectedType('airport');
+                  setMobileView('detail');
+                  // Initialize selected airport if none selected
+                  if (!selectedAirportId && filteredAirports.length > 0) {
+                    setSelectedAirportId(filteredAirports[0].id);
+                  }
+                }}
+                className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all cursor-pointer group border relative overflow-hidden ${
+                  selectedType === 'airport'
+                    ? 'bg-gradient-to-r from-teal-500/25 to-emerald-500/25 border-teal-500/50 shadow-lg shadow-teal-500/10'
+                    : isDark 
+                      ? 'bg-slate-900/40 hover:bg-slate-900/80 border-white/5' 
+                      : 'bg-white hover:bg-slate-50 border border-slate-200 shadow-sm'
+                }`}
+              >
+                <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-radial-gradient from-teal-400 to-transparent flex items-center justify-center">
+                  <Compass className="w-16 h-16 text-teal-400 animate-spin" style={{ animationDuration: '40s' }} />
+                </div>
+
+                <div className="flex items-center gap-3.5 z-10">
+                  <div className={`p-2 rounded-xl text-white shadow-md flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
+                    selectedType === 'airport'
+                      ? 'bg-gradient-to-tr from-teal-500 to-emerald-500 shadow-teal-500/20'
+                      : 'bg-gradient-to-tr from-teal-500/80 to-emerald-500/80'
+                  }`}>
+                    <Globe className="w-4 h-4 animate-pulse" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className={`text-sm font-extrabold tracking-tight flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                      {lang === 'CZ' ? '3D Glóbus letišť' : '3D Airports Globe'}
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-bold font-mono tracking-wider bg-teal-500/10 text-teal-400 uppercase animate-pulse border border-teal-500/20">
+                        Live
+                      </span>
+                    </h3>
+                    <p className={`text-[10px] font-mono mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {lang === 'CZ' ? 'Holografické zobrazení s hranicemi' : 'Interactive geospatial view'}
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform duration-300 group-hover:translate-x-0.5 ${
+                  selectedType === 'airport' ? 'text-teal-400 translate-x-1' : ''
+                }`} />
+              </button>
+            </div>
           </AnimatePresence>
         </div>
 
@@ -2314,7 +2413,11 @@ export default function App() {
       {/* RIGHT MAIN PANEL: Extensive aviation details */}
       <main 
         id="main-details"
-        className={`flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-y-auto max-w-7xl mx-auto w-full relative ${
+        className={`flex-1 overflow-y-auto relative ${
+          selectedType === 'airport'
+            ? 'w-full max-w-none p-0 h-screen flex flex-col' // truly edge-to-edge full screen
+            : 'p-4 sm:p-6 md:p-8 lg:p-10 max-w-7xl mx-auto w-full'
+        } ${
           mobileView === 'list' ? 'hidden md:block' : 'block'
         }`}
         style={{
@@ -2473,6 +2576,12 @@ export default function App() {
                           <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{translateCountry(selectedAirline.country, lang)}</span>
                         </div>
                         <div className="flex justify-between border-b pb-1.5 border-indigo-500/10">
+                          <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>{lang === 'CZ' ? 'Kontinent' : 'Continent'}</span>
+                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                            {lang === 'CZ' ? selectedAirline.continent : (continentTranslations[selectedAirline.continent]?.EN ?? selectedAirline.continent)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between border-b pb-1.5 border-indigo-500/10">
                           <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>{lang === 'CZ' ? 'Aliance' : 'Alliance'}</span>
                           <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedAirline.alliance}</span>
                         </div>
@@ -2590,6 +2699,32 @@ export default function App() {
                     : 'Information regarding airline fleets, aircraft counts, and histories for Delta Air Lines and Lufthansa is compiled from official annual reports and flight logs for 2024/2025.'}
                 </p>
               </div>
+            </motion.div>
+          ) : selectedType === 'airport' ? (
+            <motion.div
+              key={`airport-${selectedAirport.id}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="space-y-8 text-left"
+            >
+              {/* Render 3D AirportGlobe Component */}
+              <AirportGlobe 
+                selectedAirportId={selectedAirportId}
+                onSelectAirport={(id) => {
+                  setSelectedAirportId(id);
+                  try {
+                    localStorage.setItem('selected_airport_id', id);
+                  } catch (_) {}
+                }}
+                isDark={isDark}
+                lang={lang}
+                onBackToList={() => {
+                  setSelectedType('aircraft');
+                  setMobileView('list');
+                }}
+              />
             </motion.div>
           ) : (
             <motion.div

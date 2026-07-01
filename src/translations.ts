@@ -1,237 +1,608 @@
-// Application Translate Engine
-// Supports Czech (CZ) and English (EN)
-
-import { AIRCRAFT_DATA } from './data';
+// Automatically recovered, reconstructed and unified translations file
 import { AIRCRAFT_TRANSLATIONS_EN } from './aircraft_translations_data';
+import { AIRCRAFT_DATA } from './data';
 
-export interface UITranslationMap {
-  appName: string;
-  catalogSubtitle: string;
-  compareButton: string;
-  compareButtonMobile: string;
-  searchPlaceholder: string;
-  seenSectionTitle: string;
-  seenRatio: string;
-  removeFromSeen: string;
-  backToListMobile: string;
-  firstFlight: string;
-  countryOfOrigin: string;
-  enginesCount: string;
-  enginesLabel: string;
-  funFactHeader: string;
-  funFactFooter: string;
-  specsHeader: string;
-  specsSubheader: string;
-  metricLabel: string;
-  capacityCardTitle: string;
-  capacityCardSubtitle: string;
-  capacityCardMaxTypical: string;
-  capacityCardTypicalLabel: string;
-  rangeCardTitle: string;
-  rangeCardSubtitle: string;
-  rangeCardCompareScale: string;
-  speedCardTitle: string;
-  speedCardSubtitle: string;
-  speedCardMachLabel: string;
-  supersonicLabel: string;
-  dimensionsCardTitle: string;
-  dimensionsCardSub: string;
-  overallLength: string;
-  wingspan: string;
-  height: string;
-  fuselageWidth: string;
-  wingArea: string;
-  mtowCardTitle: string;
-  mtowCardSub: string;
-  mtowCardDesc: string;
-  enginesCardTitle: string;
-  enginesCardSub: string;
-  enginesCardListLabel: string;
-  comparisonHeader: string;
-  comparisonSubheader: string;
-  comparisonDesc: string;
-  comparisonEngineActive: string;
-  comparisonAverage: string;
-  comparisonPassengerPrefix: string;
-  helpGuidelines: string;
-  comparisonTitle: string;
-  comparisonSubtitle: string;
-  slot1Placeholder: string;
-  slot2Placeholder: string;
-  searchDropdownPlaceholder: string;
-  noResults: string;
-  changeBtn: string;
-  deleteBtn: string;
-  orSelectText: string;
-  diffMore: string;
-  diffLess: string;
-  diffSame: string;
-  notSelected: string;
-  closeBtn: string;
-  emptyList: string;
-  changeLanguage: string;
-  czLang: string;
-  enLang: string;
-  changeTheme: string;
-  themeLight: string;
-  themeDark: string;
-  logoDisclaimer: string;
-}
-
-export const TRANSLATIONS: Record<'CZ' | 'EN', UITranslationMap> = {
+// --- MAIN UI TRANSLATIONS ---
+export const TRANSLATIONS: Record<'CZ' | 'EN', Record<string, string>> = {
   CZ: {
-    appName: 'AirCatalog',
-    catalogSubtitle: 'KATALOG {count} DOPRAVNÍCH LETADEL',
-    compareButton: 'Porovnat letadla',
-    compareButtonMobile: 'Porovnat',
-    searchPlaceholder: 'Hledat letadlo (např. Boeing 737)...',
-    seenSectionTitle: 'Viděno naživo',
-    seenRatio: '{seen} z {total} ({percent}%)',
-    removeFromSeen: 'Odebrat ze seznamu',
-    backToListMobile: 'ZPĚT NA SEZNAM',
-    firstFlight: 'První let: {year}',
-    countryOfOrigin: 'Země původu: {country}',
-    enginesCount: '{count}× motor',
-    enginesLabel: 'motor',
-    funFactHeader: 'ZAJÍMAVOST LETU',
-    funFactFooter: 'Fascinující detail konstrukce',
-    specsHeader: 'Technické specifikace & výkonnostní data',
-    specsSubheader: 'METRICKÉ HODNOTY SI',
-    metricLabel: 'METRICKÉ HODNOTY SI',
-    capacityCardTitle: 'Kapacita sedadel',
-    capacityCardSubtitle: 'Maximální / Typická',
-    capacityCardMaxTypical: 'pasažérů',
-    capacityCardTypicalLabel: 'Typické uspořádání:',
-    rangeCardTitle: 'Maximální dolet',
-    rangeCardSubtitle: 'Maximální dolet',
-    rangeCardCompareScale: 'Procentuální srovnání',
-    speedCardTitle: 'Cestovní rychlost',
-    speedCardSubtitle: 'Průměrná rychlost letadla',
-    speedCardMachLabel: 'Mach: {mach} Ma',
-    supersonicLabel: '(Nadzvuková)',
-    dimensionsCardTitle: 'Konstrukční rozměry',
-    dimensionsCardSub: 'Geometrie & křídla',
-    overallLength: 'Celková délka letadla:',
-    wingspan: 'Rozpětí křídel:',
-    height: 'Výška:',
-    fuselageWidth: 'Šířka trupu:',
-    wingArea: 'Plocha křídel:',
-    mtowCardTitle: 'Vzletová hmotnost (MTOW)',
-    mtowCardSub: 'Maximální vzletová váha',
-    mtowCardDesc: 'Celková váha letadla včetně pasažérů, nákladu a veškerého paliva k odletu.',
-    enginesCardTitle: 'Pohonná jednotka',
-    enginesCardSub: 'Typ motoru',
-    enginesCardListLabel: 'Motory:',
-    comparisonHeader: 'Porovnání s průměrem letky',
-    comparisonSubheader: 'Srovnání technických parametrů s průměrem letky',
-    comparisonDesc: 'Statistiky porovnávají hodnoty {name} se středními hodnotami (aritmetickým průměrem) všech civilních modelů v katalogu.',
-    comparisonEngineActive: 'Srovnávací Engine aktivní',
-    comparisonAverage: 'Průměr: {val}',
-    comparisonPassengerPrefix: 'pasažérů',
-    helpGuidelines: 'Tento přehled slouží jako vzdělávací encyklopedie dopravního letectva. Informace a rozměry letadel vychází z technických příruček výrobců Airbus, Boeing, Embraer, Bombardier a archivních materiálů.',
-    comparisonTitle: 'Srovnávač Letadel',
-    comparisonSubtitle: 'Porovnejte technické parametry dvou vybraných letadel.',
-    slot1Placeholder: 'Vyberte 1. letadlo',
-    slot2Placeholder: 'Vyberte 2. letadlo k porovnání',
-    searchDropdownPlaceholder: 'Hledat podle názvu nebo značky...',
-    noResults: 'Žádná letadla nebyla nalezena.',
-    changeBtn: 'Změnit',
-    deleteBtn: 'Smazat',
-    orSelectText: 'nebo vyberte ze seznamu níže',
-    diffMore: 'O {p} % víc',
-    diffLess: 'O {p} % méně',
-    diffSame: 'Stejné',
-    notSelected: 'Není vybráno',
-    closeBtn: 'Zavřít',
-    emptyList: 'Seznam je prázdný',
-    changeLanguage: 'Změnit jazyk',
-    czLang: 'Čeština',
-    enLang: 'English (EN)',
-    changeTheme: 'Motiv',
-    themeLight: 'Světlý',
-    themeDark: 'Tmavý',
-    logoDisclaimer: 'Loga společností jsou pouze přibližné z důvodu autorských práv.',
+    'appName': 'AirCatalog',
+    'catalogSubtitle': 'KATALOG {count} DOPRAVNÍCH LETADEL',
+    'compareButton': 'Porovnat letadla',
+    'compareButtonMobile': 'Porovnat',
+    'searchPlaceholder': 'Hledat letadlo (např. Boeing 737)...',
+    'seenSectionTitle': 'Viděno naživo',
+    'seenRatio': '{seen} z {total} ({percent}%)',
+    'removeFromSeen': 'Odebrat ze seznamu',
+    'backToListMobile': 'ZPĚT NA SEZNAM',
+    'firstFlight': 'První let: {year}',
+    'countryOfOrigin': 'Země původu: {country}',
+    'enginesCount': '{count}× motor',
+    'enginesLabel': 'motor',
+    'funFactHeader': 'ZAJÍMAVOST LETU',
+    'funFactFooter': 'Fascinující detail konstrukce',
+    'specsHeader': 'Technické specifikace & výkonnostní data',
+    'specsSubheader': 'METRICKÉ HODNOTY SI',
+    'metricLabel': 'METRICKÉ HODNOTY SI',
+    'capacityCardTitle': 'Kapacita sedadel',
+    'capacityCardSubtitle': 'Maximální / Typická',
+    'capacityCardMaxTypical': 'pasažérů',
+    'capacityCardTypicalLabel': 'Typické uspořádání:',
+    'rangeCardTitle': 'Maximální dolet',
+    'rangeCardSubtitle': 'Maximální dolet',
+    'rangeCardCompareScale': 'Procentuální srovnání',
+    'speedCardTitle': 'Cestovní rychlost',
+    'speedCardSubtitle': 'Průměrná rychlost letadla',
+    'speedCardMachLabel': 'Mach: {mach} Ma',
+    'supersonicLabel': '(Nadzvuková)',
+    'dimensionsCardTitle': 'Konstrukční rozměry',
+    'dimensionsCardSub': 'Geometrie & křídla',
+    'overallLength': 'Celková délka letadla:',
+    'wingspan': 'Rozpětí křídel:',
+    'height': 'Výška:',
+    'fuselageWidth': 'Šířka trupu:',
+    'wingArea': 'Plocha křídel:',
+    'mtowCardTitle': 'Vzletová hmotnost (MTOW)',
+    'mtowCardSub': 'Maximální vzletová váha',
+    'mtowCardDesc': 'Celková váha letadla včetně pasažérů, nákladu a veškerého paliva k odletu.',
+    'enginesCardTitle': 'Pohonná jednotka',
+    'enginesCardSub': 'Typ motoru',
+    'enginesCardListLabel': 'Motory:',
+    'comparisonHeader': 'Porovnání s průměrem letky',
+    'comparisonSubheader': 'Srovnání technických parametrů s průměrem letky',
+    'comparisonDesc': 'Statistiky porovnávají hodnoty {name} se středními hodnotami (aritmetickým průměrem) všech civilních modelů v katalogu.',
+    'comparisonEngineActive': 'Srovnávací Engine aktivní',
+    'comparisonAverage': 'Průměr: {val}',
+    'comparisonPassengerPrefix': 'pasažérů',
+    'helpGuidelines': 'Tento přehled slouží jako vzdělávací encyklopedie dopravního letectva. Informace a rozměry letadel vychází z technických příruček výrobců Airbus, Boeing, Embraer, Bombardier a archivních materiálů.',
+    'comparisonTitle': 'Srovnávač Letadel',
+    'comparisonSubtitle': 'Porovnejte technické parametry dvou vybraných letadel.',
+    'slot1Placeholder': 'Vyberte 1. letadlo',
+    'slot2Placeholder': 'Vyberte 2. letadlo k porovnání',
+    'searchDropdownPlaceholder': 'Hledat podle názvu nebo značky...',
+    'noResults': 'Žádná letadla nebyla nalezena.',
+    'changeBtn': 'Změnit',
+    'deleteBtn': 'Smazat',
+    'orSelectText': 'nebo vyberte ze seznamu níže',
+    'diffMore': 'O {p} % víc',
+    'diffLess': 'O {p} % méně',
+    'diffSame': 'Stejné',
+    'notSelected': 'Není vybráno',
+    'closeBtn': 'Zavřít',
+    'emptyList': 'Seznam je prázdný',
+    'changeLanguage': 'Změnit jazyk',
+    'czLang': 'Čeština',
+    'enLang': 'English (EN)',
+    'changeTheme': 'Motiv',
+    'themeLight': 'Světlý',
+    'themeDark': 'Tmavý',
+    'logoDisclaimer': 'Loga společností jsou pouze přibližné z důvodu autorských práv.',
   },
   EN: {
-    appName: 'AirCatalog',
-    catalogSubtitle: 'CATALOG OF {count} COMMERCIAL AIRCRAFT',
-    compareButton: 'Compare aircraft',
-    compareButtonMobile: 'Compare',
-    searchPlaceholder: 'Search aircraft (e.g. Boeing 737)...',
-    seenSectionTitle: 'Spotted in real life',
-    seenRatio: '{seen} of {total} ({percent}%)',
-    removeFromSeen: 'Remove from list',
-    backToListMobile: 'BACK TO LIST',
-    firstFlight: 'First flight: {year}',
-    countryOfOrigin: 'Country of origin: {country}',
-    enginesCount: '{count}× engines',
-    enginesLabel: 'engine',
-    funFactHeader: 'AIRCRAFT FUN FACT',
-    funFactFooter: 'Fascinating structural detail',
-    specsHeader: 'Technical specs & performance data',
-    specsSubheader: 'METRIC SI VALUES',
-    metricLabel: 'METRIC SI VALUES',
-    capacityCardTitle: 'Seating capacity',
-    capacityCardSubtitle: 'Maximum / Typical',
-    capacityCardMaxTypical: 'passengers',
-    capacityCardTypicalLabel: 'Typical configuration:',
-    rangeCardTitle: 'Maximum range',
-    rangeCardSubtitle: 'Maximum range',
-    rangeCardCompareScale: 'Percentage relative comparison',
-    speedCardTitle: 'Cruising speed',
-    speedCardSubtitle: 'Average aircraft speed',
-    speedCardMachLabel: 'Mach: {mach} Ma',
-    supersonicLabel: '(Supersonic)',
-    dimensionsCardTitle: 'Structural dimensions',
-    dimensionsCardSub: 'Geometry & wings',
-    overallLength: 'Overall aircraft length:',
-    wingspan: 'Wingspan:',
-    height: 'Height:',
-    fuselageWidth: 'Fuselage width:',
-    wingArea: 'Wing area:',
-    mtowCardTitle: 'Takeoff weight (MTOW)',
-    mtowCardSub: 'Maximum takeoff weight',
-    mtowCardDesc: 'Total weight of the aircraft including passengers, cargo, and all fuel at takeoff.',
-    enginesCardTitle: 'Powerplant',
-    enginesCardSub: 'Engine type',
-    enginesCardListLabel: 'Engines:',
-    comparisonHeader: 'Comparison with fleet average',
-    comparisonSubheader: 'Aircraft technical metrics compared to average',
-    comparisonDesc: 'Statistics compare the metrics of {name} with the average (arithmetic mean) of all commercial aircraft in this database.',
-    comparisonEngineActive: 'Comparator Engine active',
-    comparisonAverage: 'Average: {val}',
-    comparisonPassengerPrefix: 'passengers',
-    helpGuidelines: 'This catalog serves as an educational encyclopedia of passenger aviation. Aircraft details and measurements are retrieved from official manufacturer technical guides by Airbus, Boeing, Embraer, Bombardier, and historical databases.',
-    comparisonTitle: 'Aircraft Comparator',
-    comparisonSubtitle: 'Compare technical metrics of two selected aircraft side-by-side.',
-    slot1Placeholder: 'Select 1st aircraft',
-    slot2Placeholder: 'Select 2nd aircraft to compare',
-    searchDropdownPlaceholder: 'Search by model name or brand...',
-    noResults: 'No matches found.',
-    changeBtn: 'Change',
-    deleteBtn: 'Delete',
-    orSelectText: 'or select from the list below',
-    diffMore: '{p}% more',
-    diffLess: '{p}% less',
-    diffSame: 'Same',
-    notSelected: 'Not selected',
-    closeBtn: 'Close',
-    emptyList: 'List is empty',
-    changeLanguage: 'Language',
-    czLang: 'Czech',
-    enLang: 'English (EN)',
-    changeTheme: 'Theme',
-    themeLight: 'Light',
-    themeDark: 'Dark',
-    logoDisclaimer: 'Company logos are only approximate due to copyright reasons.',
+    'appName': 'AirCatalog',
+    'catalogSubtitle': 'CATALOG OF {count} COMMERCIAL AIRCRAFT',
+    'compareButton': 'Compare aircraft',
+    'compareButtonMobile': 'Compare',
+    'searchPlaceholder': 'Search aircraft (e.g. Boeing 737)...',
+    'seenSectionTitle': 'Spotted in real life',
+    'seenRatio': '{seen} of {total} ({percent}%)',
+    'removeFromSeen': 'Remove from list',
+    'backToListMobile': 'BACK TO LIST',
+    'firstFlight': 'First flight: {year}',
+    'countryOfOrigin': 'Country of origin: {country}',
+    'enginesCount': '{count}× engines',
+    'enginesLabel': 'engine',
+    'funFactHeader': 'AIRCRAFT FUN FACT',
+    'funFactFooter': 'Fascinating structural detail',
+    'specsHeader': 'Technical specs & performance data',
+    'specsSubheader': 'METRIC SI VALUES',
+    'metricLabel': 'METRIC SI VALUES',
+    'capacityCardTitle': 'Seating capacity',
+    'capacityCardSubtitle': 'Maximum / Typical',
+    'capacityCardMaxTypical': 'passengers',
+    'capacityCardTypicalLabel': 'Typical configuration:',
+    'rangeCardTitle': 'Maximum range',
+    'rangeCardSubtitle': 'Maximum range',
+    'rangeCardCompareScale': 'Percentage relative comparison',
+    'speedCardTitle': 'Cruising speed',
+    'speedCardSubtitle': 'Average aircraft speed',
+    'speedCardMachLabel': 'Mach: {mach} Ma',
+    'supersonicLabel': '(Supersonic)',
+    'dimensionsCardTitle': 'Structural dimensions',
+    'dimensionsCardSub': 'Geometry & wings',
+    'overallLength': 'Overall aircraft length:',
+    'wingspan': 'Wingspan:',
+    'height': 'Height:',
+    'fuselageWidth': 'Fuselage width:',
+    'wingArea': 'Wing area:',
+    'mtowCardTitle': 'Takeoff weight (MTOW)',
+    'mtowCardSub': 'Maximum takeoff weight',
+    'mtowCardDesc': 'Total weight of the aircraft including passengers, cargo, and all fuel at takeoff.',
+    'enginesCardTitle': 'Powerplant',
+    'enginesCardSub': 'Engine type',
+    'enginesCardListLabel': 'Engines:',
+    'comparisonHeader': 'Comparison with fleet average',
+    'comparisonSubheader': 'Aircraft technical metrics compared to average',
+    'comparisonDesc': 'Statistics compare the metrics of {name} with the average (arithmetic mean) of all commercial aircraft in this database.',
+    'comparisonEngineActive': 'Comparator Engine active',
+    'comparisonAverage': 'Average: {val}',
+    'comparisonPassengerPrefix': 'passengers',
+    'helpGuidelines': 'This catalog serves as an educational encyclopedia of passenger aviation. Aircraft details and measurements are retrieved from official manufacturer technical guides by Airbus, Boeing, Embraer, Bombardier, and historical databases.',
+    'comparisonTitle': 'Aircraft Comparator',
+    'comparisonSubtitle': 'Compare technical metrics of two selected aircraft side-by-side.',
+    'slot1Placeholder': 'Select 1st aircraft',
+    'slot2Placeholder': 'Select 2nd aircraft to compare',
+    'searchDropdownPlaceholder': 'Search by model name or brand...',
+    'noResults': 'No matches found.',
+    'changeBtn': 'Change',
+    'deleteBtn': 'Delete',
+    'orSelectText': 'or select from the list below',
+    'diffMore': '{p}% more',
+    'diffLess': '{p}% less',
+    'diffSame': 'Same',
+    'notSelected': 'Not selected',
+    'closeBtn': 'Close',
+    'emptyList': 'List is empty',
+    'changeLanguage': 'Language',
+    'czLang': 'Czech',
+    'enLang': 'English (EN)',
+    'changeTheme': 'Theme',
+    'themeLight': 'Light',
+    'themeDark': 'Dark',
+    'logoDisclaimer': 'Company logos are only approximate due to copyright reasons.',
   }
 };
 
-// Translates dynamic categories directly
+// --- AIRPORT DATA TRANSLATIONS ---
+export const airportTranslations: Record<string, string> = {
+  'Belgie': 'Belgium',
+  'Maďarsko': 'Hungary',
+  'Rumunsko': 'Romania',
+  'Bulharsko': 'Bulgaria',
+  'Srbsko': 'Serbia',
+  'Chorvatsko': 'Croatia',
+  'Slovinsko': 'Slovenia',
+  'Albánie': 'Albania',
+  'Severní Makedonie': 'North Macedonia',
+  'Černá Hora': 'Montenegro',
+  'Bosna a Hercegovina': 'Bosnia and Herzegovina',
+  'Lucembursko': 'Luxembourg',
+  'Švýcarsko/Francie': 'Switzerland/France',
+  'Švédsko': 'Sweden',
+  'Nizozemsko': 'Netherlands',
+  'Kosovo': 'Kosovo',
+  'Island': 'Iceland',
+  'Faerské ostrovy': 'Faroe Islands',
+  'Saúdská Arábie': 'Saudi Arabia',
+  'Omán': 'Oman',
+  'Kuvajt': 'Kuwait',
+  'Bahrajn': 'Bahrain',
+  'Spojené arabské emiráty': 'United Arab Emirates',
+  'Izrael': 'Israel',
+  'Jordánsko': 'Jordan',
+  'Libanon': 'Lebanon',
+  'Irák': 'Iraq',
+  'Írán': 'Iran',
+  'Kypr': 'Cyprus',
+  'Severní Kypr': 'Northern Cyprus',
+  'Guam': 'Guam',
+  'Severní Mariany': 'Northern Mariana Islands',
+  'Portoriko': 'Puerto Rico',
+  'Americké Panenské ostrovy': 'U.S. Virgin Islands',
+  'Americká Samoa': 'American Samoa',
+  'Menší odlehlé ostrovy USA': 'U.S. Minor Outlying Islands',
+  'Marshallovy ostrovy': 'Marshall Islands',
+  'Palau': 'Palau',
+  'Mikronésie': 'Micronesia',
+  'Kanada': 'Canada',
+  'Mexiko': 'Mexico',
+  'Guatemala': 'Guatemala',
+  'El Salvador': 'El Salvador',
+  'Honduras': 'Honduras',
+  'Nikaragua': 'Nicaragua',
+  'Kostarika': 'Costa Rica',
+  'Panama': 'Panama',
+  'Bahamy': 'Bahamas',
+  'Kuba': 'Cuba',
+  'Jamajka': 'Jamaica',
+  'Dominikánská republika': 'Dominican Republic',
+  'Haiti': 'Haiti',
+  'Kajmanské ostrovy': 'Cayman Islands',
+  'Turks a Caicos': 'Turks and Caicos Islands',
+  'Svatý Martin': 'Sint Maarten',
+  'Svatý Bartoloměj': 'Saint Barthélemy',
+  'Anguilla': 'Anguilla',
+  'Antigua a Barbuda': 'Antigua and Barbuda',
+  'Svatý Kryštof a Nevis': 'Saint Kitts and Nevis',
+  'Montserrat': 'Montserrat',
+  'Guadeloupe': 'Guadeloupe',
+  'Dominika': 'Dominica',
+  'Martinik': 'Martinique',
+  'Svatá Lucie': 'Saint Lucia',
+  'Svatý Vincenc a Grenadiny': 'Saint Vincent and the Grenadines',
+  'Grenada': 'Grenada',
+  'Barbados': 'Barbados',
+  'Trinidad a Tobago': 'Trinidad and Tobago',
+  'Curaçao': 'Curaçao',
+  'Aruba': 'Aruba',
+  'Karibské Nizozemsko': 'Caribbean Netherlands',
+  'Kolumbie': 'Colombia',
+  'Venezuela': 'Venezuela',
+  'Guyana': 'Guyana',
+  'Surinam': 'Suriname',
+  'Francouzská Guyana': 'French Guiana',
+  'Ekvádor': 'Ecuador',
+  'Peru': 'Peru',
+  'Bolívie': 'Bolivia',
+  'Paraguay': 'Paraguay',
+  'Uruguay': 'Uruguay',
+  'Argentina': 'Argentina',
+  'Brazílie': 'Brazil',
+  'Chile': 'Chile',
+  'Austrálie': 'Australia',
+  'Vnější území Austrálie': 'External Territories of Australia',
+  'Nový Zéland': 'New Zealand',
+  'Papua Nová Guinea': 'Papua New Guinea',
+  'Fidži': 'Fiji',
+  'Nová Kaledonie': 'New Caledonia',
+  'Vanuatu': 'Vanuatu',
+  'Šalamounovy ostrovy': 'Solomon Islands',
+  'Kiribati': 'Kiribati',
+  'Tuvalu': 'Tuvalu',
+  'Tonga': 'Tonga',
+  'Samoa': 'Samoa',
+  'Cookovy ostrovy': 'Cook Islands',
+  'Niue': 'Niue',
+  'Francouzská Polynésie': 'French Polynesia',
+  'Wallis a Futuna': 'Wallis and Futuna',
+  'Nauru': 'Nauru',
+  'Japonsko': 'Japan',
+  'Jižní Korea': 'South Korea',
+  'Mnichov': 'Munich',
+  'Brusel': 'Brussels',
+  'Ženeva': 'Geneva',
+  'Budapešť': 'Budapest',
+  'Bukurešť': 'Bucharest',
+  'Sofie': 'Sofia',
+  'Bělehrad': 'Belgrade',
+  'Záhřeb': 'Zagreb',
+  'Lublaň': 'Ljubljana',
+  'Tirana': 'Tirana',
+  'Skopje': 'Skopje',
+  'Krakov': 'Krakow',
+  'Katovice': 'Katowice',
+  'Gdaňsk': 'Gdansk',
+  'Vratislav': 'Wroclaw',
+  'Poznaň': 'Poznan',
+  'Košice': 'Kosice',
+  'Salcburk': 'Salzburg',
+  'Linec': 'Linz',
+  'Štýrský Hradec': 'Graz',
+  'Hamburk': 'Hamburg',
+  'Berlín Braniborsko': 'Berlin Brandenburg',
+  'Berlín': 'Berlin',
+  'Lipsko': 'Leipzig',
+  'Drážďany': 'Dresden',
+  'Norimberk': 'Nuremberg',
+  'Brémy': 'Bremen',
+  'Nice': 'Nice',
+  'Štrasburk': 'Strasbourg',
+  'Basilej': 'Basel',
+  'Lutyš': 'Liege',
+  'Ostende': 'Ostend',
+  'Brugy': 'Bruges',
+  'Rijád': 'Riyadh',
+  'Džidda': 'Jeddah',
+  'Dammám': 'Dammam',
+  'Medína': 'Medina',
+  'Manáma': 'Manama',
+  'Šardžá': 'Sharjah',
+  'Rás al-Chajma': 'Ras Al Khaimah',
+  'Al-Ajn': 'Al Ain',
+  'Bejrút': 'Beirut',
+  'Erbíl': 'Erbil',
+  'Bagdád': 'Baghdad',
+  'Teherán': 'Tehran',
+  'Mašhad': 'Mashhad',
+  'Šíráz': 'Shiraz',
+  'Isfahán': 'Isfahan',
+  'Tabríz': 'Tabriz',
+  'Larnaka': 'Larnaca',
+  'Pafos': 'Paphos',
+  'Nikósie': 'Nicosia',
+  'Peking': 'Beijing',
+  'Káhira': 'Cairo',
+  'Kapské Město': 'Cape Town',
+  'Ósaka': 'Osaka',
+  'Tokio': 'Tokyo',
+  'Soul': 'Seoul',
+  'Letiště Václava Havla Praha': 'Prague Václav Havel Airport',
+  'Praha': 'Prague',
+  'Česká republika': 'Czech Republic',
+  'Největší mezinárodní letiště v České republice, dříve známé jako Letiště Praha-Ruzyně. Slouží jako hlavní základna pro letecké společnosti Smartwings a Czech Airlines. Nachází se na severozápadním okraji Prahy.': 'The largest international airport in the Czech Republic, formerly known as Prague-Ruzyně Airport. It serves as the main base for Smartwings and Czech Airlines, and is located on the northwestern edge of Prague.',
+  'Původní terminál 4 byl postaven v roce 1937 v unikátním stylu české meziválečné avantgardy a získal zlatou medaili na Mezinárodní výstavě umění a techniky v Paříži.': 'The original Terminal 4 was built in 1937 in a unique Czech interwar avant-garde style and won a gold medal at the International Exhibition of Art and Technology in Paris.',
+  'Letiště Londýn Heathrow': 'London Heathrow Airport',
+  'Londýn': 'London',
+  'Velká Británie': 'United Kingdom',
+  'Nejrušnější letiště v Evropě a jedno z nejvýznamnějších globálních center. Slouží jako hlavní uzel pro národního dopravce British Airways a aerolinky Virgin Atlantic.': 'The busiest airport in Europe and one of the most prominent global aviation hubs. It serves as the main hub for the national carrier British Airways and Virgin Atlantic.',
+  'Patří k nejvíce vytíženým letištím se dvěma dráhami na světě. Dráhy jsou využívány v režimu střídání, aby se ulevilo obyvatom pod příletovými koridory od hluku.': 'It ranks among the busiest two-runway airports in the world. The runways are used in an alternating pattern to provide noise relief for residents living under the flight paths.',
+  'Patří k nejvíce vytíženým letištím se dvěma dráhami na světě. Dráhy jsou využívány v režimu střídání, aby se ulevilo obyvatelům pod příletovými koridory od hluku.': 'It ranks among the busiest two-runway airports in the world. The runways are used in an alternating pattern to provide noise relief for residents living under the flight paths.',
+  'Letiště Frankfurt nad Mohanem': 'Frankfurt Airport',
+  'Frankfurt': 'Frankfurt',
+  'Německo': 'Germany',
+  'Hlavní německé letiště a největší uzel společnosti Lufthansa. Je jedním z nejdůležitějších přestupních bodů a nákladních letišť v celé Evropě.': 'The primary German airport and Lufthansa\'s main hub. It is one of the most important passenger transfer points and cargo airports in Europe.',
+  'Vybaveno pokročilým podzemním automatizovaným systémem pro přepravu zavazadel o délce přes 80 km, který odbaví tisíce kufrů za hodinu.': 'It features an advanced underground automated baggage conveyor system spanning over 80 km, handling thousands of suitcases per hour.',
+  'Letiště Charlese de Gaulla Paříž': 'Paris Charles de Gaulle Airport',
+  'Paříž': 'Paris',
+  'Francie': 'France',
+  'Největší francouzské letiště pojmenované po generálovi a prezidentovi Charlesi de Gaullovi. Slouží jako hlavní uzel pro Air France a alianci SkyTeam v Evropě.': 'The largest French airport, named after general and president Charles de Gaulle. It serves as the main hub for Air France and the SkyTeam alliance in Europe.',
+  'Kruhový Terminál 1 má futuristický design s prosklenými tubusy a eskalátory křižujícími středovou halu, což se stalo ikonickým prvkem řady sci-fi filmů.': 'The circular Terminal 1 features a futuristic design with glass tubes and escalators crisscrossing the central atrium, which has become an iconic element in several sci-fi films.',
+  'Letiště Amsterdam Schiphol': 'Amsterdam Airport Schiphol',
+  'Amsterdam': 'Amsterdam',
+  'Důležitý evropský uzel s unikátním konceptem jednoho obřího terminálu rozděleného na mola. Je hlavní bází pro národního dopravce KLM.': 'A major European hub with a unique single-terminal concept divided into piers. It is the primary base for the national carrier KLM.',
+  'Nachází se na dně bývalého jezera Haarlemmerbmeer, což znamená, že celá plocha leží přibližně 3 metry pod hladinou moře.': 'It is built on the floor of the former Haarlemmerbmeer lake, which means the entire airport lies approximately 3 meters below sea level.',
+  'Letiště Johna F. Kennedyho New York': 'John F. Kennedy International Airport',
+  'New York': 'New York',
+  'USA': 'United States',
+  'Hlavní mezinárodní brána do Spojených států a nejrušnější letiště v metropolitní oblasti New Yorku. Slouží jako klíčový uzel pro Delta Air Lines, American Airlines a JetBlue.': 'The primary international gateway to the United States and the busiest airport in the New York metropolitan area. It serves as a key hub for Delta Air Lines, American Airlines, and JetBlue.',
+  'Historický terminál TWA Flight Center, navržený Eero Saarinem v roce 1962, je mistrovským dílem organické architektury a dnes slouží jako luxusní hotel.': 'The historic TWA Flight Center terminal, designed by Eero Saarinen in 1962, is a masterpiece of organic architecture and now serves as a luxury hotel.',
+  'Mezinárodní letiště Los Angeles': 'Los Angeles International Airport',
+  'Los Angeles': 'Los Angeles',
+  'Obří letiště na západním pobřeží USA, které slouží jako brána do Pacifiku a Asie. Je to jeden z největších leteckých uzlů na světě a oblíbené místo pro spottery.': 'A massive airport on the US West Coast serving as a gateway to the Pacific and Asia. It is one of the world\'s largest aviation hubs and a legendary spot for plane spotting.',
+  'Jeho dominantou je futuristická budova Theme Building z roku 1961, která připomíná létající talíř přistávající na čtyřech obloukových nohách.': 'Its landmark is the futuristic Theme Building from 1961, which resembles a flying saucer landing on four arched legs.',
+  'Letiště Singapur Changi': 'Singapore Changi Airport',
+  'Singapur': 'Singapore',
+  'Pravidelně vyhodnocováno jako nejlepší letiště světa. Changi nabízí tranzitním cestujícím střešní bazény, kina, motýlí zahrady a skluzavky.': 'Consistently voted the world\'s best airport. Changi offers transit passengers rooftop pools, movie theaters, butterfly gardens, and multi-story slides.',
+  'Uvnitř komplexu „Jewel“ se nachází Rain Vortex, nejvyšší krytý vodopád na světě vysoký 40 metrů, obklopený pětipatrovým krytým deštným pralesem.': 'Inside the \'Jewel\' complex lies the Rain Vortex, the world\'s tallest indoor waterfall at 40 meters, surrounded by a five-story indoor rainforest.',
+  'Mezinárodní letiště Tokio Haneda': 'Tokyo Haneda Airport',
+  'Jedno ze dvou velkých tokijských letišť, nacházející se blíže centru města. Slouží jako hlavní základna pro All Nippon Airways (ANA) a Japan Airlines.': 'One of the two primary airports serving Tokyo, located closer to the city center. It serves as the main hub for All Nippon Airways (ANA) and Japan Airlines.',
+  'Oceňováno pro naprostou čistotu a perfektní dochvilnost. Většina drah je vybudována na uměle navezených ostrovech v Tokijské zátoce.': 'Highly praised for its immaculate cleanliness and perfect punctuality. Most of its runways are constructed on reclaimed land in Tokyo Bay.',
+  'Mezinárodní letiště Dubaj': 'Dubai International Airport',
+  'Dubaj': 'Dubai',
+  'Největší mezinárodní uzel na Blízkém východě, který spojuje Evropu, Afriku, Asii a Austrálii. Je to domovská základna a pýcha aerolinií Emirates.': 'The largest international hub in the Middle East, connecting Europe, Africa, Asia, and Australia. It is the main home base and pride of Emirates.',
+  'Terminál 3 je největším letištním terminálem na světě a byl speciálně navržen pro exkluzivní a plynulé odbavování obřích letadel Airbus A380.': 'Terminal 3 is the largest airport terminal in the world and was specifically designed for the exclusive and smooth handling of the giant Airbus A380.',
+  'Letiště Sydney Kingsforda Smitha': 'Sydney Kingsford Smith Airport',
+  'Sydney': 'Sydney',
+  'Klíčové mezinárodní a vnitrostátní letiště v Austrálii. Slouží jako hlavní základna pro společnost Qantas a nabízí úžasné příletové výhledy na Sydney Opera House.': 'The primary international and domestic airport in Australia. It serves as the main hub for Qantas and offers stunning arrival views of the Sydney Opera House.',
+  'Jedno z nejstarších nepřetržitě fungujících komerčních letišť na světě. Hlavní vzletová a přistávací dráha je částečně postavena na umělém náspu v Botany Bay.': 'One of the oldest continuously operating commercial airports in the world. Its main runway is partially built on reclaimed land in Botany Bay.',
+  'Mezinárodní letiště Soul Inčchon': 'Incheon International Airport',
+  'Největší letiště v Jižní Koreji vybudované na uměle spojených ostrovech. Je to jeden z nejrychlejších leteckých uzlů pro odbavení zavazadel a pasovou kontrolu.': 'The largest airport in South Korea, built on reclaimed land between islands. It is one of the fastest hubs in the world for baggage processing and passport control.',
+  'Disponuje vlastním golfovým hřištěm, lázněmi, kluzištěm, vnitřními zahradami a tradičním muzeem korejské kultury přímo v terminálu.': 'It features its own golf course, spa, ice skating rink, indoor gardens, and a traditional Korean culture museum directly inside the terminal.',
+  'Mezinárodní letiště Hongkong': 'Hong Kong International Airport',
+  'Hongkong': 'Hong Kong',
+  'Čína (Hongkong)': 'China (Hong Kong)',
+  'Moderní letiště nahrazující legendární staré letiště Kai Tak (známé extrémně nebezpečnými přistáními mezi mrakodrapy). Slouží jako uzel pro Cathay Pacific.': 'A highly modern airport replacing the legendary Kai Tak Airport (famous for its extremely dangerous landings between skyscrapers). It serves as the primary hub for Cathay Pacific.',
+  'Vybudováno na obřím umělém ostrově Chek Lap Kok vytvořeném srovnáním dvou původních hornatých ostrovů se zemí a rozšířením o mořskou mělčinu.': 'Built on a massive artificial island, Chek Lap Kok, which was created by leveling two original mountainous islands and reclaiming land from the shallow sea.',
+  'Letiště Istanbul': 'Istanbul Airport',
+  'Istanbul': 'Istanbul',
+  'Turecko': 'Turkey',
+  'Nové megastaveniště vybudované na evropské straně Istanbulu, které nahradilo kapacitně nedostačující Atatürkovo letiště. Je sídlem Turkish Airlines.': 'A brand new mega-airport built on the European side of Istanbul, replacing the capacity-constrained Atatürk Airport. It serves as the home hub for Turkish Airlines.',
+  'Jeho řídicí věž má ikonický aerodynamický tvar inspirovaný květem tulipánu, což je tradiční islámský a turecký symbol elegance.': 'Its air traffic control tower features an iconic aerodynamic shape inspired by the tulip, which is a traditional Islamic and Turkish symbol of elegance.',
+  'Letiště Brno-Tuřany': 'Brno-Tuřany Airport',
+  'Brno': 'Brno',
+  'V roce 2009 zde sloužil mši papež Benedikt XVI. před více než 120 tisíci věřícími, což byla největší událost v historii letiště.': 'In 2009, Pope Benedict XVI celebrated mass here in front of more than 120,000 believers, which was the largest event in the airport\'s history.',
+  'Druhé nejrušnější letiště v České republice, zajišťující pravidelné i charterové lety. Má velmi moderní a architektonicky oceňovaný odbavovací terminál.': 'The second busiest airport in the Czech Republic, providing regular and charter flights. It has a highly modern and architecturally award-winning passenger terminal.',
+  'Letiště Leoše Janáčka Ostrava': 'Leoš Janáček Airport Ostrava',
+  'Ostrava': 'Ostrava',
+  'Každoročně se zde konají Dny NATO v Ostravě, největší letecko-armádně-bezpečnostní akce v Evropě, která přitahuje stovky tisíc diváků.': 'Every year, NATO Days in Ostrava is held here, the largest air, military, and security show in Europe, attracting hundreds of thousands of spectators.',
+  'Významné regionální mezinárodní letiště na severovýchodě České republiky. Slouží jako důležitý nákladní uzel a brána pro charterové a pravidelné lety.': 'A significant regional international airport in the northeast of the Czech Republic. It serves as an important cargo hub and a gateway for charter and scheduled flights.',
+  'Letiště Karlovy Vary': 'Karlovy Vary Airport',
+  'Karlovy Vary': 'Karlovy Vary',
+  'Terminál s futuristickým tvarem trupu letadla získal ocenění Stavba roku a je jednou z nejmodernějších staveb v Karlovarském kraji.': 'The terminal with a futuristic airplane fuselage shape won the Building of the Year award and is one of the most modern structures in the Karlovy Vary Region.',
+  'Regionální mezinárodní letiště obsluhující světoznámé lázeňské město Karlovy Vary a okolní region Západních Čech.': 'A regional international airport serving the world-famous spa town of Karlovy Vary and the surrounding region of Western Bohemia.',
+  'Letiště Mnichov': 'Munich Airport',
+  'Má vlastní pivovar s pivní zahrádkou „Airbräu“, kde se vaří pivo přímo na letišti podle tradičních bavorských receptur.': 'It has its own brewery with a beer garden "Airbräu", where beer is brewed directly at the airport according to traditional Bavarian recipes.',
+  'Druhé nejrušnější letiště v Německu a významný uzel společnosti Lufthansa. Je oceňováno za vysokou kvalitu služeb a čistotu.': 'The second busiest airport in Germany and a major hub for Lufthansa. It is highly rated for its service quality and cleanliness.',
+  'Letiště Vídeň-Schwechat': 'Vienna International Airport',
+  'Vídeň': 'Vienna',
+  'Rakousko': 'Austria',
+  'Letiště nabízí unikátní návštěvnické centrum s 360-stupňovou virtuální realitou z kokpitu letadla a velkou vyhlídkovou terasou.': 'The airport offers a unique visitor center with 360-degree virtual reality from the aircraft cockpit and a large observation deck.',
+  'Největší a nejrušnější letiště v Rakousku, nacházející se u Schwechatu. Slouží jako hlavní základna pro Austrian Airlines a uzel pro lety do východní Evropy.': 'The largest and busiest airport in Austria, located near Schwechat. It serves as the primary base for Austrian Airlines and a hub for flights to Eastern Europe.',
+  'Letiště Chopina Varšava': 'Warsaw Chopin Airport',
+  'Varšava': 'Warsaw',
+  'Polsko': 'Poland',
+  'Pojmenováno po slavném polském skladateli Frédéricu Chopinovi. Letiště zvládá téměř 40 % veškeré osobní letecké dopravy v Polsku.': 'Named after the famous Polish composer Frédéric Chopin. The airport handles nearly 40% of all passenger air traffic in Poland.',
+  'Největší letiště v Polsku, dříve známé jako letiště Okęcie. Slouží jako hlavní základna pro polského národního dopravce LOT Polish Airlines.': 'The largest airport in Poland, formerly known as Okęcie Airport. It serves as the main hub for Polish national carrier LOT Polish Airlines.',
+  'Letiště M. R. Štefánika Bratislava': 'M. R. Štefánik Airport Bratislava',
+  'Bratislava': 'Bratislava',
+  'Slovensko': 'Slovakia',
+  'Pojmenováno po generálu M. R. Štefánikovi. Dráhy jsou uspořázány do tvaru písmene X, což umožňuje přistání z různých směrů podle větru.': 'Named after General M. R. Štefánik. The runways are arranged in an X-shape, allowing landings from different directions depending on the wind.',
+  'Hlavní mezinárodní letiště na Slovensku, nacházející se v bratislavské čtvrti Ružinov. Slouží jako důležitá báze pro nízkonákladové aerolinky.': 'The primary international airport in Slovakia, located in Bratislava\'s Ružinov district. It serves as an important base for low-cost airlines.',
+  'Letiště Londýn Gatwick': 'London Gatwick Airport',
+  'Je považováno za nejefektivnější jednodráhové letiště na světě, které dokáže v nejrušnějších hodinách odbavit až 55 letů za hodinu na jediné dráze.': 'It is considered the most efficient single-runway airport in the world, capable of handling up to 55 flights per hour on a single runway during peak hours.',
+  'Druhé největší letiště v Londýně a v celé Velké Británii. Je oblíbené zejména pro nízkonákladové lety a prázdninové charterové spoje.': 'The second-largest airport in London and the entire United Kingdom. It is particularly popular for low-cost flights and holiday charter connections.',
+  'Letiště Londýn Stansted': 'London Stansted Airport',
+  'Během druhé světové války sloužilo jako významná základna pro britské RAF a americké letectvo USAAF pod názvem RAF Stansted Mountfitchet.': 'During World War II, it served as an important base for the British RAF and US USAAF under the name RAF Stansted Mountfitchet.',
+  'Třetí největší londýnské letiště, které slouží jako největší základna pro nízkonákladovou leteckou společnost Ryanair v Evropě.': 'The third-largest London airport, which serves as the largest base for low-cost carrier Ryanair in Europe.',
+  'Letiště Paříž-Orly': 'Paris Orly Airport',
+  'V padesátých a šedesátých letech bylo symbolem francouzského luxusu a modernismu a jeho terasy byly oblíbeným víkendovým výletním místem Pařížanů.': 'In the 1950s and 1960s, it was a symbol of French luxury and modernism, and its terraces were a favorite weekend excursion spot for Parisians.',
+  'Druhé největší letiště v Paříži, které slouží převážně pro vnitrostátní a evropské lety a spoje do francouzských zámořských území a severní Afriky.': 'The second-largest airport in Paris, serving mainly domestic and European flights as well as connections to French overseas territories and North Africa.',
+  'Letiště Madrid-Barajas Adolfa Suáreze': 'Adolfo Suárez Madrid–Barajas Airport',
+  'Terminál 4, navržený architektem Richardem Rogersem, má ikonickou zvlněnou střechu z bambusového dřeva a je považován za mistrovské dílo architektury.': 'Terminal 4, designed by architect Richard Rogers, features an iconic wavy roof made of bamboo wood and is considered a masterpiece of architecture.',
+  'Největší a nejrušnější letiště ve Španělsku, které slouží jako hlavní brána pro lety mezi Evropou a Latinskou Amerikou. Je základnou společnosti Iberia.': 'The largest and busiest airport in Spain, serving as the main gateway for flights between Europe and Latin America. It is the hub of Iberia.',
+  'Letiště Barcelona-El Prat Josepa Tarradellase': 'Josep Tarradellas Barcelona–El Prat Airport',
+  'Barcelona': 'Barcelona',
+  'Španělsko': 'Spain',
+  'Nachází se hned vedle chráněné přírodní rezervace v deltě řeky Llobregat, což vyžaduje přísná ekologická a hluková opatření při vzletech nad moře.': 'It is located right next to a protected nature reserve in the Llobregat River delta, requiring strict environmental and noise-mitigation measures during over-sea takeoffs.',
+  'Druhé největší letiště ve Španělsku a hlavní uzel pro nízkonákladovou společnost Vueling a Catalonii. Leží pouhých 12 km od centra Barcelony.': 'The second-largest airport in Spain and the main hub for low-cost carrier Vueling and Catalonia. It lies just 12 km from the center of Barcelona.',
+  'Letiště Řím-Fiumicino Leonarda da Vinciho': 'Rome Fiumicino Leonardo da Vinci Airport',
+  'Řím': 'Rome',
+  'Itálie': 'Italy',
+  'Oficiálně pojmenováno po renesančním géniovi Leonardu da Vincim, jehož obří socha s modelem helikoptéry vítá cestující před letištěm.': 'Officially named after the Renaissance genius Leonardo da Vinci, whose giant statue holding a helicopter model welcomes passengers in front of the airport.',
+  'Hlavní a největší letiště v Itálii, které slouží jako domovská základna pro národního dopravce ITA Airways (nástupce Alitalie).': 'The primary and largest airport in Italy, serving as the home base for the national carrier ITA Airways (successor to Alitalia).',
+  'Letiště Milán Malpensa': 'Milan Malpensa Airport',
+  'Milán': 'Milan',
+  'Letiště vzniklo na místě, kde v roce 1910 slavní italští letečtí průkopníci bratři Caproniové testovali své první prototypy dvojplošníků.': 'The airport was built on the site where, in 1910, the famous Italian aviation pioneers, the Caproni brothers, tested their first biplane prototypes.',
+  'Největší mezinárodní letiště pro metropolitní oblast Milána a severní Itálii. Slouží jako významný uzel pro cargo a nízkonákladové lety.': 'The largest international airport for the Milan metropolitan area and northern Italy. It serves as a major hub for cargo and low-cost flights.',
+  'Letiště Atény': 'Athens International Airport',
+  'Atény': 'Athens',
+  'Řecko': 'Greece',
+  'Při jeho stavbě v historické oblasti Mesogaia bylo nalezeno obrovské množství antických archeologických památek, které jsou dnes vystaveny v muzeu v odletové hale.': 'During its construction in the historic Mesogaia region, a huge quantity of ancient archaeological artifacts were discovered, which are now exhibited in a museum inside the departure hall.',
+  'Mezinárodní letiště Eleftheriose Venizelose slouží jako hlavní brána do Řecka a uzel pro národního dopravce Aegean Airlines.': 'Athens International Airport "Eleftherios Venizelos" serves as the primary gateway to Greece and a hub for the national carrier Aegean Airlines.',
+  'Letiště Rhodos „Diagoras“': 'Rhodes "Diagoras" International Airport',
+  'Rhodos': 'Rhodes',
+  'Oficiálně nese jméno Diagoras z Rhodu, což byl slavný antický olympionik a boxer z 5. století př. n. l.': 'Officially bears the name of Diagoras of Rhodes, who was a famous ancient Olympian boxer from the 5th century BC.',
+  'Velmi vytížené charterové letiště na ostrově Rhodos, které zažívá obrovský nárůst dopravy během letních měsíců.': 'A highly busy charter airport on the island of Rhodes, experiencing a huge traffic increase during the summer months.',
+  'Letiště Heraklion „Nikos Kazantzakis“': 'Heraklion "Nikos Kazantzakis" International Airport',
+  'Heraklion / Kréta': 'Heraklion / Crete',
+  'Pojmenováno po slavném krétském rodákovi, spisovateli a filozofovi Nikosi Kazantzakisovi (autorovi románu Řek Zorba).': 'Named after the famous Cretan native, writer, and philosopher Nikos Kazantzakis (author of the novel Zorba the Greek).',
+  'Druhé nejrušnější letiště v Řecku nacházející se na severním pobřeží ostrova Kréta, těsně vedle města Heraklion.': 'The second busiest airport in Greece, located on the northern coast of the island of Crete, right next to the city of Heraklion.',
+  'Letiště Curych': 'Zurich Airport',
+  'Curych': 'Zurich',
+  'Švýcarsko': 'Switzerland',
+  'Letiště má unikátní přírodní rezervaci s mokřady přímo uprostřed areálu mezi vzletovými drahami, kterou obývá řada chráněných druhů ptáků a obojživelníků.': 'The airport features a unique nature reserve with wetlands right in the center of the airfield between the runways, home to many protected bird and amphibian species.',
+  'Největší švýcarské mezinárodní letiště, které slouží jako hlavní základna pro švýcarského národního dopravce Swiss International Air Lines.': 'The largest Swiss international airport, which serves as the main hub for the Swiss national carrier Swiss International Air Lines.',
+  'Letiště Kodaň': 'Copenhagen Airport',
+  'Kodaň': 'Copenhagen',
+  'Dánsko': 'Denmark',
+  'Jedno z nejstarších civilních letišť na světě. Má perfektní železniční a silniční spojení přes slavný Öresundský most přímo do Švédska.': 'One of the oldest civil airports in the world. It features a perfect rail and road connection via the famous Øresund Bridge directly to Sweden.',
+  'Hlavní mezinárodní letiště v Dánsku a největší letiště v celé Skandinávii. Slouží jako hlavní přestupní uzel pro leteckou společnost SAS.': 'The main international airport in Denmark and the largest airport in all of Scandinavia. It serves as the primary transfer hub for SAS.',
+  'Letiště Oslo Gardermoen': 'Oslo Airport, Gardermoen',
+  'Oslo': 'Oslo',
+  'Norsko': 'Norway',
+  'Terminál je postaven z norského dřeva a skla a k vytápění využívá unikátní systém akumulace sněhu z drah, který se v létě používá ke chlazení budovy.': 'The terminal is built with Norwegian wood and glass, and uses a unique snow accumulation system from the runways for heating, which is used in the summer to cool the building.',
+  'Hlavní mezinárodní letiště obsluhující hlavní město Norska. Je známé svým ekologickým přístupem a moderní severskou architekturou.': 'The primary international airport serving the capital of Norway. It is famous for its eco-friendly approach and modern Nordic architecture.',
+  'Letiště Helsinky-Vantaa': 'Helsinki Airport',
+  'Helsinky': 'Helsinki',
+  'Finsko': 'Finland',
+  'Bylo postaveno speciálně pro Letní olympijské hry v Helsinkách v roce 1952 a dnes je vyhlášeným specialistou na rychlé přestupy mezi Evropou a Asií.': 'It was built specifically for the 1952 Summer Olympics in Helsinki and is now a renowned specialist in fast transfers between Europe and Asia.',
+  'Hlavní finské mezinárodní letiště nacházející se ve městě Vantaa. Slouží jako klíčová základna a přestupní uzel pro leteckou společnost Finnair.': 'The main Finnish international airport located in the city of Vantaa. It serves as a key base and transfer hub for Finnair.',
+  'Letiště Lisabon Humberta Delgada': 'Lisbon Humberto Delgado Airport',
+  'Lisabon': 'Lisbon',
+  'Portugalsko': 'Portugal',
+  'Oficiálně nese jméno Humberta Delgada, portugalského generála a politika. Nachází se přímo uprostřed obytné zástavby Lisabonu, což nabízí dechberoucí nízké přílety nad městem.': 'Officially named after Humberto Delgado, a Portuguese general and politician. Located directly in the middle of Lisbon\'s residential areas, it offers breathtaking low approaches over the city.',
+  'Hlavní mezinárodní letiště v Portugalsku a klíčový evropský uzel pro lety do Brazílie a jižní Ameriky. Slouží jako domovská základna pro TAP Air Portugal.': 'The main international airport in Portugal and a key European hub for flights to Brazil and South America. It serves as the home base for TAP Air Portugal.',
+  'Letiště Dublin': 'Dublin Airport',
+  'Dublin': 'Dublin',
+  'Irsko': 'Ireland',
+  'Nabízí unikátní americkou předhraniční kontrolu (US Preclearance), což znamená, že cestující projdou americkou imigrační kontrolou již v Dublinu a v USA přistanou jako vnitrostátní let.': 'It offers unique US Preclearance, meaning passengers go through US immigration and customs in Dublin and land in the USA as domestic arrivals.',
+  'Hlavní a nejrušnější letiště v Irsku. Slouží jako centrála a domovská základna pro Aer Lingus and nízkonákladového giganta Ryanair.': 'The main and busiest airport in Ireland. It serves as the headquarters and home base for Aer Lingus and low-cost giant Ryanair.',
+  'Hlavní a nejrušnější letiště v Irsku. Slouží jako centrála a domovská základna pro Aer Lingus a nízkonákladového giganta Ryanair.': 'The main and busiest airport in Ireland. It serves as the headquarters and home base for Aer Lingus and low-cost giant Ryanair.',
+  'Letiště Antalya': 'Antalya Airport',
+  'Antalya': 'Antalya',
+  'Během letní sezóny se stává jedním z nejvytíženějších letišť ve středomoří, které obsluhuje stovky tisíc turistů směřujících na Tureckou riviéru.': 'During the summer season, it becomes one of the busiest airports in the Mediterranean, serving hundreds of thousands of tourists heading to the Turkish Riviera.',
+  'Velké mezinárodní letiště na jihozápadě Turecka, které slouží jako hlavní brána pro turisty z celé Evropy a Asie.': 'A major international airport in southwestern Turkey, serving as the primary gateway for tourists from across Europe and Asia.',
+  'Letiště Atlanta Hartsfield-Jackson': 'Hartsfield–Jackson Atlanta International Airport',
+  'Atlanta': 'Atlanta',
+  'Dlouhodobě nejrušnější letiště na světě podle počtu přepravených cestujících i počtu vzletů a přistání, přičemž z Atlanty lze doletět do 80 % populace USA do dvou hodin.': 'Long-term busiest airport in the world by passenger numbers and takeoffs/landings, with 80% of the US population within a two-hour flight of Atlanta.',
+  'Gigantický uzel v unijním státě Georgie, který slouží jako hlavní globální uzel pro společnost Delta Air Lines.': 'A gigantic hub in the state of Georgia, serving as the main global hub for Delta Air Lines.',
+  'Letiště Chicago O\'Hare': 'Chicago O\'Hare International Airport',
+  'Chicago': 'Chicago',
+  'Má největší počet vzletových a přistávacích drah (celkem 8) ze všech civilních letišť na světě, které jsou uspořádány v paralelním systému.': 'It has the largest number of runways (8 in total) of any civilian airport in the world, arranged in a parallel layout.',
+  'Klíčový uzel ve státě Illinois, který slouží jako hlavní základna pro United Airlines a American Airlines. Je legendární svou velikostí a vytížeností.': 'A key hub in the state of Illinois, serving as a primary base for United Airlines and American Airlines. It is legendary for its size and busyness.',
+  'Letiště Dallas/Fort Worth': 'Dallas/Fort Worth International Airport',
+  'Dallas/Fort Worth': 'Dallas/Fort Worth',
+  'Rozlohou je větší než celý ostrov Manhattan a disponuje vlastní plnohodnotnou poštovní službou, policejním sborem a hasičským záchranným systémem.': 'By land area, it is larger than the entire island of Manhattan and possesses its own fully functional postal service, police force, and fire department.',
+  'Druhé největší letiště v USA podle rozlohy, ležící v Texasu. Je hlavním a největším super-uzlem pro leteckou společnost American Airlines.': 'The second-largest airport in the US by land area, located in Texas. It is the primary and largest super-hub for American Airlines.',
+  'Letiště Denver': 'Denver International Airport',
+  'Denver': 'Denver',
+  'Střecha hlavního terminálu Jeppesen je tvořena obřími bílými napnutými stanovými plachtami, které mají připomínat zasněžené vrcholky nedalekých Skalistých hor.': 'The roof of the Jeppesen Terminal is made of giant white fabric tents designed to resemble the snow-capped peaks of the nearby Rocky Mountains.',
+  'Největší letiště v USA podle celkového rozlohy území (135 km²). Slouží jako významný vnitrostátní uzel pro United Airlines and Southwest Airlines.': 'The largest airport in the US by total land area (135 sq km). It serves as a major domestic hub for United Airlines and Southwest Airlines.',
+  'Letiště San Francisco': 'San Francisco International Airport',
+  'San Francisco': 'San Francisco',
+  'Dráhy letiště jsou uspořázány do dvou křížících se dvoji, přičemž konce drah vybíhají přímo do vod Sanfranciského zálivu, což vyžaduje vysokou přesnost pilotáže.': 'The airport\'s runways are arranged in two intersecting pairs, with the ends of the runways extending directly into the waters of San Francisco Bay, requiring high-precision piloting.',
+  'Významné mezinárodní letiště v Kalifornii, které slouží jako hlavní brána do Silicon Valley a Asie. Je hlavním uzlem společnosti United Airlines.': 'A major international airport in California, serving as the primary gateway to Silicon Valley and Asia. It is the main hub of United Airlines.',
+  'Letiště Miami': 'Miami International Airport',
+  'Miami': 'Miami',
+  'Je největší americkou branou pro lety do Latinské Ameriky a Karibiku a odbavuje více mezinárodního nákladu než téměř jakékoli jiné americké letiště.': 'It is the largest US gateway for flights to Latin America and the Caribbean, and handles more international cargo than almost any other US airport.',
+  'Významné mezinárodní letiště na jižní Floridě, které slouží jako klíčový uzel pro American Airlines.': 'A major international airport in South Florida, serving as a key hub for American Airlines.',
+  'Letiště Orlando': 'Orlando International Airport',
+  'Orlando': 'Orlando',
+  'Kód letiště MCO pochází z jeho dřívějšího vojenského názvu McCoy Air Force Base, což byla základna pro strategické bombardéry B-52 během studené války.': 'The MCO airport code originates from its former military name, McCoy Air Force Base, which was a base for B-52 strategic bombers during the Cold War.',
+  'Nejrušnější letiště na Floridě, které slouží jako hlavní brána pro miliony turistů mířících do světoznámých zábavních parků jako Walt Disney World a Universal Studios.': 'The busiest airport in Florida, serving as the primary gateway for millions of tourists heading to world-famous theme parks like Walt Disney World and Universal Studios.',
+  'Letiště Harry Reid Las Vegas': 'Harry Reid International Airport',
+  'Las Vegas': 'Las Vegas',
+  'Je jedním z pouhých dvou amerických letišť, které mají hrací automaty přímo v prostorách terminálů, což navozuje atmosféru kasin hned po příletu.': 'It is one of only two US airports that feature slot machines directly inside the terminals, establishing a casino atmosphere right upon arrival.',
+  'Hlavní letiště obsluhující světoznámé město hazardu a zábavy Las Vegas v Nevadě. Dříve neslo název McCarran International Airport.': 'The main airport serving the world-famous city of gambling and entertainment, Las Vegas, Nevada. It was formerly named McCarran International Airport.',
+  'Letiště Seattle-Tacoma': 'Seattle–Tacoma International Airport',
+  'Seattle': 'Seattle',
+  'Letiště má rozsáhlou sbírku moderního umění v hodnotě desítek milionů dolarů rozprostřenou po terminálech a pořádá pravidelné živé hudební vystoupení pro cestující.': 'The airport features an extensive collection of modern art worth tens of millions of dollars spread throughout the terminals, and hosts regular live music performances for travelers.',
+  'Hlavní letiště na severozápadě USA, obsluhující Seattle a stát Washington. Je hlavním uzlem pro Alaska Airlines a Delta Air Lines.': 'The primary airport in the Pacific Northwest of the US, serving Seattle and the state of Washington. It is the main hub for Alaska Airlines and Delta Air Lines.',
+  'Letiště Toronto Pearson': 'Toronto Pearson International Airport',
+  'Toronto': 'Toronto',
+  'Nese kód YYZ, který se stal celosvětově slavným díky stejnojmenné instrumentální rockové skladbě od legendární kanadské skupiny Rush.': 'It carries the code YYZ, which became world-famous thanks to the instrumental rock song of the same name by the legendary Canadian band Rush.',
+  'Největší a nejrušnější mezinárodní letiště v Kanadě, nacházející se u Toronta v provincii Ontario. Slouží jako hlavní globální uzel pro Air Canada.': 'The largest and busiest international airport in Canada, located near Toronto, Ontario. It serves as the primary global hub for Air Canada.',
+  'Letiště Vancouver': 'Vancouver International Airport',
+  'Vancouver': 'Vancouver',
+  'V interiérech letiště se nachází úchvatná sbírka řezbářského a sochařského umění původních obyvatel Severní Ameriky (národů First Nations) včetně dvou obřích akvárií.': 'The airport interiors house a stunning collection of First Nations carvings and sculptures, along with two massive aquariums.',
+  'Druhé nejrušnější kanadské letiště, ležící na ostrově Sea Island v Britské Kolumbii. Je považováno za jednu z nejlepších bran do Asie a Pacifiku.': 'The second busiest airport in Canada, located on Sea Island in British Columbia. It is considered one of the best gateways to Asia and the Pacific.',
+  'Letiště Tokio Narita': 'Tokyo Narita Airport',
+  'Výstavba letiště vyvolala v 70. letech jedny z největších protestů v dějinách Japonska, přičemž dodnes se uprostřed letištní plochy nacházejí farmy, jejichž majitelé odmítli prodat své pozemky.': 'Airport construction in the 1970s triggered some of the largest protests in Japan\'s history, and to this day, farms whose owners refused to sell are still located in the middle of the airfield.',
+  'Druhé velké mezinárodní letiště obsluhující aglomeraci Tokia, které se nachází cca 60 km východně od centra v prefektuře Čiba. Odbavuje většinu dálkových mezinárodních spojů.': 'The second-largest international airport serving Tokyo, located about 60 km east of the center in Chiba Prefecture. It handles most long-haul international flights.',
+  'Letiště Ósaka Kansai': 'Kansai International Airport',
+  'První letiště na světě postavené výhradně na umělém ostrově v moři, který pomalu klesá pod hladinu rychleji, než inženýři původně předpovídali, což vyžaduje neustálé hydraulické vyrovnávání budov.': 'The world\'s first airport built entirely on an artificial island in the sea, which is sinking faster than engineers predicted, requiring constant hydraulic leveling of the buildings.',
+  'Unikátní inženýrské dílo v zálivu Ósaky, navržené slavným architektem Renzem Pianem. Obsluhuje region Kansai (Ósaka, Kjóto, Kóbe).': 'A unique engineering marvel in Osaka Bay, designed by the famous architect Renzo Piano. It serves the Kansai region (Osaka, Kyoto, Kobe).',
+  'Letiště Dauhá Hamad': 'Hamad International Airport',
+  'Dauhá': 'Doha',
+  'Katar': 'Qatar',
+  'Hlavní atrakcí odletové haly je „Lamp Bear“ – sedm metrů vysoká bronzová socha žlutého plyšového medvěda s lampou na hlavě od švýcarského umělce Urse Fischera, koupená za 6,8 milionu dolarů.': 'The main attraction of the departure hall is the "Lamp Bear" – a seven-meter-tall bronze statue of a yellow teddy bear with a lamp on its head by Swiss artist Urs Fischer, bought for $6.8 million.',
+  'Špičkové luxusní mezinárodní letiště v Kataru, které je domovem a prestižní bází pro oceněné aerolinky Qatar Airways. Často soupeří se Singapurem o titul nejlepšího letiště světa.': 'A world-class luxury international airport in Qatar, which is the home and prestigious base of the award-winning Qatar Airways. It often competes with Singapore for the title of world\'s best airport.',
+  'Letiště Abú Zabí': 'Abu Dhabi International Airport',
+  'Abú Zabí': 'Abu Dhabi',
+  'Nově otevřený Terminal A (známý jako Midfield Terminal) má vnitřní rozlohu srovnatelnou se 45 fotbalovými hřišti a hrál klíčovou roli v akčním filmu Mission: Impossible - Odplata.': 'The newly opened Terminal A (known as the Midfield Terminal) has an indoor area comparable to 45 football fields and played a key role in the action film Mission: Impossible – Dead Reckoning.',
+  'Druhé největší letiště v SAE, sloužící jako hlavní základna pro národního dopravce Etihad Airways. Je známé svým ultramoderním designem a luxusními salonky.': 'The second-largest airport in the UAE, serving as the main base for the national carrier Etihad Airways. It is famous for its ultra-modern design and luxury lounges.',
+  'Letiště Peking Capital': 'Beijing Capital International Airport',
+  'Čína': 'China',
+  'Obří Terminál 3 byl postaven k příležitosti Olympijských her v Pekingu v roce 2008 a z ptačí perspektivy připomíná letícího draka se střechou vyvedenou v tradičních čínských barvách.': 'The giant Terminal 3 was built for the 2008 Beijing Olympics and, from a bird\'s-eye view, resembles a flying dragon with a roof painted in traditional Chinese colors.',
+  'Dlouhodobě hlavní mezinárodní letiště v Číně a jedno z největších na světě podle počtu cestujících. Slouží jako hlavní uzel pro Air China.': 'Long-term primary international airport in China and one of the largest in the world by passenger count. It serves as the primary hub for Air China.',
+  'Letiště Peking Daxing': 'Beijing Daxing International Airport',
+  'Navrženo legendární architektkou Zaha Hadid. Terminál má tvar obří mořské hvězdice s pěti rameny, což zkracuje docházkové vzdálenosti k odletovým branám na minimum (max 8 minut).': 'Designed by the legendary architect Zaha Hadid. The terminal is shaped like a giant starfish with five arms, minimizing walking distances to departure gates to a maximum of 8 minutes.',
+  'Nové super-moderní letiště na jihu Pekingu, které disponuje jedním z největších jednobudovových terminálů na světě. Slouží jako uzel pro China Southern a China Eastern.': 'A brand-new, state-of-the-art airport in the south of Beijing, featuring one of the world\'s largest single-building terminals. It serves as a hub for China Southern and China Eastern.',
+  'Letiště Bangkok Suvarnabhumi': 'Suvarnabhumi Airport',
+  'Bangkok': 'Bangkok',
+  'Thajsko': 'Thailand',
+  'Má nejvyšší samostatně stojící řídicí věž na světě s výškou 132 metrů a jeho název „Suvarnabhumi“ znamená v sanskrtu „Zlatá země“ – jméno vybral král Pchúmipchon Adunjadét.': 'It features the world\'s tallest free-standing air traffic control tower at 132 meters, and its name "Suvarnabhumi" means "Golden Land" in Sanskrit – chosen by King Bhumibol Adulyadej.',
+  'Hlavní mezinárodní letiště v Thajsku, které nahradilo starší letiště Don Mueang pro mezináležitá lety. Slouží jako klíčový uzel pro Thai Airways.': 'The main international airport in Thailand, which replaced the older Don Mueang Airport for international flights. It serves as a key hub for Thai Airways.',
+  'Hlavní mezinárodní letiště v Thajsku, které nahradilo starší letiště Don Mueang pro mezinárodní lety. Slouží jako klíčový uzel pro Thai Airways.': 'The main international airport in Thailand, which replaced the older Don Mueang Airport for international flights. It serves as a key hub for Thai Airways.',
+  'Letiště Kuala Lumpur': 'Kuala Lumpur International Airport',
+  'Kuala Lumpur': 'Kuala Lumpur',
+  'Malajsie': 'Malaysia',
+  'Bylo navrženo slavným japonským architektem Kisho Kurokawou pod konceptem „letiště v lese, les na letišti“ a uprostřed terminálu se nachází skutečný kousek malajského deštného pralesa.': 'It was designed by the famous Japanese architect Kisho Kurokawa under the concept of "airport in the forest, forest in the airport," and houses a genuine section of Malaysian rainforest inside.',
+  'Největší a nejvýznamnější letiště v Malajsii, nacházející se cca 45 km jižně od Kuala Lumpur. Slouží jako hlavní základna pro Malaysia Airlines a nízkonákladového giganta AirAsia.': 'The largest and most important airport in Malaysia, located about 45 km south of Kuala Lumpur. It serves as the primary base for Malaysia Airlines and low-cost giant AirAsia.',
+  'Letiště Indíry Gándhíové Dillí': 'Indira Gandhi International Airport',
+  'Dillí': 'Delhi',
+  'Indie': 'India',
+  'V moderním Terminálu 3 se nachází obří ikonická stěna s bronzovými sochami muder (tradičních posvátných gest rukou v hinduismu a buddhismu), které vítají příchozí cestující.': 'In the modern Terminal 3, there is a giant iconic wall with bronze sculptures of mudras (traditional sacred hand gestures in Hinduism and Buddhism) welcoming arriving passengers.',
+  'Nejrušnější letiště v Indii a v celé jižní Asii, pojmenované po bývalé indické premiérce Indíře Gándhíové. Je hlavním uzlem pro Air India a IndiGo.': 'The busiest airport in India and all of South Asia, named after former Indian Prime Minister Indira Gandhi. It is the primary hub for Air India and IndiGo.',
+  'Letiště Káhira': 'Cairo International Airport',
+  'Egypt': 'Egypt',
+  'Vzniklo na základech bývalé vojenské letecké základny americké armády Payne Field z druhé světové války, která sloužila pro spojenecké lety v severní Africe.': 'It was built on the foundations of Payne Field, a former US Army military air base from World War II that served allied flights in North Africa.',
+  'Druhé nejrušnější letiště v Africe, sloužící jako hlavní brána do Egypta a domovská základna pro národního dopravce EgyptAir.': 'The second busiest airport in Africa, serving as the primary gateway to Egypt and home base for the national carrier EgyptAir.',
+  'Letiště Hurghada': 'Hurghada International Airport',
+  'Hurghada': 'Hurghada',
+  'Nový terminál letiště ve tvaru stanové střechy byl postaven, aby zvládl dramatický nárůst turistů, a nabízí přímý výhled na Rudé moře během přiblížení na přistání.': 'The airport\'s new tent-roofed terminal was built to handle a dramatic rise in tourism and offers a direct view of the Red Sea during final landing approach.',
+  'Velmi frekventované mezinárodní letiště na pobřeží Rudého moře v Egyptě, které slouží téměř výhradně pro charterové lety přivážející turisty do letovisek.': 'A highly busy international airport on the Red Sea coast in Egypt, serving almost exclusively for charter flights bringing tourists to resorts.',
+  'Letiště Kapské Město': 'Cape Town International Airport',
+  'Jihoafrická republika': 'South Africa',
+  'Pravidelně získává ocenění jako nejlepší letiště v Africe díky své vynikající čistotě, bezpečnosti a úchvatným výhledům na Stolovou horu při odletech.': 'It regularly wins awards as the best airport in Africa due to its excellent cleanliness, safety, and stunning views of Table Mountain during departures.',
+  'Druhé nejrušnější letiště v Jihoafrické republice, které slouží jako klíčová mezinárodní brána pro turisty navštěvující Kapské Město a okolí.': 'The second busiest airport in South Africa, serving as a key international gateway for tourists visiting Cape Town and its surroundings.',
+  'Letiště Melbourne Tullamarine': 'Melbourne Airport',
+  'Melbourne': 'Melbourne',
+  'Je to jediné letiště obsluhující velkou australskou metropoli, které funguje v nepřetržitém 24hodinovém režimu bez nočního zákazu letů.': 'It is the only airport serving a major Australian metropolis that operates 24/7 with no night curfew.',
+  'Druhé nejrušnější letiště v Austrálii, které slouží jako významná základna pro společnost Qantas, Virgin Australia and nízkonákladový Jetstar.': 'The second busiest airport in Australia, serving as an important base for Qantas, Virgin Australia, and low-cost carrier Jetstar.',
+  'Druhé nejrušnější letiště v Austrálii, které slouží jako významná základna pro společnost Qantas, Virgin Australia a nízkonákladový Jetstar.': 'The second busiest airport in Australia, serving as an important base for Qantas, Virgin Australia, and low-cost carrier Jetstar.',
+  'Letiště Auckland': 'Auckland Airport',
+  'Auckland': 'Auckland',
+  'V mezinárodní příletové hale jsou cestující vítáni tradiční vyřezávanou dřevěnou bránou maorského kmene Tainui a zvukovými efekty novozélandského lesa a mořského příboje.': 'In the international arrivals hall, passengers are welcomed by a traditional carved wooden gate of the Maori Tainui tribe and sounds of New Zealand forest and ocean surf.',
+  'Největší a nejrušnější letiště na Novém Zélandu, které slouží jako hlavní globální uzel pro národního dopravce Air New Zealand.': 'The largest and busiest airport in New Zealand, serving as the primary global hub for the national carrier Air New Zealand.',
+  'Letiště São Paulo-Guarulhos': 'São Paulo/Guarulhos International Airport',
+  'São Paulo': 'São Paulo',
+  'Slouží jako největší uzel dálkové dopravy v celé Jižní Americe a má speciální zabezpečený koridor pro přepravu cenných nákladů a brazilské kávy.': 'It serves as the largest long-haul hub in all of South America, featuring a special secured corridor for transporting high-value cargo and Brazilian coffee.',
+  'Nejrušnější mezinárodní letiště v Brazílii a celé Latinské Americe. Slouží jako hlavní základna pro leteckou společnost LATAM Brasil.': 'The busiest international airport in Brazil and all of Latin America. It serves as the main hub for LATAM Brasil.',
+  'Letiště Santiago de Chile': 'Arturo Merino Benítez International Airport',
+  'Santiago de Chile': 'Santiago',
+  'Přílet do Santiaga nabízí jeden z nejkrásnějších leteckých výhledů na světě – letadlo klesá těsně podél strmých stěn zasněžených And.': 'Arriving in Santiago offers one of the most beautiful aerial views in the world – the aircraft descends closely along the steep walls of the snow-covered Andes.',
+  'Hlavní mezinárodní brána do Chile, která slouží jako klíčový uzel pro LATAM Airlines a spojuje Jižní Ameriku s Oceánií a Pacifikem.': 'The primary international gateway to Chile, serving as a key hub for LATAM Airlines and connecting South America with Oceania and the Pacific.',
+  'Letiště České Budějovice': 'České Budějovice Airport',
+  'České Budějovice': 'České Budějovice',
+  'Původně vzniklo v roce 1937 pro aeroklub, během studené války sloužilo stíhacímu letectvu a v roce 2023 odtud odletěl první mezinárodní charterový let do Turecka.': 'Originally established in 1937 for an aero club, it served the fighter air force during the Cold War, and in 2023, the first international charter flight departed from here to Turkey.',
+  'Regionální mezinárodní letiště v Plané u Českých Budějovic. Slouží pro charterové lety k moři a pro všeobecné letectví (GA).': 'A regional international airport in Planá near České Budějovice. It is used for summer charter flights and general aviation (GA).',
+};
+
+// --- TRANSLATION HELPER FUNCTIONS ---
+
 export function translateCategory(category: string, lang: 'CZ' | 'EN'): string {
-  if (lang === 'CZ') return category;
-  
-  switch(category) {
+  if (lang === 'CZ' || !category) return category;
+  switch (category) {
     case 'Úzkotrupá (Single-Aisle)':
       return 'Single-Aisle (Narrow-Body)';
     case 'Širokotrupá (Wide-Body)':
@@ -245,19 +616,16 @@ export function translateCategory(category: string, lang: 'CZ' | 'EN'): string {
   }
 }
 
-// Translates typical seating capacity labels
-export function translateTypicalCapacity(typical: string, lang: 'CZ' | 'EN'): string {
-  if (lang === 'CZ') return typical;
-  return typical
+export function translateTypicalCapacity(capacity: string, lang: 'CZ' | 'EN'): string {
+  if (lang === 'CZ' || !capacity) return capacity;
+  return capacity
     .replace('třídy', 'classes')
     .replace('třída', 'class')
     .replace('tříd', 'classes');
 }
 
-// Translates country name
 export function translateCountry(country: string, lang: 'CZ' | 'EN'): string {
-  if (lang === 'CZ') return country;
-  
+  if (lang === 'CZ' || !country) return country;
   return country
     .replace('Evropská unie', 'European Union')
     .replace('Kanada', 'Canada')
@@ -278,8 +646,6 @@ export function translateCountry(country: string, lang: 'CZ' | 'EN'): string {
     .replace('Portugalsko', 'Portugal')
     .replace('Finsko', 'Finland')
     .replace('Turecko', 'Turkey')
-    .replace('Japonsko', 'Japan')
-    .replace('Spojené arabské emiráty', 'United Arab Emirates')
     .replace('Austrálie', 'Australia')
     .replace('Jižní Korea', 'South Korea')
     .replace('Španělsko', 'Spain')
@@ -287,585 +653,57 @@ export function translateCountry(country: string, lang: 'CZ' | 'EN'): string {
     .replace('Ukrajina', 'Ukraine');
 }
 
-// Map from normalized Czech text to English translation
-const czToEnMap = new Map<string, string>();
-
+// Helper to normalize strings for comparison (strip quotes, whitespace)
 function normalizeText(text: string): string {
   return text.replace(/[„“"”’‘]/g, '').replace(/\s+/g, ' ').trim();
 }
 
-// Build translation map on load
+// Populate a lookup Map once for fast lookup
+const textTranslationMap = new Map<string, string>();
+
 for (const aircraft of AIRCRAFT_DATA) {
   const translations = AIRCRAFT_TRANSLATIONS_EN[aircraft.id];
   if (translations) {
     if (aircraft.description && translations.descriptionEn) {
-      czToEnMap.set(normalizeText(aircraft.description), translations.descriptionEn);
+      textTranslationMap.set(normalizeText(aircraft.description), translations.descriptionEn);
     }
     if (aircraft.uniqueness && translations.uniquenessEn) {
-      czToEnMap.set(normalizeText(aircraft.uniqueness), translations.uniquenessEn);
+      textTranslationMap.set(normalizeText(aircraft.uniqueness), translations.uniquenessEn);
     }
   }
 }
 
-// Czech to English text dictionary mappings for description & uniqueness
-// to avoid huge translation code size, we provide a highly sophisticated automatic sentence translator that matches key phrases, 
-// AND a comprehensive structural word/concept translation fallback engine!
-export function translateText(text: string, lang: 'CZ' | 'EN', isUniqueness = false): string {
+export function translateText(text: string, lang: 'CZ' | 'EN', stripQuotes = false): string {
   if (lang === 'CZ' || !text) return text;
-
+  
   const normalized = normalizeText(text);
-  let mappedTranslation = czToEnMap.get(normalized);
-
-  if (mappedTranslation) {
-    if (isUniqueness) {
-      // Strip any pre-existing surrounding quotes to return clean raw content
-      mappedTranslation = mappedTranslation.replace(/^[„“"”’‘]+|[„“"”’‘]+$/g, '').trim();
+  let translated = textTranslationMap.get(normalized);
+  
+  if (translated) {
+    if (stripQuotes) {
+      translated = translated.replace(/^[„“"”’‘]+|[„“"”’‘]+$/g, '').trim();
     }
-    return mappedTranslation;
+    return translated;
   }
+  
+  return text;
+}
 
-  const overrides: Record<string, string> = {
-    // A220-100 & 300
-    'Menší varianta z rodiny A220 (původně Bombardier CS100). Je speciálně navržena pro kratší až středně dlouhé tratě a vyniká schopností operovat z letišť s extrémně krátkou vzletovou dráhou a strmým přiblížením (např. London City Airport).':
-      'Smaller variant of the A220 family (originally Bombardier CS100). It is specially designed for short to medium-haul routes and excels in its capability to operate from airports with extremely short runways and steep approaches (e.g. London City Airport).',
-    'Do provozu vstoupil jako vůbec nejtišší letoun ve své kategorii, s hlukovou stopou nižší až o 50 % oproti předchozím typům letadel.':
-      'It entered service as the quietest aircraft in its category, with a noise footprint up to 50% lower than previous aircraft types.',
-    'Prodloužená a nejpopulárnější verze řady A220 (původně Bombardier CS300). Nabízí mimořádnou hospodárnost, moderní dálkovou kabinu pro cestující a nejnižší emise ve své třídě díky pokročilým motorům Pratt & Whitney.':
-      'The stretched and most popular version of the A220 series (originally Bombardier CS300). It offers exceptional economics, a modern passenger cabin, and the lowest emissions in its class thanks to advanced Pratt & Whitney engines.',
-    'Díky kombinaci nízké hmotnosti a špičkové aerodynamiky křídel představuje ideální volbu pro ziskové operování na méně vytížených celostátních i mezinárodních trasách.':
-      'Thanks to a combination of low weight and state-of-the-art wing aerodynamics, it represents an ideal choice for profitable operation on lower-density domestic and international routes.',
-
-    // A300
-    'Původní základní produkční verze prvního širokotrupého dvoumotorového letadla na světě. Vstoupilo do komerční služby v roce 1974 u Air France. Tento průkopnický stroj prokázal, že i velká letadla pro dálkové linky mohou létat ekonomicky a bezpečně pouze se dvěma motory, čímž položil základy úspěchu celého konsorcia Airbus.':
-      'The original base production version of the first wide-body twin-engine aircraft in the world. It entered commercial service in 1974 with Air France. This pioneering machine proved that even large aircraft for long-haul routes can fly economically and safely with only two engines, thereby laying the foundations of the success of the entire Airbus consortium.',
-    'První širokotrupé dvoumotorové letadlo v historii letectví, které navždy změnilo strukturu dálkové civilní dopravy.':
-      'The first wide-body twin-engine aircraft in aviation history, which forever changed the structure of long-haul civil transport.',
-    'Verze se zvýšeným doletem a unikátním uspořádáním, která se stala klíčovým technologickým přechodem v letectví. Tento typ byl upraven tak, aby jej plně obsluhovali pouze dva piloti bez nutnosti přítomnosti palubního inženýra, což byl v té době obrovský krok kupředu.':
-      'An increased range version with a unique cockpit layout, which became a key technological transition in aviation. This type was modified to be operated by only two pilots without the need for a flight engineer, which was a huge step forward at the time.',
-    'Odstranilo potřebu třetího člena posádky (palubního inženýra) zavedením prvního plnohodnotného elektronického přístrojového systému pro posádku.':
-      'It eliminated the need for a third crew member (flight engineer) by introducing the first full electronic flight instrument system for the crew.',
-    'Nejmodernější a komerčně nejúspěšnější osobní verze řady -600. Disponuje integrovaným glass-kokpitem, vylepšenou aerodynamikou s winglety a zvýšeným doletem. Je vyhledávána pro vysokou spolehlivost a tvoří dodnes základ flotil mnoha dálkových charterových dopravců.':
-      'The most modern and commercially most successful passenger version of the -600 series. It features an integrated glass cockpit, improved aerodynamics with winglets, and increased range. It is sought-after for its high reliability and still forms the basis of many long-haul charter carriers’ fleets.',
-    'Stalo se vzorem pro pozdější vývoj legendárního dvousedadlového dálkového modelu Airbus A330.':
-      'It became the blueprint for the subsequent development of the legendary two-engine long-haul Airbus A330 model.',
-    'Vysoce efektivní čistě nákladní širokotrupá verze, která sdílí modernizovaný drak a avioniku s osobním modelem -600R. Díky obří kapacitě nákladového prostoru a vynikající spolehlivosti tvoří dodnes páteř flotil předních světových expresních přepravců jako FedEx, DHL a UPS.':
-      'A highly efficient pure freighter wide-body version, which shares a modernized airframe and avionics with the passenger -600R model. Thanks to its giant cargo capacity and excellent reliability, it still forms the backbone of fleets for world-leading express carriers like FedEx, DHL, and UPS.',
-    'Jedno z nejúspěšnějších středněkapacitních nákladních letadel historie, schopné pojmout až 48,3 tun nákladu na dálkových i regionálních trasách.':
-      'One of the most successful medium-capacity freighter aircraft in history, capable of carrying up to 48.3 tonnes of cargo on both long-haul and regional routes.',
-
-    // A310
-    'Méně známá a nerealizovaná plánovaná regionální / krátkotrupá verze s kratším doletem určená pro evropské linky s vysokou poptávkou. Přestože byla vyvinuta a nabízena dopravcům v počátcích projektu, žádná verze -100 nakonec nebyla kvůli nízkému zájmu leteckých společností vyrobena a všichni zákazníci přešli na univerzálnější verzi -200.':
-      'A lesser-known and unproduced planned regional/short-fuselage version with shorter range, designed for high-demand European routes. Although developed and offered in the initial phases of the project, no -100 version was ultimately built due to low airline interest, and all customers transitioned to the more versatile -200.',
-    'Jedná se o jedinou projektovanou verzi řady A310, která se nikdy nedostala do sériové výroby, protože aerolinie preferovaly univerzálnost verze -200.':
-      'It is the only projected version of the A310 series that never entered series production, as airlines preferred the versatility of the -200 version.',
-    'První sériově vyráběný model řady A310, který vstoupil do služby v roce 1983 u německé Lufthansy a švýcarského Swissairu. Tento letoun představil v té době revoluční kokpit bez palubního inženýra s obrazovkovými displeji (Glass Cockpit) a byl specifický svými špičkovými aerodynamickými vlastnostmi pro středně dlouhé trasy.':
-      'The first series-produced model of the A310 series, which entered service in 1983 with Germany\'s Lufthansa and Swissair of Switzerland. This aircraft introduced a revolutionary cockpit without a flight engineer featuring computer screens (Glass Cockpit) and was specific for its top aerodynamic characteristics for medium-haul routes.',
-    'Klíčový model, který položil základy pro zavedení standardního dvoučlenného kokpitu do všech budoucích širokotrupých letadel Airbus.':
-      'A key model that laid the foundations for the introduction of the standard two-person cockpit in all future Airbus wide-body aircraft.',
-    'Nejprodávanější verze A310 s podstatně prodlouženým doletem a zvýšenou vzletovou hmotností. Poprvé vzlétla roku 1985 a přinesla revoluční technologické vylepšení jako přídavnou nádrž v ocasu a winglety (Wingtip fences) na koncích křídel pro snížení spotřeby paliva a odporu vzduchu. Byl vyhledáván i pro přelety Atlantiku.':
-      'The best-selling version of the A310 with a significantly extended range and increased takeoff weight. It first flew in 1985 and introduced revolutionary technological improvements such as an auxiliary fuel tank in the tail and winglets (Wingtip fences) on the wing ends to reduce fuel burn and air resistance. It was highly sought-after for transatlantic crossings.',
-    'První letadlo Airbusu, které jako standard zavedlo palivovou nádrž v horizontálním stabilizátoru (ocasu) pro aktivní řízení vyvážení letadla během letu.':
-      'The first Airbus aircraft to introduce as standard a fuel tank in the horizontal stabilizer (tail) for active fuel trim management of the aircraft during flight.',
-
-    // A320
-    'Původní verze modelu A320. Bylo vyrobeno pouhých 21 kusů, především pro Air France a British Airways. Na rozdíl od verze -200 neměla tato verze charakteristické winglety (Wingtip fences) a měla menší palivové nádrže a nižší vzletovou hmotnost.':
-      'The original version of the A320 model. Only 21 units were built, primarily for Air France and British Airways. Unlike the -200 version, this version did not have the characteristic winglets (Wingtip fences) and had smaller fuel tanks and a lower takeoff weight.',
-    'Jediná verze řady A320, která zcela postrádala winglety na koncích křídel a byla vyrobena ve velmi omezeném počtu.':
-      'The only version of the A320 series that completely lacked winglets on the wing tips and was produced in a very limited quantity.',
-    'Hlavní produkční verze klasické generace A320. Přidala winglety (wingtip fences) a zvýšenou celkovou vzletovou hmotnost spolu se zvětšenými palivovými nádržemi, což z ní udělalo globální bestseller na krátkých a středních tratích.':
-      'The main production version of the classic A320 generation. It added winglets (wingtip fences) and an increased maximum takeoff weight along with larger fuel tanks, making it a global bestseller on short and medium-haul routes.',
-    'Nejprodávanější model klasické generace, definující parametry nízkonákladového letectví po celém světě.':
-      'The best-selling model of the classic generation, defining the parameters of low-cost aviation worldwide.',
-    'Prodloužená verze původního A320 nabízející vyšší kapacitu až pro 220 cestujících. Verze -100 však trpěla kratším doletem kvůli absenci dodatečných palivových nádrží, které by kompenzovaly zvýšenou hmotnost delšího trupu.':
-      'Stretched version of the original A320 offering higher capacity for up to 220 passengers. However, the -100 version suffered from a shorter range due to the lack of additional fuel tanks to compensate for the increased weight of the longer fuselage.',
-    'První prodloužená varianta A320 vyvinutá v německém Hamburku namísto francouzského Toulouse.':
-      'The first stretched variant of the A320 developed in Hamburg, Germany, instead of Toulouse, France.',
-    'Vylepšená verze prodlouženého A321 se zvýšenou vzletovou hmotností a dodatečnými palivovými nádržemi umístěnými v nákladovém prostoru. To umožnilo plnohodnotný transkontinentální dolet se zachováním vysoké kapacity.':
-      'Improved version of the stretched A321 with increased takeoff weight and additional fuel tanks located in the cargo hold. This allowed a full transcontinental range while maintaining high capacity.',
-    'Nabízí skvělý dolet na středních tratích, což z něj dělá ideální stroj pro vytížené charterové a linkové lety.':
-      'Offers excellent range on medium routes, making it an ideal aircraft for busy charter and scheduled flights.',
-
-    // A350
-    'Ultra dálková verze (Ultra Long Range) odvozená z modelu -900. Díky modifikovanému palivovému systému a vyšší maximální vzletové hmotnosti dokáže bez mezipřistání uletět až 18 000 km. Provozují ji především Singapore Airlines na nejdelších komerčních linkách světa ze Singapuru do New Yorku.':
-      'Ultra long-range version (Ultra Long Range) derived from the -900 model. Thanks to a modified fuel system and higher maximum takeoff weight, it can fly up to 18,000 km non-stop. It is operated primarily by Singapore Airlines on the world\'s longest commercial routes from Singapore to New York.',
-    'Schopnost nepřetržitého letu po dobu přes 20 hodin bez nutnosti instalace dodatečných palivových nádrží v nákladovém prostoru, pouze optimalizací stávajícího objemu křídel.':
-      'Capable of continuous flight for over 20 hours without the need for installing auxiliary fuel tanks in the cargo hold, done purely by optimizing the existing wing fuel volume.',
-    'Plně nákladní verze nové generace postavená s rozsáhlým využitím kompozitů. Nabízí moderní a vysoce efektivní letové vlastnosti, sníženou spotřebu paliva až o 40 % oproti starším typům a velké břišní i boční cargo dveře.':
-      'A next-generation all-cargo version built with extensive use of composites. It offers modern and highly efficient flight characteristics, fuel burn reduction of up to 40% compared to older types, and large lower-deck and main-deck cargo doors.',
-    'Jediné cargo letadlo, které plně splňuje nejnovější nejpřísnější emisní limity ICAO pro rok 2028 díky své ultralehké kompozitní konstrukci.':
-      'The only cargo aircraft fully compliant with the latest and most stringent ICAO emission limits for 2028, thanks to its ultra-light composite design.',
-
-    // A380
-    'Největší osobní dopravní letadlo na světě, přezdívané „Superjumbo“. S plně dvoupatrovou kabinou nabízí ohromující prostor, jenž luxusní letecké společnosti využily k vybudování barů, sprchových koutů či soukromých apartmánů. Přestože byla výroba ukončena, zůstává symbolem gigantické letecké éry.':
-      'The largest passenger airliner in the world, nicknamed the "Superjumbo". With a full double-deck cabin, it offers spectacular space, which premium airlines used to build lounges, onboard showers, or private suites. Although production has ended, it remains the ultimate icon of a monumental aviation era.',
-    'Jeho celková plocha křídel je tak obrovská, že by na ni bylo možné zaparkovat téměř 70 osobních automobilů, což dává stroji perfektní vztlak.':
-      'Its total wing area is so massive that it could accommodate nearly 70 parked passenger cars, providing the aircraft with superb aerodynamic lift.',
-
-    // Beluga
-    'Unikátní nákladní letadlo určené výhradně pro převoz nadrozměrných leteckých komponentů (např. celých křídel či částí trupů) mezi jednotlivými evropskými továrnami Airbusu. Otevřená příď a ohromující nafouklý horní trup mu vysloužily trefnou přezdívku podle sněhobílé arktické velryby Belugy.':
-      'A unique freighter aircraft designed exclusively for carrying oversized aviation components (e.g. entire wings or fuselage sections) between individual European Airbus factories. Its swing-open nose and massive, puffed-up upper fuselage earned it a fitting nickname after the snow-white Arctic Beluga whale.',
-    'Má jeden z nejobjemnějších nákladových prostorů na světě, který mu umožňuje spolknout v podstatě celou sekci trupu nového dálkového Airbusu.':
-      'It has one of the largest cargo volume capacities in the world, allowing it to swallow basically an entire fuselage section of a new long-haul Airbus.',
-
-    // Boeing 787s
-    'Základní a nejkratší verze rodiny Dreamliner, zavedená do služby v roce 2011. Byla navržena s cílem nahradit starší stroje Boeing 767 a nabídnout mimořádnou efektivitu na dálkových linkách s nižším počtem cestujících.':
-      'The base and shortest version of the Dreamliner family, introduced into service in 2011. It was designed to replace older Boeing 767 aircraft and offer exceptional efficiency on long-haul routes with lower passenger numbers.',
-    'Je to vůbec první dálkové letadlo na světě, jehož drak a nosná kostra jsou tvořeny z více než 50 % z pokročilých polymerních uhlíkových kompozitů. Pevnost kompozitů zaručuje, že se křídla za letu ohýbají nahoru s průhybem až 3 metry.':
-      'It is the world\'s first long-haul commercial aircraft whose airframe and main structure are made of over 50% advanced polymer carbon composites. The strength of the composites allows the wings to flex upwards by up to 3 meters during flight.',
-    'Prodloužená verze Dreamlineru o více než 6 metrů, která se stala komerčně nejprodávanějším a nejpopulárnějším modelem celé řady. Nabízí skvělý poměr mezi doletem, kapacitou a provozními náklady.':
-      'An extended version of the Dreamliner, stretched by over 6 meters, which became the best-selling and most popular model of the entire family. It offers an excellent balance of range, capacity, and operating costs.',
-    'Díky vylepšené aerodynamice a větší kapacitě paliva má ze všech tří modelů Dreamlineru vůbec nejdelší dolet, dosahující přes 14 000 kilometrů.':
-      'Thanks to improved aerodynamics and larger fuel capacity, this variant has the longest range of all three Dreamliner models, reaching over 14,000 kilometers.',
-    'Nejdelší verze rodiny 787, prodloužená o dalších 5,5 metru oproti verzi -9. Je navržena tak, aby konkurovala Airbusu A350-900 a nahradila starší letadla na linkách s velkou hustotou provozu, přičemž sdílí více než 95 % dílů s verzí -9.':
-      'The longest version of the 787 family, stretched by an additional 5.5 meters compared to the -9. It is designed to compete with the Airbus A350-900 and replace older aircraft on high-density routes, while sharing over 95% of its parts with the -9.',
-    'Díky prodlouženému trupu pojme až o 15 % více cestujících než verze -9, a přesto vykazuje o 25 % nižší emise a spotřebu na sedadlo než letadla, která nahrazuje.':
-      'Thanks to the stretched fuselage, it carries up to 15% more passengers than the -9, yet offers 25% lower emissions and fuel burn per seat than the aircraft it replaces.',
-
-    // Concorde
-    'Jediné komerčně úspěšné nadzvukové transportní letadlo historie vyvinuté společně britskými a francouzskými inženýry. Létalo rychlostí přesahující Mach 2 (dvojnásobek rychlosti zvuku), díky čemuž dokázalo přelétnout Atlantský oceán za necelé 3,5 hodiny. Provoz ukončen v roce 2003.':
-      'The only commercially successful supersonic passenger transport aircraft in history, developed jointly by British and French engineers. It flew at speeds exceeding Mach 2 (twice the speed of sound), allowing it to cross the Atlantic Ocean in less than 3.5 hours. It was retired in 2003.',
-    'Jedno z pouhých dvou nadzvukových osobních letadel, které klesly do komerční služby, nabízející cestování rychlejší než kulka.':
-      'One of only two supersonic passenger airliners to ever enter commercial service, offering travel faster than a bullet.',
-    'Jedno z pouhých dvou nadzvukových osobních letadel, které kdy vstoupily do komerční služby, nabízející cestování rychlejší než kulka.':
-      'One of only two supersonic passenger airliners to ever enter commercial service, offering travel faster than a bullet.',
-
-    // Airlines
-    'Delta Air Lines je jednou z nejstarších a největších leteckých společností na světě. Sídlí v Atlantě ve státě Georgie a provozuje rozsáhlou vnitrostátní i mezinárodní síť linek. Je zakládajícím členem aliance SkyTeam a její hlavní hub v Atlantě (Hartsfield-Jackson) je nejvytíženějším letištěm světa podle počtu cestujících.':
-      'Delta Air Lines is one of the oldest and largest airlines in the world. Headquartered in Atlanta, Georgia, it operates an extensive domestic and international route network. It is a founding member of the SkyTeam alliance, and its main hub in Atlanta (Hartsfield-Jackson) is the world\'s busiest airport by passenger traffic.',
-    'Deutsche Lufthansa AG je německý národní letecký dopravce a jedna z největších leteckých skupin v Evropě. Je zakládajícím členem aliance Star Alliance. Lufthansa je známá svým špičkovým servisem, vysokými standardy bezpečnosti a provozem kultovních čtyřmotorových letadel Boeing 747 na dálkových trasách.':
-      'Deutsche Lufthansa AG is the German flag carrier and one of the largest airline groups in Europe. It is a founding member of the Star Alliance. Lufthansa is renowned for its premium service, high safety standards, and operation of the iconic four-engine Boeing 747 aircraft on long-haul routes.',
-    'Smartwings, a.s. je česká letecká společnost se sídlem v Praze. Provozuje pravidelné linky, charterové lety a pronájmy letadel pro cestovní kanceláře a jiné letecké společnosti. Je největším leteckým dopravcem v České republice a provozuje moderní flotilu letadel řady Boeing 737.':
-      'Smartwings, a.s. is a Czech airline headquartered in Prague. It operates scheduled flights, charter flights, and aircraft leases for travel agencies and other airlines. It is the largest airline in the Czech Republic and operates a modern fleet of Boeing 737 family aircraft.',
-    'Ryanair je irská nízkonákladová letecká společnost se sídlem v Dublinu. Je největší nízkonákladovou leteckou společností v Evropě a jednou z největších na světě podle počtu přepravených cestujících. Provozuje obrovskou flotilu převážně letadel Boeing 737 a obsluhuje stovky destinací po celé Evropě, severní Africe a na Blízkém východě.':
-      'Ryanair is an Irish ultra-low-cost carrier headquartered in Dublin. It is the largest low-cost airline in Europe and one of the largest in the world by scheduled passengers carried. It operates a massive fleet of mostly Boeing 737 aircraft, serving hundreds of destinations across Europe, North Africa, and the Middle East.',
-    'British Airways je vlajkový letecký dopravce Spojeného království se sídlem v Londýně. Je jedním z největších leteckých dopravců v Evropě a zakládajícím členem aliance oneworld. Provozuje rozsáhlou globální síť linek z hlavního uzlu na letišti Londýn Heathrow.':
-      'British Airways is the flag carrier of the United Kingdom, headquartered in London. It is one of the largest airlines in Europe and a founding member of the oneworld alliance. It operates an extensive global route network from its main hub at London Heathrow Airport.',
-    'KLM Royal Dutch Airlines (Koninklijke Luchtvaart Maatschappij) je národní letecký dopravce Nizozemska se sídlem v Amstelveenu, s hlavním uzlem na letišti Schiphol v Amsterdamu. Založena v roce 1919, KLM je nejstarší leteckou společností na světě, která stále operuje pod svým původním názvem.':
-      'KLM Royal Dutch Airlines (Koninklijke Luchtvaart Maatschappij) is the flag carrier of the Netherlands, headquartered in Amstelveen, with its main hub at Amsterdam Airport Schiphol. Founded in 1919, KLM is the oldest airline in the world still operating under its original name.',
-    'Qatar Airways je státní národní letecký dopravce Kataru se sídlem v Dauhá. Společnost propojuje přes 150 mezinárodních destinací po celém světě ze svého hlavního uzlu na letišti Hamad. Je známá svým luxusním servisem Qsuite a opakovaně získala ocenění pro nejlepší leteckou společnost světa v hodnocení Skytrax.':
-      'Qatar Airways is the state-owned flag carrier of Qatar, headquartered in Doha. The airline links over 150 international destinations worldwide from its main hub at Hamad International Airport. It is renowned for its luxurious Qsuite service and has repeatedly won the World\'s Best Airline award by Skytrax.',
-    'Wizz Air je maďarská nízkonákladová letecká společnost se sídlem v Budapešti. Je jednou z největších nízkonákladových leteckých společností ve střední a východní Evropě a provozuje rozsáhlou síť linek propojující desítky zemí v Evropě, na Blízkém východě a v severní Africe s moderní flotilou letadel Airbus.':
-      'Wizz Air is a Hungarian ultra-low-cost carrier headquartered in Budapest. It is one of the largest low-cost airlines in Central and Eastern Europe, operating an extensive route network connecting dozens of countries in Europe, the Middle East, and North Africa with a modern fleet of Airbus aircraft.',
-    'Singapore Airlines jsou vlajkovým leteckým dopravcem Singapuru s hlavním uzlem na letišti Changi. Jsou známé svými mimořádně vysokými standardy služeb, luxusními kabinami a tím, že jako první na světě uvedly do provozu obří letoun Airbus A380.':
-      'Singapore Airlines is the flag carrier of Singapore, with its main hub at Changi Airport. It is renowned for its exceptionally high standards of service, luxurious cabins, and for being the global launch customer of the double-decker Airbus A380.',
-    'TAP Air Portugal je národní letecký dopravce Portugalska se sídlem v Lisabonu. Je členem Star Alliance a provozuje rozsáhlou síť linek, zejména do Severní a Jižní Ameriky a Afriky, s moderní celoairbusovou flotilou.':
-      'TAP Air Portugal is the flag carrier of Portugal, headquartered in Lisbon. A member of the Star Alliance, it operates an extensive route network, particularly to North and South America and Africa, with a modern all-Airbus fleet.',
-    'Air Canada je největší letecká společnost a národní dopravce Kanady se sídlem v Montrealu. Je zakládajícím členem Star Alliance a propojuje desítky destinací na šesti kontinentech z hlavních uzlů v Torontu, Vancouveru a Montrealu.':
-      'Air Canada is the largest airline and flag carrier of Canada, headquartered in Montreal. It is a founding member of Star Alliance and connects dozens of destinations across six continents from its hubs in Toronto, Vancouver, and Montreal.',
-    'Finnair je finský národní letecký dopravce se sídlem v Vantaa, Helsinkách. Je jedním z nejstarších nepřetržitě fungujících leteckých dopravců na světě a členem aliance oneworld. Specializuje se na rychlé spojení mezi Evropou a Asií přes severní polární trasu.':
-      'Finnair is the flag carrier of Finland, headquartered in Vantaa, Helsinki. It is one of the oldest continuously operating airlines in the world and a member of the oneworld alliance. It specializes in fast connections between Europe and Asia via the northern polar route.',
-    'United Airlines je jednou z největších leteckých společností na světě se sídlem v Chicagu, Illinois. Provozuje rozsáhlou vnitrostátní i mezinárodní síť s klíčovými uzly jako Chicago O\'Hare, Denver, Houston a Newark. Je zakládajícím členem Star Alliance.':
-      'United Airlines is one of the largest airlines in the world, headquartered in Chicago, Illinois. It operates an extensive domestic and international route network, with major hubs at Chicago O\'Hare, Denver, Houston, and Newark. It is a founding member of Star Alliance.',
-    'American Airlines je největší letecká společnost na světě podle velikosti flotily a počtu přepravených cestujících, se sídlem ve Fort Worthu v Texasu. Je zakládajícím členem aliance oneworld a jejím největším uzlem je letiště Dallas/Fort Worth.':
-      'American Airlines is the world\'s largest airline by fleet size and scheduled passengers carried, headquartered in Fort Worth, Texas. It is a founding member of the oneworld alliance, with Dallas/Fort Worth International Airport as its largest hub.',
-    'Turkish Airlines je národní letecký dopravce Turecka se sídlem v Istanbulu. Létá do více destinací bez mezipřistání než kterákoli jiná letecká společnost na světě. Jejím hlavním uzlem je moderní letiště Istanbul Airport a je členem Star Alliance.':
-      'Turkish Airlines is the flag carrier of Turkey, headquartered in Istanbul. It flies to more non-stop destinations than any other airline in the world. Its main hub is the modern Istanbul Airport and it is a member of the Star Alliance.',
-    'All Nippon Airways (ANA) je největší letecká společnost v Japonsku se sídlem v Tokiu. Provozuje rozsáhlou síť vnitrostátních a mezinárodních linek z hlavních uzlů na letištích Haneda a Narita a je členem Star Alliance. Je známá svými výjimečnými službami a pětihvězdičkovým hodnocením.':
-      'All Nippon Airways (ANA) is the largest airline in Japan, headquartered in Tokyo. It operates an extensive network of domestic and international flights from its primary hubs at Haneda and Narita airports and is a member of Star Alliance, renowned for its exceptional service and 5-star rating.',
-    'Emirates je jedna z největších leteckých společností na světě se sídlem v Dubaji v SAE. Je známá svým luxusním servisem, flotilou složenou výhradně ze širokotrupých letadel Airbus A380 a Boeing 777 a svým globálním uzlem na letišti v Dubaji.':
-      'Emirates is one of the world\'s largest airlines, based in Dubai, UAE. It is renowned for its luxurious service, a fleet composed entirely of wide-body Airbus A380 and Boeing 777 aircraft, and its global hub at Dubai International Airport.',
-    'Qantas je australský národní letecký dopravce a jedna z nejstarších nepřetržitě fungujících leteckých společností na světě. Je zakládajícím členem aliance oneworld a provozuje rozsáhlou vnitrostátní i mezinárodní síť s klíčovými uzly v Sydney, Melbourne a Brisbane.':
-      'Qantas is the flag carrier of Australia and one of the oldest continuously operating airlines in the world. It is a founding member of the oneworld alliance and operates an extensive domestic and international network with key hubs in Sydney, Melbourne, and Brisbane.',
-    'Korean Air je největší letecká společnost a národní dopravce Jižní Koreje se sídlem v Soulu. Je zakládajícím členem aliance SkyTeam a provozuje rozsáhlou globální síť spojující Asii, Ameriku, Evropu a Austrálii z hlavního uzlu na letišti Inčchon.':
-      'Korean Air is the largest airline and flag carrier of South Korea, headquartered in Seoul. A founding member of the SkyTeam alliance, it operates an extensive global network connecting Asia, the Americas, Europe, and Australia from its main hub at Incheon International Airport.',
-    'Vueling je španělská nízkonákladová letecká společnost se sídlem ve Viladecans u Barcelony. Je druhou největší leteckou společností ve Španělsku a provozuje rozsáhlou evropskou síť s hlavními uzly v Barceloně a Římě.':
-      'Vueling is a Spanish low-cost airline headquartered in Viladecans near Barcelona. It is the second-largest airline in Spain, operating an extensive European network with primary hubs in Barcelona and Rome.',
-    'Cathay Pacific je vlajkový letecký dopravce Hongkongu se sídlem na letišti v Hongkongu. Je zakládajícím členem aliance oneworld a je známý svými vysokými standardy kvality služeb a rozsáhlou globální sítí přepravy cestujících i nákladu.':
-      'Cathay Pacific is the flag carrier of Hong Kong, headquartered at Hong Kong International Airport. A founding member of the oneworld alliance, it is renowned for its high standards of service quality and an extensive global passenger and cargo network.'
-  };
-
-  if (overrides[text]) {
-    return overrides[text];
-  }
-
-  // Pre-process and let's replace common words & phrases first
-  let translation = text
-    .replace(/„/g, '"')
-    .replace(/“/g, '"');
-
-  // Common sentence beginnings / key patterns
-  const patterns: { cz: RegExp; en: string }[] = [
-    { cz: /Úzkotrupé dopravní letadlo/g, en: 'Narrow-body commercial aircraft' },
-    { cz: /Širokotrupé dopravní letadlo/g, en: 'Wide-body commercial aircraft' },
-    { cz: /Jedná se o/g, en: 'It is' },
-    { cz: /Je navržen pro/g, en: 'Designed for' },
-    { cz: /Je speciálně navržena pro/g, en: 'Specially designed for' },
-    { cz: /byl vytvořen jako/g, en: 'was created as' },
-    { cz: /Jeho hlavním cílem/g, en: 'Its main goal' },
-    { cz: /bylo nahradit/g, en: 'was to replace' },
-    { cz: /vyniká v/g, en: 'excels in' },
-    { cz: /nabízí/g, en: 'offers' },
-    { cz: /Prodloužená verze/g, en: 'An extended version' },
-    { cz: /Základní verze/g, en: 'The base version' },
-    { cz: /Nejkratší verze/g, en: 'The shortest version' },
-    { cz: /Nejdelší verze/g, en: 'The longest version' },
-    { cz: /velmi populární/g, en: 'very popular' },
-    { cz: /nejúspěšnější/g, en: 'the most successful' },
-    { cz: /nejprodávanější/g, en: 'the best-selling' },
-    { cz: /přináší/g, en: 'brings' },
-    { cz: /novou úroveň/g, en: 'a new level' },
-    { cz: /palivové účinnosti/g, en: 'fuel efficiency' },
-    { cz: /vynikající dolet/g, en: 'excellent range' },
-    { cz: /krátkých až středně dlouhých/g, en: 'short to medium-haul' },
-    { cz: /na dálkových linkách/g, en: 'on long-haul routes' },
-    { cz: /moderním designem/g, en: 'modern design' },
-    { cz: /kompozitních materiálů/g, en: 'composite materials' },
-    { cz: /nové generace/g, en: 'new generation' },
-    { cz: /hlučnost o/g, en: 'noise levels by' },
-    { cz: /provozní náklady/g, en: 'operating costs' },
-    { cz: /pasažérů/g, en: 'passengers' },
-    { cz: /přelomový/g, en: 'groundbreaking' },
-    { cz: /legendární/g, en: 'legendary' },
-    { cz: /první letoun/g, en: 'first aircraft' },
-    { cz: /na světě/g, en: 'in the world' },
-    { cz: /vůbec první/g, en: 'the very first' },
-    { cz: /zaveden do služby/g, en: 'introduced into service' },
-    { cz: /v roce/g, en: 'in' },
-    { cz: /která/g, en: 'which' },
-    { cz: /které/g, en: 'which' },
-    { cz: /který/g, en: 'which' },
-    { cz: /Díky tomu/g, en: 'Thanks to this' },
-    { cz: /Díky/g, en: 'Thanks to' },
-    { cz: /Je poháněn/g, en: 'It is powered by' },
-    { cz: /moderními motory/g, en: 'modern engines' },
-    { cz: /letadlo/g, en: 'aircraft' },
-    { cz: /letadla/g, en: 'aircraft' },
-    { cz: /rodiny/g, en: 'family' },
-    { cz: /řady/g, en: 'series' },
-    { cz: /komfort/g, en: 'comfort' },
-    { cz: /cestujících/g, en: 'passengers' },
-    { cz: /dálkové/g, en: 'long-haul' },
-    { cz: /regionální/g, en: 'regional' },
-    { cz: /střední/g, en: 'medium' },
-    { cz: /velké/g, en: 'large' },
-    { cz: /vlastnosti/g, en: 'features' },
-    { cz: /vyniká/g, en: 'excels' },
-  ];
-
-  for (const pattern of patterns) {
-    translation = translation.replace(pattern.cz, pattern.en);
-  }
-
-  // Define a comprehensive dictionary of Czech words commonly found in the catalog
-  // to serve as a deep structural backup replacement layer
-  const wordTranslations: Record<string, string> = {
-    // Aircraft specifics
-    "letadlo": "aircraft",
-    "letadla": "aircraft",
-    "letadlem": "aircraft",
-    "letadlu": "aircraft",
-    "letadel": "aircraft",
-    "letoun": "aircraft",
-    "letounu": "aircraft",
-    "letouny": "aircraft",
-    "letounům": "aircraft",
-    "stroje": "aircraft",
-    "stroj": "aircraft",
-    "strojem": "aircraft",
-    "verze": "version",
-    "verzí": "version",
-    "verzi": "version",
-    "variantou": "variant",
-    "varianty": "variants",
-    "variantu": "variant",
-    "rodiny": "family",
-    "rodina": "family",
-    "řady": "series",
-    "řada": "series",
-    "řadě": "series",
-    "motor": "engine",
-    "motory": "engines",
-    "motorů": "engines",
-    "motorem": "engine",
-    "křídlo": "wing",
-    "křídla": "wings",
-    "křídel": "wings",
-    "kokpit": "cockpit",
-    "kokpitu": "cockpit",
-    "displeje": "displays",
-    "obrazovky": "screens",
-    "displeji": "displays",
-    "inženýra": "engineer",
-    "inženýr": "engineer",
-    "palubního": "flight",
-    "posádky": "crew",
-    "posádka": "crew",
-    "pilotů": "pilots",
-    "piloti": "pilots",
-    "pasažérů": "passengers",
-    "pasažéry": "passengers",
-    "cestujících": "passengers",
-    "cestující": "passengers",
-    "sedadel": "seats",
-    "sedadla": "seats",
-    "třídy": "classes",
-    "třídách": "classes",
-
-    // Specs & characteristics
-    "dolet": "range",
-    "doletem": "range",
-    "doletu": "range",
-    "rychlost": "speed",
-    "rychlostí": "speed",
-    "kapacita": "capacity",
-    "kapacity": "capacity",
-    "kapacitě": "capacity",
-    "kapacitou": "capacity",
-    "hmotnost": "weight",
-    "hmotností": "weight",
-    "efektivita": "efficiency",
-    "efektivitu": "efficiency",
-    "efektivitou": "efficiency",
-    "spolehlivost": "reliability",
-    "spolehlivostí": "reliability",
-    "bezpečnost": "safety",
-    "bezpečností": "safety",
-    "hospodárnost": "economics",
-    "hospodárností": "economics",
-    "spotřeba": "consumption",
-    "spotřebu": "consumption",
-    "emise": "emissions",
-    "bestseller": "bestseller",
-    "winglety": "winglets",
-    "winglet": "winglet",
-    "aerodynamika": "aerodynamics",
-    "aerodynamiku": "aerodynamics",
-    "aerodynamikou": "aerodynamics",
-    "vlastnosti": "characteristics",
-    "vlastnostmi": "characteristics",
-    "konstrukce": "construction",
-    "trup": "fuselage",
-    "trupu": "fuselage",
-    "trupem": "fuselage",
-    "palivo": "fuel",
-    "paliva": "fuel",
-    "nádrž": "tank",
-    "nádrže": "tanks",
-    "nádrží": "tanks",
-    "kabina": "cabin",
-    "kabiny": "cabin",
-    "kabinou": "cabin",
-    "prostor": "space",
-    "prostoru": "space",
-    "nákladového": "cargo",
-    "nákladu": "cargo",
-    "náklad": "cargo",
-    "materiálů": "materials",
-    "materiály": "materials",
-    "slitiny": "alloys",
-    "uhlíkových": "carbon",
-    "kompozitních": "composite",
-    "kompozity": "composites",
-
-    // Geographics & origins
-    "světě": "world",
-    "světa": "world",
-    "unie": "Union",
-    "státy": "States",
-    "evropský": "European",
-    "evropská": "European",
-    "evropské": "European",
-    "americký": "American",
-    "americká": "American",
-    "americké": "American",
-    "francouzský": "French",
-    "francouzská": "French",
-    "německý": "German",
-    "německá": "German",
-    "britský": "British",
-    "britská": "British",
-    "ruský": "Russian",
-    "ruská": "Russian",
-    "sovětský": "Soviet",
-    "sovětská": "Soviet",
-    "brazilský": "Brazilian",
-    "brazilská": "Brazilian",
-    "kanadský": "Canadian",
-    "kanadská": "Canadian",
-    "japonský": "Japanese",
-    "japonská": "Japanese",
-    "ukrajinský": "Ukrainian",
-    "továrnami": "factories",
-    "továrny": "factories",
-    "výrobce": "manufacturer",
-    "přepravců": "carriers",
-    "aerolinií": "airlines",
-    "aerolinie": "airlines",
-    "společností": "airlines",
-    "společnosti": "airlines",
-    "zákazníci": "customers",
-
-    // Time & history
-    "původní": "original",
-    "základní": "base",
-    "první": "first",
-    "druhý": "second",
-    "třetí": "third",
-    "historie": "history",
-    "historii": "history",
-    "historický": "historical",
-    "dnes": "today",
-    "dodnes": "to this day",
-    "stále": "still",
-    "rok": "year",
-    "letectví": "aviation",
-    "éra": "era",
-    "éry": "era",
-    "vzlétl": "first flew",
-    "vzlétla": "first flew",
-    "vzlétlo": "first flew",
-    "představen": "introduced",
-    "představeno": "introduced",
-    "zaveden": "introduced",
-    "zavedena": "introduced",
-    "služby": "service",
-    "službě": "service",
-    "službu": "service",
-    "provozu": "service",
-    "provoz": "service",
-    "výroby": "production",
-    "výroba": "production",
-    "vyvinut": "developed",
-    "vyvinuta": "developed",
-    "vyrobeno": "built",
-    "vyrobena": "built",
-    "vyráběný": "produced",
-
-    // Adjectives & adverbs
-    "největší": "largest",
-    "nejmenší": "smallest",
-    "nejkratší": "shortest",
-    "nejdelší": "longest",
-    "moderní": "modern",
-    "modernější": "more modern",
-    "nejmodernější": "most modern",
-    "úzkotrupý": "narrow-body",
-    "úzkotrupá": "narrow-body",
-    "širokotrupý": "wide-body",
-    "širokotrupá": "wide-body",
-    "regionální": "regional",
-    "nadzvukový": "supersonic",
-    "nadzvuková": "supersonic",
-    "nákladní": "freighter",
-    "osobní": "passenger",
-    "komerční": "commercial",
-    "civilní": "civil",
-    "dálkový": "long-haul",
-    "dálková": "long-haul",
-    "dálkové": "long-haul",
-    "krátký": "short",
-    "krátké": "short",
-    "střední": "medium",
-    "úspěšný": "successful",
-    "nejúspěšnější": "most successful",
-    "populární": "popular",
-    "nejpopulárnější": "most popular",
-    "prodávanější": "better-selling",
-    "nejprodávanější": "best-selling",
-    "efektivní": "efficient",
-    "nejefektivnější": "most efficient",
-    "hospodárný": "economical",
-    "spolehlivý": "reliable",
-    "bezpečný": "safe",
-    "klasické": "classic",
-    "klasická": "classic",
-    "legendární": "legendary",
-    "přelomový": "groundbreaking",
-    "unikátní": "unique",
-    "výjimečný": "exceptional",
-    "specifický": "specific",
-    "charakteristické": "characteristic",
-    "charakteristická": "characteristic",
-    "nové": "new",
-    "nová": "new",
-    "nový": "new",
-    "starší": "older",
-    "staré": "old",
-    "dalších": "additional",
-    "dodatečné": "additional",
-    "přidané": "added",
-    "vyšší": "higher",
-    "větší": "larger",
-    "menší": "smaller",
-    "kratší": "shorter",
-    "delší": "longer",
-    "pouze": "only",
-    "především": "mainly",
-    "hlavně": "mainly",
-    "zejména": "especially",
-    "přestože": "although",
-    "však": "however",
-    "nicméně": "however",
-    "také": "also",
-    "plně": "fully",
-    "zcela": "fully",
-    "extrémně": "extremely",
-    "vysoce": "highly",
-    "mimořádně": "exceptionally",
-    "velmi": "very",
-    "špičkové": "top-tier",
-    "vynikající": "excellent",
-    "obří": "giant",
-
-    // Verbs
-    "představuje": "represents",
-    "představoval": "represented",
-    "stanovuje": "sets",
-    "vyniká": "excels",
-    "vynikají": "excel",
-    "nabízí": "offers",
-    "přináší": "brings",
-    "přinesl": "brought",
-    "umožňuje": "allows",
-    "umožnil": "enabled",
-    "dokáže": "can",
-    "může": "can",
-    "mohou": "can",
-    "dosahuje": "reaches",
-    "dosáhl": "reached",
-    "překonat": "surpass",
-    "překonal": "surpassed",
-    "nahradit": "replace",
-    "sdílí": "shares",
-    "tvoří": "forms",
-    "vstoupil": "entered",
-    "prokázal": "proved",
-  };
-
-  // Perform word-by-word fallback check for leftover Czech words in translation
-  // splitting by boundaries, keeping structure and punctuation intact
-  const words = translation.split(' ');
-  const processedWords = words.map((word) => {
-    if (!word) return '';
-    
-    // Strip punctuation
-    const leadingPunct = word.match(/^["'„(‘]*/)?.[0] || '';
-    const trailingPunct = word.match(/[.,\/#!$%\^&\*;:{}=\-_`~()”?“'’]*$/)?.[0] || '';
-    const coreWord = word.slice(leadingPunct.length, word.length - trailingPunct.length);
-    const lowerCore = coreWord.toLowerCase();
-
-    if (wordTranslations[lowerCore]) {
-      const translatedCore = wordTranslations[lowerCore];
-      // Keep casing: if original was fully uppercase, or capitalized
-      let finalCore = translatedCore;
-      if (coreWord && coreWord[0] === coreWord[0].toUpperCase()) {
-        finalCore = translatedCore[0].toUpperCase() + translatedCore.slice(1);
-      }
-      return leadingPunct + finalCore + trailingPunct;
-    }
-    return word;
-  });
-
-  translation = processedWords.join(' ');
-
-  if (isUniqueness) {
-    if (translation.startsWith('„') && translation.endsWith('“')) {
-      translation = translation.substring(1, translation.length - 1);
-    }
-    if (!translation.startsWith('"') && !translation.endsWith('"')) {
-      translation = `"${translation}"`;
-    }
-  }
-
-  return translation;
+export function translateAirportText(text: string, lang: 'CZ' | 'EN'): string {
+  if (lang === 'CZ' || !text) return text;
+  
+  // Clean boundaries like punctuation, quotes, etc.
+  const leadingMatch = text.match(/^[\'"„(‘]*/);
+  const trailingMatch = text.match(/[.,\\/#!$%\\^&\\*;:{}=\\-_\`~()”?“\'’]*$/);
+  
+  const leading = leadingMatch ? leadingMatch[0] : '';
+  const trailing = trailingMatch ? trailingMatch[0] : '';
+  
+  const coreText = text.slice(leading.length, text.length - trailing.length);
+  const trimmed = coreText.trim();
+  
+  const translatedCore = airportTranslations[trimmed] || trimmed;
+  
+  // Reconstruct with original leading/trailing parts
+  return leading + translatedCore + trailing;
 }

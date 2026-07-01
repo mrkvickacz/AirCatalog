@@ -49,3 +49,21 @@ export interface Airline {
   continent: string;            // 'Evropa' | 'Amerika' | 'Asie' | 'Austrálie a Oceánie'
 }
 
+export interface Airport {
+  id: string;
+  name: string;                 // Official name in Czech/English
+  code: string;                 // IATA / ICAO code (e.g. "PRG / LKPR")
+  city: string;                 // City served
+  country: string;              // Country located
+  builtYear: number;            // Opening/Construction year
+  avgFlightsDaily: number;      // Average aircraft departures/arrivals daily
+  passengersYearlyM: number;    // Yearly passengers in millions
+  runwaysCount: number;         // Number of active runways
+  altitudeM: number;            // Elevation in meters above sea level
+  uniqueness: string;           // Czech unique fact/description
+  description: string;          // Czech description
+  lat: number;                  // Latitude coordinate (-90 to 90)
+  lon: number;                  // Longitude coordinate (-180 to 180)
+}
+
+

@@ -692,7 +692,31 @@ export function translateText(text: string, lang: 'CZ' | 'EN', stripQuotes = fal
 export function translateAirportText(text: string, lang: 'CZ' | 'EN'): string {
   if (lang === 'CZ' || !text) return text;
   
-  // Clean boundaries like punctuation, quotes, etc.
+  const fullTrimmed = text.trim();
+  
+  // 1. Check full string against templates first, before removing punctuation/quotes
+  // DESCRIPTION template
+  const descRegex = /^Regionální mezinárodní letiště obsluhující město (.*?) v zemi (.*?)\. Zajišťuje důležité dopravní spojení v oblasti a nabízí pravidelné i charterové lety\.$/;
+  const descMatch = fullTrimmed.match(descRegex);
+  if (descMatch) {
+    const cityCzech = descMatch[1];
+    const countryCzech = descMatch[2];
+    const cityEnglish = translateAirportText(cityCzech, 'EN');
+    const countryEnglish = translateAirportText(countryCzech, 'EN');
+    return `A regional international airport serving the city of ${cityEnglish} in ${countryEnglish}. It provides important transportation links in the region and offers regular and charter flights.`;
+  }
+  
+  // UNIQUENESS template
+  const uniqRegex = /^Letiště (.*?) se nachází v nadmořské výšce (.*?) metrů nad mořem a je vybaveno vzletovou a přistávací dráhou o dostatečné délce pro bezpečné odbavení středně velkých letadel\.$/;
+  const uniqMatch = fullTrimmed.match(uniqRegex);
+  if (uniqMatch) {
+    const nameCzech = uniqMatch[1];
+    const alt = uniqMatch[2];
+    const nameEnglish = translateAirportText(nameCzech, 'EN');
+    return `${nameEnglish} Airport is located at an altitude of ${alt} meters above sea level and is equipped with a runway of sufficient length for the safe handling of medium-sized aircraft.`;
+  }
+  
+  // 2. Clean boundaries like punctuation, quotes, etc. for shorter fragments or keys
   const leadingMatch = text.match(/^[\'"„(‘]*/);
   const trailingMatch = text.match(/[.,\\/#!$%\\^&\\*;:{}=\\-_\`~()”?“\'’]*$/);
   
@@ -702,8 +726,39 @@ export function translateAirportText(text: string, lang: 'CZ' | 'EN'): string {
   const coreText = text.slice(leading.length, text.length - trailing.length);
   const trimmed = coreText.trim();
   
-  const translatedCore = airportTranslations[trimmed] || trimmed;
+  // 3. Direct match in dictionary
+  if (airportTranslations[trimmed]) {
+    return leading + airportTranslations[trimmed] + trailing;
+  }
   
-  // Reconstruct with original leading/trailing parts
-  return leading + translatedCore + trailing;
+  // 4. Dynamic prefix matching for names:
+  // If starts with "Mezinárodní letiště "
+  if (trimmed.startsWith("Mezinárodní letiště ")) {
+    const rest = trimmed.slice("Mezinárodní letiště ".length);
+    const translatedRest = translateAirportText(rest, 'EN');
+    return leading + `${translatedRest} International Airport` + trailing;
+  }
+  
+  // If starts with "Letiště "
+  if (trimmed.startsWith("Letiště ")) {
+    const rest = trimmed.slice("Letiště ".length);
+    const translatedRest = translateAirportText(rest, 'EN');
+    return leading + `${translatedRest} Airport` + trailing;
+  }
+  
+  // 5. Diacritics transliteration / normalization fallback for cities and names
+  const diacritics: Record<string, string> = {
+    'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ů': 'u', 'ý': 'y',
+    'č': 'c', 'ď': 'd', 'ě': 'e', 'ň': 'n', 'ř': 'r', 'š': 's', 'ť': 't', 'ž': 'z',
+    'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U', 'Ý': 'Y',
+    'Č': 'C', 'Ď': 'D', 'Ě': 'E', 'Ň': 'N', 'Ř': 'R', 'Š': 'S', 'Ť': 'T', 'Ž': 'Z'
+  };
+  
+  let replaced = '';
+  for (let i = 0; i < trimmed.length; i++) {
+    const char = trimmed[i];
+    replaced += diacritics[char] || char;
+  }
+  
+  return leading + replaced + trailing;
 }

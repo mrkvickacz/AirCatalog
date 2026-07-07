@@ -484,5 +484,191 @@ export const AIRLINE_DATA: Airline[] = [
       { aircraftId: 'boeing-777-300', quantity: 17 },
       { aircraftId: 'boeing-777-300er', quantity: 37 }
     ]
+  },
+  {
+    id: 'air-france',
+    continent: 'Evropa',
+    name: 'Air France',
+    foundedYear: 1933,
+    country: 'Francie',
+    hub: 'Paříž Charles de Gaulle (CDG)',
+    alliance: 'SkyTeam',
+    description: 'Air France je vlajkový francouzský letecký dopravce se sídlem v Paříži. Patří mezi nejstarší a nejvýznamnější aerolinky na světě. Je zakládajícím členem aliance SkyTeam a její hlavní základna se nachází na letišti Charlese de Gaulla v Paříži.',
+    logoUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a220-300', quantity: 37 },
+      { aircraftId: 'airbus-a320-a319-100', quantity: 11 },
+      { aircraftId: 'airbus-a320-200', quantity: 36 },
+      { aircraftId: 'airbus-a320-a321-200', quantity: 15 },
+      { aircraftId: 'airbus-a330-200', quantity: 15 },
+      { aircraftId: 'airbus-a350-900', quantity: 32 },
+      { aircraftId: 'boeing-777-200er', quantity: 18 },
+      { aircraftId: 'boeing-777-300er', quantity: 43 },
+      { aircraftId: 'boeing-787-9', quantity: 10 }
+    ]
+  },
+  {
+    id: 'iberia',
+    continent: 'Evropa',
+    name: 'Iberia',
+    foundedYear: 1927,
+    country: 'Španělsko',
+    hub: 'Madrid (MAD)',
+    alliance: 'oneworld',
+    description: 'Iberia je národní letecká společnost Španělska se sídlem v Madridu. Je členem aliance oneworld a provozuje rozsáhlou síť mezinárodních spojů, přičemž je klíčovým mostem mezi Evropou a Latinskou Amerikou.',
+    logoUrl: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a320-a319-100', quantity: 6 },
+      { aircraftId: 'airbus-a320-200', quantity: 13 },
+      { aircraftId: 'airbus-a320-neo', quantity: 17 },
+      { aircraftId: 'airbus-a320-a321-200', quantity: 11 },
+      { aircraftId: 'airbus-a320-a321-neo', quantity: 6 },
+      { aircraftId: 'airbus-a330-200', quantity: 16 },
+      { aircraftId: 'airbus-a330-300', quantity: 8 },
+      { aircraftId: 'airbus-a350-900', quantity: 22 }
+    ]
+  },
+  {
+    id: 'sas',
+    continent: 'Evropa',
+    name: 'SAS - Scandinavian Airlines',
+    foundedYear: 1946,
+    country: 'Švédsko / Norsko / Dánsko',
+    hub: 'Kodaň (CPH) / Oslo (OSL) / Stockholm (ARN)',
+    alliance: 'SkyTeam',
+    description: 'Scandinavian Airlines (SAS) je vlajkový letecký dopravce pro Skandinávii (Dánsko, Norsko a Švédsko). Společnost provozuje lety ze svých hlavních základen v Kodani, Oslu a Stockholmu.',
+    logoUrl: 'https://images.unsplash.com/photo-1520437358207-3dbf6f56bc15?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a320-a319-100', quantity: 4 },
+      { aircraftId: 'airbus-a320-200', quantity: 11 },
+      { aircraftId: 'airbus-a320-neo', quantity: 36 },
+      { aircraftId: 'airbus-a320-a321-neo', quantity: 3 },
+      { aircraftId: 'airbus-a330-300', quantity: 7 },
+      { aircraftId: 'airbus-a350-900', quantity: 4 },
+      { aircraftId: 'boeing-737-700', quantity: 4 },
+      { aircraftId: 'embraer-e195', quantity: 10 }
+    ]
+  },
+  {
+    id: 'brussels-airlines',
+    continent: 'Evropa',
+    name: 'Brussels Airlines',
+    foundedYear: 2002,
+    country: 'Belgie',
+    hub: 'Brusel (BRU)',
+    alliance: 'Star Alliance',
+    description: 'Brussels Airlines je národní belgický letecký dopravce se sídlem v Bruselu. Je členem skupiny Lufthansa Group a aliance Star Alliance. Provozuje lety do Evropy, Severní Ameriky a Afriky.',
+    logoUrl: 'https://images.unsplash.com/photo-1483450388369-9ed95738483c?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a320-a319-100', quantity: 15 },
+      { aircraftId: 'airbus-a320-200', quantity: 16 },
+      { aircraftId: 'airbus-a320-neo', quantity: 5 },
+      { aircraftId: 'airbus-a330-300', quantity: 10 }
+    ]
+  },
+  {
+    id: 'lot-polish-airlines',
+    continent: 'Evropa',
+    name: 'LOT Polish Airlines',
+    foundedYear: 1928,
+    country: 'Polsko',
+    hub: 'Varšava (WAW)',
+    alliance: 'Star Alliance',
+    description: 'LOT Polish Airlines je polský národní letecký dopravce se sídlem ve Varšavě. Patří mezi nejstarší aerolinky na světě. Je členem aliance Star Alliance a provozuje rozsáhlou síť letů po Evropě, Severní Americe a Asii ze svého hlavního uzlu na letišti Chopina ve Varšavě.',
+    logoUrl: 'https://images.unsplash.com/photo-1473862170180-84427c485ade?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'boeing-737-800', quantity: 6 },
+      { aircraftId: 'boeing-737-max-8', quantity: 11 },
+      { aircraftId: 'boeing-787-8', quantity: 8 },
+      { aircraftId: 'boeing-787-9', quantity: 7 },
+      { aircraftId: 'embraer-e170', quantity: 6 },
+      { aircraftId: 'embraer-e175', quantity: 15 },
+      { aircraftId: 'embraer-e190', quantity: 8 },
+      { aircraftId: 'embraer-e195', quantity: 15 }
+    ]
+  },
+  {
+    id: 'austrian-airlines',
+    continent: 'Evropa',
+    name: 'Austrian Airlines',
+    foundedYear: 1957,
+    country: 'Rakousko',
+    hub: 'Vídeň (VIE)',
+    alliance: 'Star Alliance',
+    description: 'Austrian Airlines je národní letecká společnost Rakouska se sídlem ve Vídni. Je dceřinou společností Lufthansa Group a členem aliance Star Alliance. Provozuje rozsáhlou síť letů s důrazem na střední a východní Evropu a Blízký východ.',
+    logoUrl: 'https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a320-200', quantity: 29 },
+      { aircraftId: 'airbus-a320-neo', quantity: 5 },
+      { aircraftId: 'airbus-a320-a321-100', quantity: 3 },
+      { aircraftId: 'airbus-a320-a321-200', quantity: 3 },
+      { aircraftId: 'boeing-777-200er', quantity: 6 },
+      { aircraftId: 'boeing-787-9', quantity: 2 },
+      { aircraftId: 'embraer-e195', quantity: 17 }
+    ]
+  },
+  {
+    id: 'swiss-international',
+    continent: 'Evropa',
+    name: 'Swiss International Air Lines',
+    foundedYear: 2002,
+    country: 'Švýcarsko',
+    hub: 'Curych (ZRH) / Ženeva (GVA)',
+    alliance: 'Star Alliance',
+    description: 'Swiss International Air Lines (SWISS) je hlavní letecký dopravce Švýcarska. Vznikl po úpadku společnosti Swissair a je součástí skupiny Lufthansa Group. Je členem aliance Star Alliance a vyniká špičkovou kvalitou služeb a typickou švýcarskou pohostinností.',
+    logoUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a220-100', quantity: 9 },
+      { aircraftId: 'airbus-a220-300', quantity: 21 },
+      { aircraftId: 'airbus-a320-200', quantity: 11 },
+      { aircraftId: 'airbus-a320-neo', quantity: 7 },
+      { aircraftId: 'airbus-a320-a321-100', quantity: 3 },
+      { aircraftId: 'airbus-a320-a321-200', quantity: 3 },
+      { aircraftId: 'airbus-a320-a321-neo', quantity: 4 },
+      { aircraftId: 'airbus-a330-300', quantity: 14 },
+      { aircraftId: 'airbus-a340-300', quantity: 4 },
+      { aircraftId: 'boeing-777-300er', quantity: 12 }
+    ]
+  },
+  {
+    id: 'etihad-airways',
+    continent: 'Asie',
+    name: 'Etihad Airways',
+    foundedYear: 2003,
+    country: 'SAE',
+    hub: 'Abú Zabí (AUH)',
+    alliance: '—',
+    description: 'Etihad Airways je jednou ze dvou národních leteckých společností Spojených arabských emirátů (druhou je Emirates). Sídlí v Abú Zabí a provozuje rozsáhlou mezinárodní síť spojující Evropu, Asii, Afriku, Ameriku a Austrálii. Je známá svým mimořádným luxusem v první a byznys třídě.',
+    logoUrl: 'https://images.unsplash.com/photo-1542296332-2e4473fac563?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a320-200', quantity: 14 },
+      { aircraftId: 'airbus-a320-a321-200', quantity: 9 },
+      { aircraftId: 'airbus-a320-a321-neo', quantity: 5 },
+      { aircraftId: 'airbus-a350-1000', quantity: 5 },
+      { aircraftId: 'airbus-a380-800', quantity: 4 },
+      { aircraftId: 'boeing-777-300er', quantity: 7 },
+      { aircraftId: 'boeing-787-9', quantity: 33 },
+      { aircraftId: 'boeing-787-10', quantity: 10 }
+    ]
+  },
+  {
+    id: 'japan-airlines',
+    continent: 'Asie',
+    name: 'Japan Airlines (JAL)',
+    foundedYear: 1951,
+    country: 'Japonsko',
+    hub: 'Tokio Haneda (HND) / Tokio Narita (NRT)',
+    alliance: 'oneworld',
+    description: 'Japan Airlines (JAL) je národní letecká společnost Japonska se sídlem v Tokiu. Je členem aliance oneworld a patří mezi nejvytíženější a nejlépe hodnocené letecké společnosti v Asii. Vyniká vysokým standardem služeb, bezpečností a přesností letů.',
+    logoUrl: 'https://images.unsplash.com/photo-1500835595337-f740027392b9?auto=format&fit=crop&w=600&q=80',
+    fleet: [
+      { aircraftId: 'airbus-a350-900', quantity: 15 },
+      { aircraftId: 'airbus-a350-1000', quantity: 5 },
+      { aircraftId: 'boeing-737-800', quantity: 62 },
+      { aircraftId: 'boeing-767-300', quantity: 25 },
+      { aircraftId: 'boeing-777-300er', quantity: 13 },
+      { aircraftId: 'boeing-787-8', quantity: 23 },
+      { aircraftId: 'boeing-787-9', quantity: 22 }
+    ]
   }
 ];

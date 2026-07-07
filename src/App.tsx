@@ -28,7 +28,7 @@ import { AIRCRAFT_DATA } from './data';
 import { AIRLINE_DATA } from './airline_data';
 import { AIRPORTS_DATA } from './data/airports';
 import { Aircraft, AircraftCategory, Airline, Airport } from './types';
-import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag, GermanyFlag, IEFlag, NLFlag, QAFlag, HUFlag, SGFlag, PTFlag, FIFlag, TRFlag, JPFlag, AEFlag, AUFlag, KRFlag, ESFlag, HKFlag, SmartwingsLogo, DeltaLogo, LufthansaLogo, RyanairLogo, BritishAirwaysLogo, KLMLogo, QatarLogo, WizzLogo, SingaporeLogo, TapLogo, AirCanadaLogo, FinnairLogo, UnitedLogo, AmericanLogo, TurkishLogo, ANALogo, EmiratesLogo, QantasLogo, KoreanLogo, VuelingLogo, CathayLogo } from './components/Flags';
+import { EUFlag, USFlag, EUCanadaFlag, CZFlag, UKFlag, BrazilFlag, CanadaFlag, GermanyFlag, IEFlag, NLFlag, QAFlag, HUFlag, SGFlag, PTFlag, FIFlag, TRFlag, JPFlag, AEFlag, AUFlag, KRFlag, ESFlag, HKFlag, SmartwingsLogo, DeltaLogo, LufthansaLogo, RyanairLogo, BritishAirwaysLogo, KLMLogo, QatarLogo, WizzLogo, SingaporeLogo, TapLogo, AirCanadaLogo, FinnairLogo, UnitedLogo, AmericanLogo, TurkishLogo, ANALogo, EmiratesLogo, QantasLogo, KoreanLogo, VuelingLogo, CathayLogo, AirFranceLogo, IberiaLogo, SASLogo, BrusselsAirlinesLogo, LOTLogo, AustrianAirlinesLogo, SwissLogo, EtihadLogo, JALLogo } from './components/Flags';
 import AircraftComparison from './components/AircraftComparison';
 import AircraftVisualProfile from './components/AircraftVisualProfile';
 import AirportGlobe from './components/AirportGlobe';
@@ -941,8 +941,10 @@ export default function App() {
                 <h1 className="text-lg font-extrabold bg-gradient-to-r from-[#38bdf8] to-[#818cf8] bg-clip-text text-transparent tracking-tight">
                   AirCatalog
                 </h1>
-                <p className={`text-[9px] ${isDark ? 'text-slate-500' : 'text-slate-450'} font-mono tracking-wider`}>
-                  {t.catalogSubtitle.replace('{count}', String(AIRCRAFT_DATA.length))}
+                <p className={`text-[9.5px] font-semibold leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'} font-sans`}>
+                  {lang === 'CZ'
+                    ? `Katalog 207 Dopravních Letadel, ${AIRLINE_DATA.length} Leteckých společností a ${AIRPORTS_DATA.length} letišť`
+                    : `Catalog of 207 Commercial Aircraft, ${AIRLINE_DATA.length} Airlines and ${AIRPORTS_DATA.length} airports`}
                 </p>
               </div>
             </div>
@@ -2303,6 +2305,26 @@ export default function App() {
                                                     <VuelingLogo className="w-full h-full object-cover scale-110" />
                                                   ) : airline.id === 'cathay-pacific' ? (
                                                     <CathayLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'air-france' ? (
+                                                    <AirFranceLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'iberia' ? (
+                                                    <IberiaLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'sas' ? (
+                                                    <SASLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'brussels-airlines' ? (
+                                                    <BrusselsAirlinesLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'lot-polish-airlines' ? (
+                                                    <LOTLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'austrian-airlines' ? (
+                                                    <AustrianAirlinesLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'swiss-international' ? (
+                                                    <SwissLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'etihad-airways' ? (
+                                                    <EtihadLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'japan-airlines' ? (
+                                                    <JALLogo className="w-full h-full object-cover scale-110" />
+                                                  ) : airline.id === 'none' ? (
+                                                    <CathayLogo className="w-full h-full object-cover scale-110" />
                                                   ) : (
                                                     <img src={airline.logoUrl} alt={airline.name} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
                                                   )}
@@ -2366,10 +2388,6 @@ export default function App() {
                       : 'bg-white hover:bg-slate-50 border border-slate-200 shadow-sm'
                 }`}
               >
-                <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-radial-gradient from-teal-400 to-transparent flex items-center justify-center">
-                  <Compass className="w-16 h-16 text-teal-400 animate-spin" style={{ animationDuration: '40s' }} />
-                </div>
-
                 <div className="flex items-center gap-3.5 z-10">
                   <div className={`p-2 rounded-xl text-white shadow-md flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
                     selectedType === 'airport'
@@ -2380,13 +2398,10 @@ export default function App() {
                   </div>
                   <div className="text-left">
                     <h3 className={`text-sm font-extrabold tracking-tight flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                      {lang === 'CZ' ? '3D Glóbus letišť' : '3D Airports Globe'}
-                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-bold font-mono tracking-wider bg-teal-500/10 text-teal-400 uppercase animate-pulse border border-teal-500/20">
-                        Live
-                      </span>
+                      {lang === 'CZ' ? 'Letiště' : 'Airports'}
                     </h3>
                     <p className={`text-[10px] font-mono mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      {lang === 'CZ' ? 'Holografické zobrazení s hranicemi' : 'Interactive geospatial view'}
+                      {lang === 'CZ' ? `${AIRPORTS_DATA.length} letišť` : `${AIRPORTS_DATA.length} airports`}
                     </p>
                   </div>
                 </div>
@@ -2520,6 +2535,24 @@ export default function App() {
                         <VuelingLogo className="w-full h-full object-cover scale-110" />
                       ) : selectedAirline.id === 'cathay-pacific' ? (
                         <CathayLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'air-france' ? (
+                        <AirFranceLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'iberia' ? (
+                        <IberiaLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'sas' ? (
+                        <SASLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'brussels-airlines' ? (
+                        <BrusselsAirlinesLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'lot-polish-airlines' ? (
+                        <LOTLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'austrian-airlines' ? (
+                        <AustrianAirlinesLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'swiss-international' ? (
+                        <SwissLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'etihad-airways' ? (
+                        <EtihadLogo className="w-full h-full object-cover scale-110" />
+                      ) : selectedAirline.id === 'japan-airlines' ? (
+                        <JALLogo className="w-full h-full object-cover scale-110" />
                       ) : (
                         <img src={selectedAirline.logoUrl} alt={selectedAirline.name} referrerPolicy="no-referrer" className="w-full h-full object-cover animate-fade-in" />
                       )}

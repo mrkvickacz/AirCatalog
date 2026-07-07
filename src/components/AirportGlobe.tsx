@@ -286,12 +286,261 @@ const ISLANDS_DATA: number[][][] = [
   ]
 ];
 
+// Helper to classify an airport to its continent or island region based on coordinates & country
+function getAirportRegion(lat: number, lon: number, country: string): string {
+  const c = country ? country.toLowerCase() : "";
+  
+  // 1. Islands (Ostrovy)
+  if (
+    c.includes("island") || 
+    c.includes("maledivy") || 
+    c.includes("madagaskar") || 
+    c.includes("filipíny") || 
+    c.includes("indonésie") || 
+    c.includes("japonsko") || 
+    c.includes("nový zéland") || 
+    c.includes("kapverdy") || 
+    c.includes("bahamy") || 
+    c.includes("mauricius") || 
+    c.includes("seychely") ||
+    c.includes("karibik") ||
+    c.includes("kypr") ||
+    c.includes("malta") ||
+    c.includes("havaj") ||
+    c.includes("hawaii") ||
+    // Caribbean lat/lon
+    (lat > 10 && lat < 28 && lon > -85 && lon < -59) ||
+    // Pacific/Hawaii/Oceania islands
+    (lat > 15 && lat < 25 && lon > -161 && lon < -154) ||
+    (lat > -25 && lat < -10 && lon > 160 && lon < 185) ||
+    (lat > -48 && lat < -33 && lon > 165 && lon < 179) // New Zealand
+  ) {
+    return 'islands';
+  }
+
+  // 2. Continents:
+  // Europe
+  if (lat > 34 && lat < 72 && lon > -25 && lon < 42) {
+    return 'europe';
+  }
+  // North America
+  if (lat > 12 && lat < 85 && lon > -170 && lon < -52) {
+    return 'north_america';
+  }
+  // South America
+  if (lat > -56 && lat < 12 && lon > -92 && lon < -32) {
+    return 'south_america';
+  }
+  // Africa
+  if (lat > -35 && lat < 37 && lon > -20 && lon < 52) {
+    return 'africa';
+  }
+  // Australia / Oceania
+  if (lat > -50 && lat < 5 && lon > 110 && lon < 180) {
+    return 'australia';
+  }
+  // Asia
+  if (lat > 5 && lat < 75 && lon > 40 && lon < 180) {
+    return 'asia';
+  }
+
+  // Fallbacks:
+  if (lon < -30) {
+    if (lat < 12) return 'south_america';
+    return 'north_america';
+  }
+  if (lon > 100) {
+    if (lat < 0) return 'australia';
+    return 'asia';
+  }
+  if (lat < -10) return 'africa';
+  
+  return 'europe';
+}
+
+// Check if a coordinate is on the visible front hemisphere of the 3D globe facing the camera
+function isCoordinateVisible(lat: number, lon: number, yaw: number, pitch: number): boolean {
+  const latRad = lat * (Math.PI / 180);
+  const lonRad = lon * (Math.PI / 180);
+
+  // 3D coordinates on unit sphere
+  const x3d = Math.cos(latRad) * Math.sin(lonRad);
+  const y3d = Math.sin(latRad);
+  const z3d = Math.cos(latRad) * Math.cos(lonRad);
+
+  // Pitch rotation (tilt on X axis)
+  const y1 = y3d * Math.cos(pitch) - z3d * Math.sin(pitch);
+  const z1 = y3d * Math.sin(pitch) + z3d * Math.cos(pitch);
+
+  // Yaw rotation (spin on Y axis)
+  const z2 = -x3d * Math.sin(yaw) + z1 * Math.cos(yaw);
+
+  return z2 > 0;
+}
+
+// Get standard country flag emojis for a clean high-fidelity visual indication
+function getCountryFlag(country: string): string {
+  const c = country.toLowerCase();
+  if (c.includes('česká') || c.includes('czech')) return '🇨🇿';
+  if (c.includes('velká británie') || c.includes('britain') || c.includes('united kingdom') || c.includes('uk')) return '🇬🇧';
+  if (c.includes('německo') || c.includes('germany')) return '🇩🇪';
+  if (c.includes('francie') || c.includes('france')) return '🇫🇷';
+  if (c.includes('nizozemsko') || c.includes('netherlands')) return '🇳🇱';
+  if (c.includes('usa') || c.includes('spojené státy') || c.includes('united states')) return '🇺🇸';
+  if (c.includes('singapur') || c.includes('singapore')) return '🇸🇬';
+  if (c.includes('japonsko') || c.includes('japan')) return '🇯🇵';
+  if (c.includes('emiráty') || c.includes('emirates') || c.includes('uae')) return '🇦🇪';
+  if (c.includes('austrálie') || c.includes('australia')) return '🇦🇺';
+  if (c.includes('korea')) return '🇰🇷';
+  if (c.includes('hongkong') || c.includes('hong kong')) return '🇭🇰';
+  if (c.includes('turecko') || c.includes('turkey')) return '🇹🇷';
+  if (c.includes('rakousko') || c.includes('austria')) return '🇦🇹';
+  if (c.includes('polsko') || c.includes('poland')) return '🇵🇱';
+  if (c.includes('slovensko') || c.includes('slovakia')) return '🇸🇰';
+  if (c.includes('španělsko') || c.includes('spain')) return '🇪🇸';
+  if (c.includes('itálie') || c.includes('italy')) return '🇮🇹';
+  if (c.includes('řecko') || c.includes('greece')) return '🇬🇷';
+  if (c.includes('švýcarsko') || c.includes('switzerland')) return '🇨🇭';
+  if (c.includes('dánsko') || c.includes('denmark')) return '🇩🇰';
+  if (c.includes('norsko') || c.includes('norway')) return '🇳🇴';
+  if (c.includes('finsko') || c.includes('finland')) return '🇫🇮';
+  if (c.includes('portugalsko') || c.includes('portugal')) return '🇵🇹';
+  if (c.includes('irsko') || c.includes('ireland')) return '🇮🇪';
+  if (c.includes('kanada') || c.includes('canada')) return '🇨🇦';
+  if (c.includes('katar') || c.includes('qatar')) return '🇶🇦';
+  if (c.includes('čína') || c.includes('china')) return '🇨🇳';
+  if (c.includes('thajsko') || c.includes('thailand')) return '🇹🇭';
+  if (c.includes('brazílie') || c.includes('brazil')) return '🇧🇷';
+  if (c.includes('belgie') || c.includes('belgium')) return '🇧🇪';
+  if (c.includes('maďarsko') || c.includes('hungary')) return '🇭🇺';
+  if (c.includes('egypt')) return '🇪🇬';
+  if (c.includes('švédsko') || c.includes('sweden')) return '🇸🇪';
+  if (c.includes('nový zéland') || c.includes('new zealand')) return '🇳🇿';
+  if (c.includes('chile')) return '🇨🇱';
+  if (c.includes('bulharsko') || c.includes('bulgaria')) return '🇧🇬';
+  if (c.includes('rumunsko') || c.includes('romania')) return '🇷🇴';
+  if (c.includes('saúdská') || c.includes('saudi')) return '🇸🇦';
+  if (c.includes('izrael') || c.includes('israel')) return '🇮🇱';
+  if (c.includes('mexiko') || c.includes('mexico')) return '🇲🇽';
+  if (c.includes('kuba') || c.includes('cuba')) return '🇨🇺';
+  if (c.includes('malta')) return '🇲🇹';
+  if (c.includes('kypr') || c.includes('cyprus')) return '🇨🇾';
+  if (c.includes('island') || c.includes('iceland')) return '🇮🇸';
+  if (c.includes('indie') || c.includes('india')) return '🇮🇳';
+  if (c.includes('jihoafrická') || c.includes('south africa')) return '🇿🇦';
+  return '🌐';
+}
+
+function getShortCountryName(country: string, lang: 'CZ' | 'EN'): string {
+  const c = country.toLowerCase();
+  if (c.includes('česká') || c.includes('czech')) return lang === 'CZ' ? 'ČESKO' : 'CZECH';
+  if (c.includes('velká británie') || c.includes('britain') || c.includes('united kingdom') || c.includes('uk')) return 'UK';
+  if (c.includes('německo') || c.includes('germany')) return lang === 'CZ' ? 'NĚMECKO' : 'GERMANY';
+  if (c.includes('francie') || c.includes('france')) return lang === 'CZ' ? 'FRANCIE' : 'FRANCE';
+  if (c.includes('nizozemsko') || c.includes('netherlands')) return lang === 'CZ' ? 'HOLAND.' : 'NETHERL.';
+  if (c.includes('usa') || c.includes('spojené státy') || c.includes('united states')) return 'USA';
+  if (c.includes('singapur') || c.includes('singapore')) return lang === 'CZ' ? 'SINGAP.' : 'SINGAP.';
+  if (c.includes('japonsko') || c.includes('japan')) return lang === 'CZ' ? 'JAPON.' : 'JAPAN';
+  if (c.includes('emiráty') || c.includes('emirates') || c.includes('uae')) return lang === 'CZ' ? 'SAE' : 'UAE';
+  if (c.includes('austrálie') || c.includes('australia')) return lang === 'CZ' ? 'AUSTRL.' : 'AUSTRL.';
+  if (c.includes('korea')) return lang === 'CZ' ? 'J.KOREA' : 'S.KOREA';
+  if (c.includes('hongkong') || c.includes('hong kong')) return 'HONGK.';
+  if (c.includes('turecko') || c.includes('turkey')) return lang === 'CZ' ? 'TUREC.' : 'TURKEY';
+  if (c.includes('rakousko') || c.includes('austria')) return lang === 'CZ' ? 'RAKOUS.' : 'AUSTRIA';
+  if (c.includes('polsko') || c.includes('poland')) return lang === 'CZ' ? 'POLSKO' : 'POLAND';
+  if (c.includes('slovensko') || c.includes('slovakia')) return lang === 'CZ' ? 'SLOVENS.' : 'SLOVAK.';
+  if (c.includes('španělsko') || c.includes('spain')) return lang === 'CZ' ? 'ŠPANĚL.' : 'SPAIN';
+  if (c.includes('itálie') || c.includes('italy')) return lang === 'CZ' ? 'ITÁLIE' : 'ITALY';
+  if (c.includes('řecko') || c.includes('greece')) return lang === 'CZ' ? 'ŘECKO' : 'GREECE';
+  if (c.includes('švýcarsko') || c.includes('switzerland')) return lang === 'CZ' ? 'ŠVÝCAR.' : 'SWISS';
+  if (c.includes('dánsko') || c.includes('denmark')) return lang === 'CZ' ? 'DÁNSKO' : 'DENMARK';
+  if (c.includes('norsko') || c.includes('norway')) return lang === 'CZ' ? 'NORSKO' : 'NORWAY';
+  if (c.includes('finsko') || c.includes('finland')) return lang === 'CZ' ? 'FINSKO' : 'FINLAND';
+  if (c.includes('portugalsko') || c.includes('portugal')) return lang === 'CZ' ? 'PORTUG.' : 'PORTUG.';
+  if (c.includes('irsko') || c.includes('ireland')) return lang === 'CZ' ? 'IRSKO' : 'IRELAND';
+  if (c.includes('kanada') || c.includes('canada')) return lang === 'CZ' ? 'KANADA' : 'CANADA';
+  if (c.includes('katar') || c.includes('qatar')) return 'QATAR';
+  if (c.includes('čína') || c.includes('china')) return lang === 'CZ' ? 'ČÍNA' : 'CHINA';
+  if (c.includes('thajsko') || c.includes('thailand')) return lang === 'CZ' ? 'THAJS.' : 'THAIL.';
+  if (c.includes('brazílie') || c.includes('brazil')) return lang === 'CZ' ? 'BRAZÍL.' : 'BRAZIL';
+  if (c.includes('belgie') || c.includes('belgium')) return lang === 'CZ' ? 'BELGIE' : 'BELG.';
+  if (c.includes('maďarsko') || c.includes('hungary')) return lang === 'CZ' ? 'MAĎAR.' : 'HUNG.';
+  if (c.includes('egypt')) return 'EGYPT';
+  if (c.includes('švédsko') || c.includes('sweden')) return lang === 'CZ' ? 'ŠVÉDS.' : 'SWEDEN';
+  if (c.includes('nový zéland') || c.includes('new zealand')) return 'NZ';
+  if (c.includes('chile')) return 'CHILE';
+  if (c.includes('bulharsko') || c.includes('bulgaria')) return lang === 'CZ' ? 'BULHAR.' : 'BULG.';
+  if (c.includes('rumunsko') || c.includes('romania')) return lang === 'CZ' ? 'RUMUN.' : 'ROMAN.';
+  if (c.includes('saúdská') || c.includes('saudi')) return lang === 'CZ' ? 'S.ARÁB.' : 'SAUDI';
+  if (c.includes('izrael') || c.includes('israel')) return 'ISRAEL';
+  if (c.includes('mexiko') || c.includes('mexico')) return 'MEXICO';
+  if (c.includes('kuba') || c.includes('cuba')) return 'CUBA';
+  if (c.includes('kypr') || c.includes('cyprus')) return 'CYPRUS';
+  if (c.includes('island') || c.includes('iceland')) return 'ICEL.';
+  if (c.includes('indie') || c.includes('india')) return 'INDIA';
+  if (c.includes('jihoafrická') || c.includes('south africa')) return 'JAR';
+  
+  const clean = country.toUpperCase();
+  return clean.length > 7 ? clean.substring(0, 6) + '.' : clean;
+}
+
+function isAirportInViewport(lat: number, lon: number, currentYaw: number, currentPitch: number, currentZoom: number, width: number, height: number): boolean {
+  const latRad = lat * (Math.PI / 180);
+  const lonRad = lon * (Math.PI / 180);
+  const cx = width / 2;
+  const cy = height / 2;
+  const size = Math.min(width, height);
+  const R = (size * 0.44) * currentZoom;
+
+  const x3d = R * Math.cos(latRad) * Math.sin(lonRad);
+  const y3d = R * Math.sin(latRad);
+  const z3d = R * Math.cos(latRad) * Math.cos(lonRad);
+
+  const y1 = y3d * Math.cos(currentPitch) - z3d * Math.sin(currentPitch);
+  const z1 = y3d * Math.sin(currentPitch) + z3d * Math.cos(currentPitch);
+
+  const x2 = x3d * Math.cos(currentYaw) + z1 * Math.sin(currentYaw);
+  const z2 = -x3d * Math.sin(currentYaw) + z1 * Math.cos(currentYaw);
+  const y2 = y1;
+
+  const screenX = cx + x2;
+  const screenY = cy - y2;
+
+  return z2 > 0 && screenX >= -30 && screenX <= width + 30 && screenY >= -30 && screenY <= height + 30;
+}
+
 export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDark, lang, onBackToList }: AirportGlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Mobile navigation sub-view: 'globe' shows interactive 3D Globe, 'info' shows specs card
-  const [mobileSubView, setMobileSubView] = useState<'globe' | 'info'>('globe');
+  // Lazy-loaded smaller airports states & refs
+  const [lazyLoadedSmallAirports, setLazyLoadedSmallAirports] = useState<Airport[]>([]);
+  const [isLoadingProgressive, setIsLoadingProgressive] = useState(false);
+  const airportOpacityRef = useRef<Record<string, number>>({});
+
+  // Group airports into continent and island clusters dynamically
+  const regionClusters = useMemo(() => {
+    const clusters: { [key: string]: { id: string; nameCZ: string; nameEN: string; lat: number; lon: number; count: number } } = {
+      europe: { id: 'europe', nameCZ: 'Evropa', nameEN: 'Europe', lat: 50.0, lon: 15.0, count: 0 },
+      north_america: { id: 'north_america', nameCZ: 'S. Amerika', nameEN: 'North America', lat: 40.0, lon: -100.0, count: 0 },
+      south_america: { id: 'south_america', nameCZ: 'J. Amerika', nameEN: 'South America', lat: -18.0, lon: -56.0, count: 0 },
+      asia: { id: 'asia', nameCZ: 'Asie', nameEN: 'Asia', lat: 34.0, lon: 100.0, count: 0 },
+      africa: { id: 'africa', nameCZ: 'Afrika', nameEN: 'Africa', lat: 2.0, lon: 20.0, count: 0 },
+      australia: { id: 'australia', nameCZ: 'Austrálie', nameEN: 'Australia', lat: -24.0, lon: 133.0, count: 0 },
+      islands: { id: 'islands', nameCZ: 'Ostrovy', nameEN: 'Islands', lat: 18.0, lon: -72.0, count: 0 } // Caribbean region as Islands hub
+    };
+
+    AIRPORTS_DATA.forEach(airport => {
+      const region = getAirportRegion(airport.lat, airport.lon, airport.country);
+      if (clusters[region]) {
+        clusters[region].count++;
+      } else {
+        clusters['europe'].count++;
+      }
+    });
+
+    return Object.values(clusters).filter(c => c.count > 0);
+  }, []);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -301,7 +550,7 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
   const [yaw, setYaw] = useState(0.4); // horizontal spin
   const [pitch, setPitch] = useState(0.3); // vertical tilt
   const [zoom, setZoom] = useState(1.0); // zoom scaling multiplier
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(false);
 
   // Route Finder States
   const [routeMode, setRouteMode] = useState(false);
@@ -315,14 +564,40 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
   // Airport visibility state: Hide all airports except selected or route airports
   const [hideAllAirports, setHideAllAirports] = useState(false);
 
+  // Group airports into country clusters dynamically
+  const countryClusters = useMemo(() => {
+    const clusters: { [key: string]: { id: string; name: string; lat: number; lon: number; count: number } } = {};
+    
+    AIRPORTS_DATA.forEach(airport => {
+      const countryName = airport.country;
+      if (!clusters[countryName]) {
+        clusters[countryName] = {
+          id: countryName.toLowerCase().replace(/\s+/g, '-'),
+          name: countryName,
+          lat: 0,
+          lon: 0,
+          count: 0
+        };
+      }
+      clusters[countryName].lat += airport.lat;
+      clusters[countryName].lon += airport.lon;
+      clusters[countryName].count++;
+    });
+
+    return Object.values(clusters).map(c => ({
+      ...c,
+      lat: c.lat / c.count,
+      lon: c.lon / c.count
+    }));
+  }, []);
+
   // Filtered list of airports to draw on the globe or click
   const airportsToDraw = useMemo(() => {
     // If route is fully searched (both from and to are set), automatically show ONLY those two airports
     if (routeMode && fromAirportId && toAirportId) {
       return AIRPORTS_DATA.filter(a => a.id === fromAirportId || a.id === toAirportId);
     }
-    
-    // If we've turned off general airports visibility
+
     if (hideAllAirports) {
       if (routeMode) {
         return AIRPORTS_DATA.filter(a => a.id === fromAirportId || a.id === toAirportId || a.id === selectedAirportId);
@@ -331,14 +606,131 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
       }
     }
     
-    return AIRPORTS_DATA;
-  }, [routeMode, fromAirportId, toAirportId, selectedAirportId, hideAllAirports]);
+    // If zoom is less than 3.5, individual airports are nested under continent/country clusters,
+    // so we only draw the active selections (selected airport or route endpoints)
+    if (zoom < 3.5) {
+      return AIRPORTS_DATA.filter(a => a.id === selectedAirportId || a.id === fromAirportId || a.id === toAirportId);
+    }
 
-  // When selected airport changes from outside (e.g. sidebar list click), auto-switch to info view on mobile
+    // Base list of airports:
+    // 1. Large hubs are always visible when zoom >= 3.5 to make sure the primary structure is always active
+    const largeHubs = AIRPORTS_DATA.filter(a => 
+      a.id === selectedAirportId || 
+      a.id === fromAirportId || 
+      a.id === toAirportId || 
+      a.passengersYearlyM >= 30 ||
+      (a.avgFlightsDaily !== undefined && a.avgFlightsDaily >= 300)
+    );
+
+    // 2. Smaller airports are loaded progressively from our React state lazyLoadedSmallAirports based on viewport visibility
+    return [...largeHubs, ...lazyLoadedSmallAirports];
+  }, [routeMode, fromAirportId, toAirportId, selectedAirportId, hideAllAirports, zoom, lazyLoadedSmallAirports]);
+
+  // Progressive lazy loading effect for smaller airports
+  useEffect(() => {
+    // Clear small airports if we are zoomed out or restricted
+    if (zoom < 4.0 || hideAllAirports || (routeMode && fromAirportId && toAirportId)) {
+      setLazyLoadedSmallAirports([]);
+      setIsLoadingProgressive(false);
+      airportOpacityRef.current = {};
+      return;
+    }
+
+    setIsLoadingProgressive(true);
+
+    const timer = setTimeout(() => {
+      const rect = containerRef.current?.getBoundingClientRect() || { width: 450, height: 450 };
+      const width = rect.width;
+      const height = rect.height;
+
+      // Find all smaller airports currently visible in the camera's viewport bounding box
+      const visibleSmallAirports = AIRPORTS_DATA.filter(airport => {
+        const isLarge = airport.id === selectedAirportId ||
+          airport.id === fromAirportId ||
+          airport.id === toAirportId ||
+          airport.passengersYearlyM >= 30 ||
+          (airport.avgFlightsDaily !== undefined && airport.avgFlightsDaily >= 300);
+
+        if (isLarge) return false;
+
+        return isAirportInViewport(airport.lat, airport.lon, yaw, pitch, zoom, width, height);
+      });
+
+      setLazyLoadedSmallAirports(prev => {
+        // Keep previously loaded small airports that are still visible in viewport to prevent visual flickering
+        const stillVisible = prev.filter(a => 
+          isAirportInViewport(a.lat, a.lon, yaw, pitch, zoom, width, height)
+        );
+
+        // Find new small airports that are not yet in stillVisible
+        const newVisible = visibleSmallAirports.filter(a => 
+          !stillVisible.some(sv => sv.id === a.id)
+        );
+
+        if (newVisible.length === 0) {
+          setIsLoadingProgressive(false);
+          return stillVisible;
+        }
+
+        // Load new visible airports in progressive batches to avoid any frame spikes or drawing lag
+        const batchSize = 12;
+        const initialBatch = newVisible.slice(0, batchSize);
+        const remaining = newVisible.slice(batchSize);
+
+        if (remaining.length > 0) {
+          let currentList = [...stillVisible, ...initialBatch];
+          let index = 0;
+
+          const interval = setInterval(() => {
+            const nextBatch = remaining.slice(index, index + batchSize);
+            if (nextBatch.length === 0) {
+              clearInterval(interval);
+              setIsLoadingProgressive(false);
+            } else {
+              setLazyLoadedSmallAirports(curr => {
+                const stillInView = curr.filter(a => 
+                  isAirportInViewport(a.lat, a.lon, yaw, pitch, zoom, width, height)
+                );
+                const uniqueNextBatch = nextBatch.filter(nb => !stillInView.some(s => s.id === nb.id));
+                return [...stillInView, ...uniqueNextBatch];
+              });
+              index += batchSize;
+            }
+          }, 85); // 85ms batch timing for ultra-smooth rendering
+
+          return currentList;
+        } else {
+          setIsLoadingProgressive(false);
+          return [...stillVisible, ...initialBatch];
+        }
+      });
+
+    }, 180); // 180ms debounce while rotating/zooming to keep interaction frame rates high
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [yaw, pitch, zoom, routeMode, fromAirportId, toAirportId, selectedAirportId, hideAllAirports]);
+
+  // Dynamically calculate which region clusters are currently loaded/visible
+  const loadedRegionClusters = useMemo(() => {
+    return regionClusters.filter(cluster => isCoordinateVisible(cluster.lat, cluster.lon, yaw, pitch));
+  }, [regionClusters, yaw, pitch]);
+
+  // Dynamically calculate which country clusters are currently loaded/visible
+  const loadedCountryClusters = useMemo(() => {
+    return countryClusters.filter(cluster => isCoordinateVisible(cluster.lat, cluster.lon, yaw, pitch));
+  }, [countryClusters, yaw, pitch]);
+
+  // Dynamically calculate which airports are currently loaded/visible
+  const loadedAirports = useMemo(() => {
+    return airportsToDraw.filter(airport => isCoordinateVisible(airport.lat, airport.lon, yaw, pitch));
+  }, [airportsToDraw, yaw, pitch]);
+
+  // When selected airport changes from outside (e.g. sidebar list click)
   const lastAirportId = useRef(selectedAirportId);
   useEffect(() => {
     if (selectedAirportId !== lastAirportId.current) {
-      setMobileSubView('info');
       lastAirportId.current = selectedAirportId;
       // If user selected an airport from the sidebar list, we sync it and make sure routeMode is off or reset
       if (routeMode) {
@@ -1034,14 +1426,38 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
         }
       }
 
-      // 5. DRAW AIRPORT MARKERS (pulsating circles + names)
-      airportsToDraw.forEach((airport) => {
+      // 5. DRAW AIRPORT MARKERS (pulsating circles + names with progressive opacity fade-in)
+      loadedAirports.forEach((airport) => {
         const pt = project(airport.lat, airport.lon);
         
         // Only draw airports located on the front side of the earth
         if (pt.z > 0) {
           const isSelected = airport.id === selectedAirportId;
-          const isHovered = false; // We can check mouse proximity
+          const isLarge = airport.id === selectedAirportId ||
+            airport.id === fromAirportId ||
+            airport.id === toAirportId ||
+            airport.passengersYearlyM >= 30 ||
+            (airport.avgFlightsDaily !== undefined && airport.avgFlightsDaily >= 300);
+
+          // Get or initialize opacity
+          let opacity = airportOpacityRef.current[airport.id] !== undefined 
+            ? airportOpacityRef.current[airport.id] 
+            : (isLarge ? 1.0 : 0.0); // large hubs start fully visible, small ones start at 0
+
+          // Smoothly animate opacity towards 1.0
+          if (opacity < 1.0) {
+            opacity = Math.min(1.0, opacity + 0.08); // fade in 8% per frame
+            airportOpacityRef.current[airport.id] = opacity;
+          }
+
+          // Apply opacity to our colors
+          const fillStyleCore = isSelected
+            ? (isDark ? `rgba(45, 212, 191, ${opacity})` : `rgba(13, 148, 136, ${opacity})`)
+            : (isDark ? `rgba(99, 102, 241, ${0.85 * opacity})` : `rgba(79, 70, 229, ${0.85 * opacity})`);
+
+          const fillStyleText = isSelected
+            ? (isDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(15, 23, 42, ${opacity})`)
+            : (isDark ? `rgba(148, 163, 184, ${0.75 * opacity})` : `rgba(71, 85, 105, ${0.75 * opacity})`);
 
           // Pulsing circle scale
           const pulseScale = (Date.now() % 1600) / 1600;
@@ -1050,32 +1466,28 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
           if (isSelected) {
             ctx.beginPath();
             ctx.arc(pt.x, pt.y, 4 + pulseScale * 12, 0, Math.PI * 2);
-            ctx.fillStyle = isDark ? `rgba(45, 212, 191, ${0.45 * (1 - pulseScale)})` : `rgba(13, 148, 136, ${0.45 * (1 - pulseScale)})`;
+            ctx.fillStyle = isDark ? `rgba(45, 212, 191, ${0.45 * (1 - pulseScale) * opacity})` : `rgba(13, 148, 136, ${0.45 * (1 - pulseScale) * opacity})`;
             ctx.fill();
           }
 
           // Main core dot
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, isSelected ? 4.5 : 3, 0, Math.PI * 2);
-          ctx.fillStyle = isSelected 
-            ? (isDark ? '#2dd4bf' : '#0d9488') // Teal glowing dot for selected
-            : (isDark ? 'rgba(99, 102, 241, 0.85)' : 'rgba(79, 70, 229, 0.85)'); // Indigo dot for others
+          ctx.fillStyle = fillStyleCore;
           ctx.fill();
 
           // Border for selected
           if (isSelected) {
             ctx.beginPath();
             ctx.arc(pt.x, pt.y, 6.5, 0, Math.PI * 2);
-            ctx.strokeStyle = isDark ? '#ffffff' : '#0f172a';
+            ctx.strokeStyle = isDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(15, 23, 42, ${opacity})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
 
           // Render Airport Code and optional City next to dot
           ctx.font = isSelected ? 'bold 10px "JetBrains Mono", monospace' : '9px "JetBrains Mono", monospace';
-          ctx.fillStyle = isSelected
-            ? (isDark ? '#ffffff' : '#0f172a')
-            : (isDark ? 'rgba(148, 163, 184, 0.75)' : 'rgba(71, 85, 105, 0.75)');
+          ctx.fillStyle = fillStyleText;
           
           const codeOnly = airport.code.split(' ')[0];
           const labelText = zoom > 1.8
@@ -1090,6 +1502,136 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
         }
       });
 
+      // If currentZoom < 1.8, draw continent and island cluster badges projected on the 3D globe!
+      if (currentZoom < 1.8) {
+        loadedRegionClusters.forEach((cluster) => {
+          const pt = project(cluster.lat, cluster.lon);
+          
+          // Only draw if it's on the front side of the globe
+          if (pt.z > 0) {
+            const badgeX = pt.x;
+            const badgeY = pt.y;
+
+            // Pulsing glow radius
+            const pulse = (Date.now() % 2000) / 2000;
+            const glowRad = 26 + pulse * 10;
+
+            // 1. Glowing outer pulse
+            ctx.beginPath();
+            ctx.arc(badgeX, badgeY, glowRad, 0, Math.PI * 2);
+            ctx.fillStyle = isDark ? `rgba(45, 212, 191, ${0.12 * (1 - pulse)})` : `rgba(79, 70, 229, ${0.09 * (1 - pulse)})`;
+            ctx.fill();
+
+            // 2. Main badge container
+            ctx.beginPath();
+            ctx.arc(badgeX, badgeY, 24, 0, Math.PI * 2);
+            
+            // Gradient fill for depth
+            const grad = ctx.createLinearGradient(badgeX - 24, badgeY - 24, badgeX + 24, badgeY + 24);
+            if (isDark) {
+              grad.addColorStop(0, '#0f172a');
+              grad.addColorStop(1, '#1e293b');
+            } else {
+              grad.addColorStop(0, '#ffffff');
+              grad.addColorStop(1, '#f1f5f9');
+            }
+            ctx.fillStyle = grad;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = isDark ? 'rgba(45, 212, 191, 0.25)' : 'rgba(79, 70, 229, 0.15)';
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset shadow
+
+            // 3. Colored border ring
+            ctx.beginPath();
+            ctx.arc(badgeX, badgeY, 24, 0, Math.PI * 2);
+            ctx.strokeStyle = isDark ? 'rgba(45, 212, 191, 0.45)' : 'rgba(79, 70, 229, 0.35)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // 4. Draw text inside: Count + continent/island name
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Count text
+            ctx.font = 'bold 11px "JetBrains Mono", monospace';
+            ctx.fillStyle = isDark ? '#ffffff' : '#0f172a';
+            ctx.fillText(`${cluster.count}`, badgeX, badgeY - 5);
+
+            // Label text below count
+            ctx.font = 'bold 7px "Inter", sans-serif';
+            ctx.fillStyle = isDark ? '#2dd4bf' : '#4f46e5';
+            const label = lang === 'CZ' ? cluster.nameCZ.toUpperCase() : cluster.nameEN.toUpperCase();
+            ctx.fillText(label, badgeX, badgeY + 7);
+          }
+        });
+      }
+
+      // If currentZoom >= 1.8 && currentZoom < 3.5, draw country cluster indicators on the 3D globe!
+      if (currentZoom >= 1.8 && currentZoom < 3.5) {
+        loadedCountryClusters.forEach((cluster) => {
+          const pt = project(cluster.lat, cluster.lon);
+          
+          if (pt.z > 0) {
+            const badgeX = pt.x;
+            const badgeY = pt.y;
+            const radius = 22;
+
+            // Small pulsing glow
+            const pulse = (Date.now() % 1600) / 1600;
+            const glowRad = radius + 2 + pulse * 6;
+
+            ctx.beginPath();
+            ctx.arc(badgeX, badgeY, glowRad, 0, Math.PI * 2);
+            ctx.fillStyle = isDark ? `rgba(45, 212, 191, ${0.1 * (1 - pulse)})` : `rgba(79, 70, 229, ${0.08 * (1 - pulse)})`;
+            ctx.fill();
+
+            // Main bubble circle
+            ctx.beginPath();
+            ctx.arc(badgeX, badgeY, radius, 0, Math.PI * 2);
+            
+            const grad = ctx.createLinearGradient(badgeX - radius, badgeY - radius, badgeX + radius, badgeY + radius);
+            if (isDark) {
+              grad.addColorStop(0, '#0f172a');
+              grad.addColorStop(1, '#1e293b');
+            } else {
+              grad.addColorStop(0, '#ffffff');
+              grad.addColorStop(1, '#f1f5f9');
+            }
+            ctx.fillStyle = grad;
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = isDark ? 'rgba(45, 212, 191, 0.2)' : 'rgba(79, 70, 229, 0.1)';
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Border
+            ctx.beginPath();
+            ctx.arc(badgeX, badgeY, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = isDark ? 'rgba(45, 212, 191, 0.35)' : 'rgba(79, 70, 229, 0.25)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            // Flag and text
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Flag emoji in center-top
+            ctx.font = '12px "Inter", sans-serif';
+            ctx.fillText(getCountryFlag(cluster.name), badgeX, badgeY - 8);
+
+            // Shorthand country name in center
+            ctx.font = 'bold 7px "Inter", sans-serif';
+            ctx.fillStyle = isDark ? '#2dd4bf' : '#4f46e5';
+            const countryShort = getShortCountryName(cluster.name, lang);
+            ctx.fillText(countryShort, badgeX, badgeY + 3);
+
+            // Count text in center-bottom
+            ctx.font = 'bold 8px "JetBrains Mono", monospace';
+            ctx.fillStyle = isDark ? '#ffffff' : '#0f172a';
+            ctx.fillText(`${cluster.count}`, badgeX, badgeY + 11);
+          }
+        });
+      }
+
       ctx.restore();
       animationFrameId.current = requestAnimationFrame(render);
     };
@@ -1101,7 +1643,7 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [yaw, pitch, zoom, selectedAirportId, autoRotate, isDark, lang, routeMode, fromAirportId, toAirportId, airportsToDraw]);
+  }, [yaw, pitch, zoom, selectedAirportId, autoRotate, isDark, lang, routeMode, fromAirportId, toAirportId, airportsToDraw, regionClusters]);
 
   // Handle Mouse Down / Touch Start (Drag initialization)
   const handleStart = (clientX: number, clientY: number) => {
@@ -1138,8 +1680,8 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
     const dx = clientX - dragStart.current.x;
     const dy = clientY - dragStart.current.y;
 
-    // Convert mouse movement to angular rotation
-    const sensitivity = 0.006;
+    // Convert mouse movement to angular rotation (reduced sensitivity when zoomed in)
+    const sensitivity = 0.005 / Math.pow(Math.max(1, zoom), 1.3);
     let newYaw = dragAngleStart.current.yaw + dx * sensitivity;
     let newPitch = dragAngleStart.current.pitch + dy * sensitivity;
 
@@ -1227,11 +1769,90 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
     const size = Math.min(width, height);
     const R = (size * 0.44) * zoom;
 
-    // Check each airport
+    // Check if clicked any of the regional cluster badges (only active when zoomed out)
+    if (zoom < 1.8) {
+      for (const cluster of loadedRegionClusters) {
+        const latRad = cluster.lat * (Math.PI / 180);
+        const lonRad = cluster.lon * (Math.PI / 180);
+
+        // Spherical coordinates
+        const x3d = R * Math.cos(latRad) * Math.sin(lonRad);
+        const y3d = R * Math.sin(latRad);
+        const z3d = R * Math.cos(latRad) * Math.cos(lonRad);
+
+        // Rotate by current angles to find screen coordinate of the badge
+        const y1 = y3d * Math.cos(pitch) - z3d * Math.sin(pitch);
+        const z1 = y3d * Math.sin(pitch) + z3d * Math.cos(pitch);
+
+        const x2 = x3d * Math.cos(yaw) + z1 * Math.sin(yaw);
+        const z2 = -x3d * Math.sin(yaw) + z1 * Math.cos(yaw);
+        const y2 = y1;
+
+        // Project on screen
+        const projX = cx + x2;
+        const projY = cy - y2;
+
+        // Only clickable if on the front side of the globe
+        if (z2 > 0) {
+          const dist = Math.hypot(clickX - projX, clickY - projY);
+          if (dist <= 28) {
+            // Smoothly pivot the globe to focus on the clicked region cluster
+            targetAngles.current = {
+              yaw: -lonRad,
+              pitch: -latRad,
+              active: true
+            };
+            setZoom(2.8);
+            return;
+          }
+        }
+      }
+    }
+
+    // Check if clicked any of the country clusters (only active in medium zoom range)
+    if (zoom >= 1.8 && zoom < 3.5) {
+      for (const cluster of loadedCountryClusters) {
+        const latRad = cluster.lat * (Math.PI / 180);
+        const lonRad = cluster.lon * (Math.PI / 180);
+
+        // Spherical coordinates
+        const x3d = R * Math.cos(latRad) * Math.sin(lonRad);
+        const y3d = R * Math.sin(latRad);
+        const z3d = R * Math.cos(latRad) * Math.cos(lonRad);
+
+        // Rotate
+        const y1 = y3d * Math.cos(pitch) - z3d * Math.sin(pitch);
+        const z1 = y3d * Math.sin(pitch) + z3d * Math.cos(pitch);
+
+        const x2 = x3d * Math.cos(yaw) + z1 * Math.sin(yaw);
+        const z2 = -x3d * Math.sin(yaw) + z1 * Math.cos(yaw);
+        const y2 = y1;
+
+        // Project on screen
+        const projX = cx + x2;
+        const projY = cy - y2;
+
+        if (z2 > 0) {
+          const dist = Math.hypot(clickX - projX, clickY - projY);
+          if (dist <= 25) {
+            // Center on this country cluster and zoom in
+            targetAngles.current = {
+              yaw: -lonRad,
+              pitch: -latRad,
+              active: true
+            };
+            setZoom(4.2);
+            return;
+          }
+        }
+      }
+    }
+
+    // Check each loaded airport
     let closestAirport: Airport | null = null;
     let minDistance = 18; // maximum selection click distance in pixels
 
-    airportsToDraw.forEach((airport) => {
+    loadedAirports.forEach((airport) => {
       const latRad = airport.lat * (Math.PI / 180);
       const lonRad = airport.lon * (Math.PI / 180);
 
@@ -1277,7 +1898,6 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
       } else {
         onSelectAirport((closestAirport as Airport).id);
       }
-      setMobileSubView('info');
     }
   };
 
@@ -1296,11 +1916,8 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
     setZoom(1.0);
   };
 
-  const showGlobeOnMobile = mobileSubView === 'globe';
-  const showInfoOnMobile = mobileSubView === 'info';
-
   return (
-    <div className="flex flex-col gap-4 w-full h-full lg:h-[calc(100vh-20px)] p-4 md:p-6 overflow-hidden">
+    <div className="flex flex-col gap-4 w-full h-full lg:h-[calc(100vh-20px)] p-4 md:p-6 overflow-y-auto lg:overflow-hidden">
       {/* Top Navigation Bar (Desktop & Mobile) */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-800/15 gap-4 w-full select-none shrink-0">
         <div className="flex items-center gap-3">
@@ -1312,17 +1929,6 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
             <ChevronLeft className="w-4 h-4" />
             {lang === 'CZ' ? 'KATALOG LETADEL' : 'AIRCRAFT CATALOG'}
           </button>
-
-          {/* If on mobile and in 'info' view, show a button to toggle back to 'globe' */}
-          {!showGlobeOnMobile && (
-            <button
-              onClick={() => setMobileSubView('globe')}
-              className="lg:hidden flex items-center gap-1.5 text-xs font-bold font-mono text-slate-400 bg-slate-800/40 hover:bg-slate-800/60 active:scale-95 transition-all py-2 px-3.5 rounded-xl border border-slate-700/20 cursor-pointer"
-            >
-              <Compass className="w-4 h-4" />
-              {lang === 'CZ' ? 'ZOBRAZIT GLÓBUS' : 'SHOW GLOBE'}
-            </button>
-          )}
         </div>
 
         {/* Title / Info */}
@@ -1348,9 +1954,7 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full h-full items-start overflow-hidden min-h-0">
         
         {/* LEFT: Interactive 3D Globe or Google Map with floating overlays */}
-        <div className={`lg:col-span-7 flex flex-col items-center justify-center relative bg-slate-900/10 rounded-3xl border border-white/5 p-4 overflow-hidden h-[450px] lg:h-[calc(100vh-140px)] min-h-0 ${
-          showGlobeOnMobile ? 'flex w-full' : 'hidden lg:flex'
-        }`}>
+        <div className="lg:col-span-7 flex flex-col items-center justify-center relative bg-slate-900/10 rounded-3xl border border-white/5 p-4 overflow-hidden h-[380px] sm:h-[450px] lg:h-[calc(100vh-140px)] min-h-0 w-full flex">
         
         {/* Top Floating Controls Overlay */}
         <div className="absolute top-4 left-4 right-4 z-20 flex flex-col md:flex-row gap-2 items-stretch md:items-center justify-between pointer-events-none">
@@ -1431,7 +2035,6 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
                               onSelectAirport(airport.id);
                               setSearchQuery('');
                               setShowDropdown(false);
-                              setMobileSubView('info');
                             }}
                             className={`w-full text-left p-3 flex items-center justify-between border-b last:border-0 text-xs font-mono cursor-pointer transition-colors ${
                               isDark 
@@ -1603,6 +2206,22 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
               }`}>
                 ZOOM: {zoom.toFixed(1)}x
               </div>
+              <div className={`text-[9px] font-bold px-1.5 py-0.5 rounded self-start flex items-center gap-1 ${
+                isDark ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20' : 'text-emerald-700 bg-emerald-50 border border-emerald-200'
+              }`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                {lang === 'CZ' 
+                  ? `NAČTENO: ${loadedAirports.length} letišť v zorném poli` 
+                  : `LOADED: ${loadedAirports.length} airports in view`}
+              </div>
+              {isLoadingProgressive && (
+                <div className={`text-[9px] font-bold px-1.5 py-0.5 rounded self-start flex items-center gap-1.5 ${
+                  isDark ? 'text-teal-400 bg-teal-500/10 border border-teal-500/20' : 'text-teal-700 bg-teal-50 border border-teal-200'
+                }`}>
+                  <RefreshCw className="w-2.5 h-2.5 animate-spin text-teal-400" />
+                  <span>{lang === 'CZ' ? 'NAČÍTÁNÍ SEKTORU...' : 'LOADING SECTOR...'}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1655,35 +2274,12 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
           >
             {hideAllAirports ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
           </button>
-          <button
-            onClick={() => setAutoRotate(!autoRotate)}
-            title={lang === 'CZ' ? (autoRotate ? 'Zastavit rotaci' : 'Spustit rotaci') : (autoRotate ? 'Stop Rotation' : 'Start Rotation')}
-            className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer shadow-md ${
-              autoRotate
-                ? 'bg-teal-500/20 border-teal-500/40 text-teal-400'
-                : isDark
-                  ? 'bg-slate-900 border-slate-700/60 text-slate-400 hover:bg-slate-800'
-                  : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5" />
-          </button>
         </div>
 
-        {/* Floating Info Button for Mobile only */}
-        <button
-          onClick={() => setMobileSubView('info')}
-          className="lg:hidden absolute bottom-4 left-4 z-20 flex items-center gap-1.5 text-xs font-bold font-mono text-teal-400 bg-slate-900/90 hover:bg-slate-950 active:scale-95 transition-all py-2 px-3.5 rounded-xl border border-teal-500/30 shadow-md shadow-teal-500/5 cursor-pointer"
-        >
-          <Info className="w-4 h-4" />
-          {lang === 'CZ' ? 'ZOBRAZIT INFO' : 'SHOW INFO'}
-        </button>
       </div>
 
       {/* RIGHT: Selected Airport Detailed Specification metrics OR Active Route Details */}
-      <div className={`lg:col-span-5 space-y-5 h-full overflow-y-auto pr-1 lg:h-[calc(100vh-140px)] pb-10 ${
-        showInfoOnMobile ? 'block' : 'hidden lg:block'
-      }`}>
+      <div className="lg:col-span-5 space-y-5 h-full lg:overflow-y-auto pr-1 lg:h-[calc(100vh-140px)] pb-10 block w-full">
         {routeMode ? (
           /* ROUTE FINDER MODE PANEL */
           fromAirport && toAirport ? (
@@ -1842,7 +2438,7 @@ export default function AirportGlobe({ selectedAirportId, onSelectAirport, isDar
                 <div className="flex items-center gap-2 mt-2">
                   <Gauge className="w-4 h-4 text-emerald-400" />
                   <span className={`text-base font-black tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-850'}`}>
-                    ~{selectedAirport.avgFlightsDaily.toLocaleString()}
+                    {selectedAirport.avgFlightsDaily !== undefined ? `~${selectedAirport.avgFlightsDaily.toLocaleString()}` : 'N/A'}
                   </span>
                 </div>
               </div>

@@ -56,7 +56,7 @@ export interface Airport {
   city: string;                 // City served
   country: string;              // Country located
   builtYear: number;            // Opening/Construction year
-  avgFlightsDaily: number;      // Average aircraft departures/arrivals daily
+  avgFlightsDaily?: number;     // Average aircraft departures/arrivals daily
   passengersYearlyM: number;    // Yearly passengers in millions
   runwaysCount: number;         // Number of active runways
   altitudeM: number;            // Elevation in meters above sea level

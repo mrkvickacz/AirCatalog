@@ -21,7 +21,7 @@ import {
 import { Aircraft, Airline } from '../types';
 import { AIRCRAFT_DATA } from '../data';
 import { AIRLINE_DATA } from '../airline_data';
-import { EUFlag, USFlag, CanadaFlag, EUCanadaFlag, BrazilFlag, CZFlag, GermanyFlag, IEFlag, NLFlag, QAFlag, HUFlag, UKFlag, SGFlag, PTFlag, FIFlag, TRFlag, JPFlag, AEFlag, AUFlag, KRFlag, ESFlag, HKFlag, SmartwingsLogo, DeltaLogo, LufthansaLogo, RyanairLogo, BritishAirwaysLogo, KLMLogo, QatarLogo, WizzLogo, SingaporeLogo, TapLogo, AirCanadaLogo, FinnairLogo, UnitedLogo, AmericanLogo, TurkishLogo, ANALogo, EmiratesLogo, QantasLogo, KoreanLogo, VuelingLogo, CathayLogo } from './Flags';
+import { EUFlag, USFlag, CanadaFlag, EUCanadaFlag, BrazilFlag, CZFlag, GermanyFlag, IEFlag, NLFlag, QAFlag, HUFlag, UKFlag, SGFlag, PTFlag, FIFlag, TRFlag, JPFlag, AEFlag, AUFlag, KRFlag, ESFlag, HKFlag, SmartwingsLogo, DeltaLogo, LufthansaLogo, RyanairLogo, BritishAirwaysLogo, KLMLogo, QatarLogo, WizzLogo, SingaporeLogo, TapLogo, AirCanadaLogo, FinnairLogo, UnitedLogo, AmericanLogo, TurkishLogo, ANALogo, EmiratesLogo, QantasLogo, KoreanLogo, VuelingLogo, CathayLogo, AirFranceLogo, IberiaLogo, SASLogo, BrusselsAirlinesLogo, LOTLogo, AustrianAirlinesLogo, SwissLogo, EtihadLogo, JALLogo } from './Flags';
 import { translateCategory, translateTypicalCapacity, translateCountry, translateText } from '../translations';
 import { AircraftCompositeOverlay } from './AircraftVisualProfile';
 
@@ -753,6 +753,24 @@ export default function AircraftComparison({
                           <VuelingLogo />
                         ) : airlineSlot1.id === 'cathay-pacific' ? (
                           <CathayLogo />
+                        ) : airlineSlot1.id === 'air-france' ? (
+                          <AirFranceLogo />
+                        ) : airlineSlot1.id === 'iberia' ? (
+                          <IberiaLogo />
+                        ) : airlineSlot1.id === 'sas' ? (
+                          <SASLogo />
+                        ) : airlineSlot1.id === 'brussels-airlines' ? (
+                          <BrusselsAirlinesLogo />
+                        ) : airlineSlot1.id === 'lot-polish-airlines' ? (
+                          <LOTLogo />
+                        ) : airlineSlot1.id === 'austrian-airlines' ? (
+                          <AustrianAirlinesLogo />
+                        ) : airlineSlot1.id === 'swiss-international' ? (
+                          <SwissLogo />
+                        ) : airlineSlot1.id === 'etihad-airways' ? (
+                          <EtihadLogo />
+                        ) : airlineSlot1.id === 'japan-airlines' ? (
+                          <JALLogo />
                         ) : airlineSlot1.id === 'united-airlines' || airlineSlot1.id === 'american-airlines' || airlineSlot1.country === 'USA' ? (
                           <USFlag />
                         ) : (
@@ -894,6 +912,24 @@ export default function AircraftComparison({
                           <VuelingLogo />
                         ) : airlineSlot2.id === 'cathay-pacific' ? (
                           <CathayLogo />
+                        ) : airlineSlot2.id === 'air-france' ? (
+                          <AirFranceLogo />
+                        ) : airlineSlot2.id === 'iberia' ? (
+                          <IberiaLogo />
+                        ) : airlineSlot2.id === 'sas' ? (
+                          <SASLogo />
+                        ) : airlineSlot2.id === 'brussels-airlines' ? (
+                          <BrusselsAirlinesLogo />
+                        ) : airlineSlot2.id === 'lot-polish-airlines' ? (
+                          <LOTLogo />
+                        ) : airlineSlot2.id === 'austrian-airlines' ? (
+                          <AustrianAirlinesLogo />
+                        ) : airlineSlot2.id === 'swiss-international' ? (
+                          <SwissLogo />
+                        ) : airlineSlot2.id === 'etihad-airways' ? (
+                          <EtihadLogo />
+                        ) : airlineSlot2.id === 'japan-airlines' ? (
+                          <JALLogo />
                         ) : airlineSlot2.id === 'united-airlines' || airlineSlot2.id === 'american-airlines' || airlineSlot2.country === 'USA' ? (
                           <USFlag />
                         ) : (
@@ -1005,6 +1041,16 @@ export default function AircraftComparison({
             ) : (
               <div className="space-y-4">
                 
+                {/* OVERLAPPING PHYSICAL SILHOUETTES VIEW */}
+                {slot1 && slot2 && (
+                  <AircraftCompositeOverlay 
+                    aircraft1={slot1} 
+                    aircraft2={slot2} 
+                    lang={currentLang} 
+                    theme={isDark ? 'dark' : 'light'} 
+                  />
+                )}
+
                 {/* COMPARISON RESULTS ROWS */}
                 <div className={`${isDark ? 'bg-slate-950/30 border-white/5' : 'bg-slate-50 border-slate-200/85 shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)]'} border rounded-xl md:rounded-2xl overflow-hidden divide-y ${isDark ? 'divide-white/5' : 'divide-slate-200/60'}`}>
                   
@@ -1123,16 +1169,6 @@ export default function AircraftComparison({
                   )}
 
                 </div>
-
-                {/* OVERLAPPING PHYSICAL SILHOUETTES VIEW */}
-                {slot1 && slot2 && (
-                  <AircraftCompositeOverlay 
-                    aircraft1={slot1} 
-                    aircraft2={slot2} 
-                    lang={currentLang} 
-                    theme={isDark ? 'dark' : 'light'} 
-                  />
-                )}
 
                 {/* DYNAMIC FUN FACT SECTION */}
                 {slot1 && slot2 && (

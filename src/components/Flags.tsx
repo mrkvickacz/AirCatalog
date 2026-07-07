@@ -21,6 +21,16 @@ import koreanLogoUrl from '../assets/images/korean_logo_1782847880759.jpg';
 import vuelingLogoUrl from '../assets/images/vueling_logo_1782847893889.jpg';
 import cathayLogoUrl from '../assets/images/cathay_logo_1782847909553.jpg';
 
+import airFranceLogoUrl from '../assets/images/air_france_logo_1783406002366.jpg';
+import iberiaLogoUrl from '../assets/images/iberia_logo_1783406018289.jpg';
+import sasLogoUrl from '../assets/images/sas_logo_1783406028219.jpg';
+import brusselsLogoUrl from '../assets/images/brussels_logo_1783406038020.jpg';
+import lotLogoUrl from '../assets/images/lot_logo_1783406051276.jpg';
+import austrianLogoUrl from '../assets/images/austrian_logo_1783406062124.jpg';
+import swissLogoUrl from '../assets/images/swiss_logo_1783406071673.jpg';
+import etihadLogoUrl from '../assets/images/etihad_logo_1783406081434.jpg';
+import jalLogoUrl from '../assets/images/jal_logo_1783406091347.jpg';
+
 export const EUFlag: React.FC = () => (
   <svg viewBox="0 0 12 8" className="w-5 h-3.5 rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none">
     <rect width="12" height="8" fill="#003399"/>
@@ -534,6 +544,87 @@ export const CathayLogo: React.FC<{ className?: string }> = ({ className = "w-5 
   <img 
     src={cathayLogoUrl} 
     alt="Cathay Pacific Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const AirFranceLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={airFranceLogoUrl} 
+    alt="Air France Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const IberiaLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={iberiaLogoUrl} 
+    alt="Iberia Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const SASLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={sasLogoUrl} 
+    alt="SAS Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const BrusselsAirlinesLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={brusselsLogoUrl} 
+    alt="Brussels Airlines Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const LOTLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={lotLogoUrl} 
+    alt="LOT Polish Airlines Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const AustrianAirlinesLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={austrianLogoUrl} 
+    alt="Austrian Airlines Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const SwissLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={swissLogoUrl} 
+    alt="Swiss International Air Lines Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const EtihadLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={etihadLogoUrl} 
+    alt="Etihad Airways Logo" 
+    className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
+export const JALLogo: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+  <img 
+    src={jalLogoUrl} 
+    alt="Japan Airlines Logo" 
     className={`${className} rounded-[2px] shadow-sm border border-white/10 shrink-0 select-none bg-white object-contain`}
     referrerPolicy="no-referrer"
   />
